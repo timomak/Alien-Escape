@@ -10,7 +10,7 @@ import SpriteKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate{
     
-    var projectile: Projectile! // <--- this one
+    var projectile: spear! // <--- this one
     
     //Touch dragging vars
     var projectileIsDragged = false
@@ -25,21 +25,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         scene.scaleMode = .aspectFit
         return scene
     }
-    
-    class Projectile: SKShapeNode {
-        convenience init(path: UIBezierPath, color: UIColor, borderColor:UIColor) {
-            self.init()
-            self.path = path.cgPath
-            self.fillColor = color
-            self.strokeColor = borderColor
-        }
-    }
 
     override func didMove(to view: SKView) {
-        physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
-        physicsWorld.gravity = Settings.Game.gravity
-        physicsWorld.speed = 0.5
-        
         setupSlingshot()
     }
     
@@ -57,11 +44,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     struct Settings {
         struct Metrics {
-            static let projectileRadius = CGFloat(10)
-            static let projectileRestPosition = CGPoint(x: -225, y: 60)
+            static let projectileRadius = CGFloat(20)
+            static let projectileRestPosition = CGPoint(x: -225, y: 0)
             static let projectileTouchThreshold = CGFloat(10)
             static let projectileSnapLimit = CGFloat(10)
-            static let forceMultiplier = CGFloat(0.5)
+            static let forceMultiplier = CGFloat(1.0)
             static let rLimit = CGFloat(50)
         }
         struct Game {
@@ -71,7 +58,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     func setupSlingshot() {
         let slingshot_1 = SKSpriteNode(imageNamed: "slingshot_1")
-        slingshot_1.position = CGPoint(x: -225, y: 10)
+        slingshot_1.position = CGPoint(x: -225, y: -50)
         addChild(slingshot_1)
         
         let projectilePath = UIBezierPath(
@@ -81,12 +68,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             endAngle: CGFloat(M_PI * 2),
             clockwise: true
         )
-        projectile = Projectile(path: projectilePath, color: UIColor.red, borderColor: UIColor.white)
+        projectile = spear()// TODO: )
         projectile.position = Settings.Metrics.projectileRestPosition
         addChild(projectile)
         
         let slingshot_2 = SKSpriteNode(imageNamed: "slingshot_2")
-        slingshot_2.position = CGPoint(x: -225, y: 10)
+        slingshot_2.position = CGPoint(x: -225, y: -50)
         addChild(slingshot_2)
     }
     
