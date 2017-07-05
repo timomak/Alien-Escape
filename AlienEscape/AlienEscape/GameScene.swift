@@ -51,6 +51,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
 
     override func didMove(to view: SKView) {
         cameraNode = childNode(withName: "cameraNode") as! SKCameraNode
+        self.physicsWorld.contactDelegate = self
         self.camera = cameraNode
         setupSlingshot()
     }
@@ -184,15 +185,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 let vectorX = touchStartingPoint.x - touchCurrentPoint.x
                 let vectorY = touchStartingPoint.y - touchCurrentPoint.y
                 projectile.physicsBody = SKPhysicsBody(circleOfRadius: Settings.Metrics.projectileRadius)
+                projectile.physicsBody?.categoryBitMask = 1
+                projectile.physicsBody?.contactTestBitMask = 1
+                print("category mask set to 1", projectile.physicsBody?.categoryBitMask as Any)
                 projectile.physicsBody?.applyImpulse(
                     CGVector(
                         dx: vectorX * Settings.Metrics.forceMultiplier,
                         dy: vectorY * Settings.Metrics.forceMultiplier
                     )
                 )
+                print("we're in the if")
             } else {
                 projectile.physicsBody = nil
                 projectile.position = Settings.Metrics.projectileRestPosition
+                print("we're in the else")
             }
         }
     }
@@ -202,6 +208,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         /* Get references to the bodies involved in the collision */
         let contactA:SKPhysicsBody = contact.bodyA
         let contactB:SKPhysicsBody = contact.bodyB
+        print("contactA = \(contactA)")
+        print("contactB = \(contactB)")
+        print(#file, #function, #line)
         /* Get references to the physics body parent SKSpriteNode */
         let nodeA = contactA.node as! SKSpriteNode
         let nodeB = contactB.node as! SKSpriteNode

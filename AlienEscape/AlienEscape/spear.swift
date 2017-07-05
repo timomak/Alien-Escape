@@ -13,7 +13,7 @@ class spear: SKSpriteNode {
         super.init(texture: texture, color: color, size: size)
         
         // Set physics properties
-        physicsBody = SKPhysicsBody()
+        physicsBody = SKPhysicsBody(circleOfRadius: size.width / 2)
         physicsBody?.categoryBitMask = 1
         physicsBody?.friction = 0.6
         physicsBody?.mass = 0.5
