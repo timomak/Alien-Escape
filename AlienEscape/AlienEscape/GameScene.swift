@@ -6,6 +6,8 @@
 //  Copyright © 2017 timofey makhlay. All rights reserved.
 //
 
+// print(#file, #function, #line)
+
 import SpriteKit
 
 func clamp<T: Comparable>(value: T, lower: T, upper: T) -> T {
@@ -20,6 +22,7 @@ extension CGVector {
 
 class GameScene: SKScene, SKPhysicsContactDelegate{
     
+    // Sets Projectile as an Image
     var projectile: spear!
     
     //Touch dragging vars
@@ -27,26 +30,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var touchCurrentPoint: CGPoint!
     var touchStartingPoint: CGPoint!
     
+    // Setting up camera
     var cameraNode:SKCameraNode!
-    
     var cameraTarget:SKSpriteNode!
 
-    /* Make a Class method to load levels */
+    // MARK: Loading Levels
     class func level(_ levelNumber: Int) -> GameScene? {
         guard let scene = GameScene(fileNamed: "Level_\(levelNumber)") else {
             return nil
         }
         scene.scaleMode = .aspectFit
         return scene
-    }
-    
-    func moveCamera() {
-        guard let cameraTarget = cameraTarget else {
-            return
-        }
-        let targetX = cameraTarget.position.x
-        let x = clamp(value: targetX, lower: 0, upper: 475)
-        cameraNode.position.x = x
     }
 
     override func didMove(to view: SKView) {
@@ -56,53 +50,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         setupSlingshot()
     }
     
-    // MARK: SlingShot 
-    func fingerDistanceFromProjectileRestPosition(projectileRestPosition: CGPoint, fingerPosition: CGPoint) -> CGFloat {
-        return sqrt(pow(projectileRestPosition.x - fingerPosition.x,2) + pow(projectileRestPosition.y - fingerPosition.y,2))
-    }
-    
-    func projectilePositionForFingerPosition(fingerPosition: CGPoint, projectileRestPosition:CGPoint, rLimit:CGFloat) -> CGPoint {
-        let θ = atan2(fingerPosition.x - projectileRestPosition.x, fingerPosition.y - projectileRestPosition.y)
-        let cX = sin(θ) * rLimit
-        let cY = cos(θ) * rLimit
-        return CGPoint(x: cX + projectileRestPosition.x, y: cY + projectileRestPosition.y)
-    }
-    
-    struct Settings {
-        struct Metrics {
-            static let projectileRadius = CGFloat(15)
-            static let projectileRestPosition = CGPoint(x: -225, y: 0)
-            static let projectileTouchThreshold = CGFloat(10)
-            static let projectileSnapLimit = CGFloat(10)
-            static let forceMultiplier = CGFloat(1.0)
-            static let rLimit = CGFloat(50)
-        }
-        struct Game {
-            static let gravity = CGVector(dx: 0,dy: -9.8)
-        }
-    }
-    
-    func setupSlingshot() {
-        let slingshot_1 = SKSpriteNode(imageNamed: "slingshot_1")
-        slingshot_1.position = CGPoint(x: -225, y: -50)
-        addChild(slingshot_1)
-        
-        let projectilePath = UIBezierPath(
-            arcCenter: CGPoint.zero,
-            radius: Settings.Metrics.projectileRadius,
-            startAngle: 0,
-            endAngle: CGFloat(M_PI * 2),
-            clockwise: true
-        )
-        projectile = spear()
-        projectile.isHidden = true
-        projectile.position = Settings.Metrics.projectileRestPosition
-        addChild(projectile)
-        
-        let slingshot_2 = SKSpriteNode(imageNamed: "slingshot_2")
-        slingshot_2.position = CGPoint(x: -225, y: -50)
-        addChild(slingshot_2)
-    }
     
     override func update(_ currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
@@ -115,7 +62,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             }
             
             /* Check penguin has come to rest */
-            if cameraTarget.physicsBody!.joints.count == 0 && cameraTarget.physicsBody!.velocity.length() < 0.18 {
+            if cameraTarget.physicsBody!.contactTestBitMask == 1 && cameraTarget.physicsBody!.velocity.length() < 1 {
                 resetCamera()
             }
             
@@ -126,17 +73,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         checkSpear()
     }
-    
-    func resetCamera() {
-        /* Reset camera */
-        let cameraReset = SKAction.move(to: CGPoint(x:0, y:camera!.position.y), duration: 1.5)
-        let cameraDelay = SKAction.wait(forDuration: 0.5)
-        let cameraSequence = SKAction.sequence([cameraDelay,cameraReset])
-        cameraNode.run(cameraSequence)
-        cameraTarget = nil
-    }
 
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         func shouldStartDragging(touchLocation:CGPoint, threshold: CGFloat) -> Bool {
             let distance = fingerDistanceFromProjectileRestPosition(
@@ -187,18 +124,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 projectile.physicsBody = SKPhysicsBody(circleOfRadius: Settings.Metrics.projectileRadius)
                 projectile.physicsBody?.categoryBitMask = 1
                 projectile.physicsBody?.contactTestBitMask = 1
-                print("category mask set to 1", projectile.physicsBody?.categoryBitMask as Any)
+                physicsBody?.friction = 0.6
+                physicsBody?.mass = 0.5
                 projectile.physicsBody?.applyImpulse(
                     CGVector(
                         dx: vectorX * Settings.Metrics.forceMultiplier,
                         dy: vectorY * Settings.Metrics.forceMultiplier
                     )
                 )
-                print("we're in the if")
             } else {
                 projectile.physicsBody = nil
                 projectile.position = Settings.Metrics.projectileRestPosition
-                print("we're in the else")
             }
         }
     }
@@ -208,17 +144,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         /* Get references to the bodies involved in the collision */
         let contactA:SKPhysicsBody = contact.bodyA
         let contactB:SKPhysicsBody = contact.bodyB
-        print("contactA = \(contactA)")
-        print("contactB = \(contactB)")
-        print(#file, #function, #line)
         /* Get references to the physics body parent SKSpriteNode */
         let nodeA = contactA.node as! SKSpriteNode
         let nodeB = contactB.node as! SKSpriteNode
         /* Check if either physics bodies was a seal */
         if contactA.categoryBitMask == 2 || contactB.categoryBitMask == 2 {
             /* Was the collision more than a gentle nudge? */
-            print("there was contact")
-            if contact.collisionImpulse > 0.1 {
+            if contact.collisionImpulse > 10 {
 
                 /* Kill Seal */
                 if contactA.categoryBitMask == 2 {
@@ -249,5 +181,72 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             node.removeFromParent()
         })
         self.run(alienDeath)
+    }
+    
+    // MARK: Move Camera function
+    func moveCamera() {
+        guard let cameraTarget = cameraTarget else {
+            return
+        }
+        let targetX = cameraTarget.position.x
+        let x = clamp(value: targetX, lower: 0, upper: 600)
+        cameraNode.position.x = x
+    }
+    
+    // MARK: SlingShot
+    func fingerDistanceFromProjectileRestPosition(projectileRestPosition: CGPoint, fingerPosition: CGPoint) -> CGFloat {
+        return sqrt(pow(projectileRestPosition.x - fingerPosition.x,2) + pow(projectileRestPosition.y - fingerPosition.y,2))
+    }
+    
+    func projectilePositionForFingerPosition(fingerPosition: CGPoint, projectileRestPosition:CGPoint, rLimit:CGFloat) -> CGPoint {
+        let θ = atan2(fingerPosition.x - projectileRestPosition.x, fingerPosition.y - projectileRestPosition.y)
+        let cX = sin(θ) * rLimit
+        let cY = cos(θ) * rLimit
+        return CGPoint(x: cX + projectileRestPosition.x, y: cY + projectileRestPosition.y)
+    }
+    
+    struct Settings {
+        struct Metrics {
+            static let projectileRadius = CGFloat(15)
+            static let projectileRestPosition = CGPoint(x: -225, y: 0)
+            static let projectileTouchThreshold = CGFloat(10)
+            static let projectileSnapLimit = CGFloat(10)
+            static let forceMultiplier = CGFloat(1.0)
+            static let rLimit = CGFloat(50)
+        }
+        struct Game {
+            static let gravity = CGVector(dx: 0,dy: -9.8)
+        }
+    }
+    
+    func setupSlingshot() {
+        let slingshot_1 = SKSpriteNode(imageNamed: "slingshot_1")
+        slingshot_1.position = CGPoint(x: -225, y: -50)
+        addChild(slingshot_1)
+        
+        let projectilePath = UIBezierPath(
+            arcCenter: CGPoint.zero,
+            radius: Settings.Metrics.projectileRadius,
+            startAngle: 0,
+            endAngle: CGFloat(M_PI * 2),
+            clockwise: true
+        )
+        projectile = spear()
+        projectile.isHidden = true
+        projectile.position = Settings.Metrics.projectileRestPosition
+        addChild(projectile)
+        
+        let slingshot_2 = SKSpriteNode(imageNamed: "slingshot_2")
+        slingshot_2.position = CGPoint(x: -225, y: -50)
+        addChild(slingshot_2)
+    }
+    
+    func resetCamera() {
+        /* Reset camera */
+        let cameraReset = SKAction.move(to: CGPoint(x:0, y:camera!.position.y), duration: 1.5)
+        let cameraDelay = SKAction.wait(forDuration: 0.5)
+        let cameraSequence = SKAction.sequence([cameraDelay,cameraReset])
+        cameraNode.run(cameraSequence)
+        cameraTarget = nil
     }
 }
