@@ -8,14 +8,28 @@
 
 import SpriteKit
 
+func clamp<T: Comparable>(value: T, lower: T, upper: T) -> T {
+    return min(max(value, lower), upper)
+}
+
+extension CGVector {
+    public func length() -> CGFloat {
+        return CGFloat(sqrt(dx*dx + dy*dy))
+    }
+}
+
 class GameScene: SKScene, SKPhysicsContactDelegate{
     
-    var projectile: spear! // <--- this one
+    var projectile: spear!
     
     //Touch dragging vars
     var projectileIsDragged = false
     var touchCurrentPoint: CGPoint!
     var touchStartingPoint: CGPoint!
+    
+    var cameraNode:SKCameraNode!
+    
+    var cameraTarget:SKSpriteNode!
 
     /* Make a Class method to load levels */
     class func level(_ levelNumber: Int) -> GameScene? {
@@ -25,8 +39,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         scene.scaleMode = .aspectFit
         return scene
     }
+    
+    func moveCamera() {
+        guard let cameraTarget = cameraTarget else {
+            return
+        }
+        let targetX = cameraTarget.position.x
+        let x = clamp(value: targetX, lower: 0, upper: 475)
+        cameraNode.position.x = x
+    }
 
     override func didMove(to view: SKView) {
+        cameraNode = childNode(withName: "cameraNode") as! SKCameraNode
+        self.camera = cameraNode
         setupSlingshot()
     }
     
@@ -44,7 +69,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     struct Settings {
         struct Metrics {
-            static let projectileRadius = CGFloat(20)
+            static let projectileRadius = CGFloat(15)
             static let projectileRestPosition = CGPoint(x: -225, y: 0)
             static let projectileTouchThreshold = CGFloat(10)
             static let projectileSnapLimit = CGFloat(10)
@@ -68,7 +93,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             endAngle: CGFloat(M_PI * 2),
             clockwise: true
         )
-        projectile = spear()// TODO: )
+        projectile = spear()
+        projectile.isHidden = true
         projectile.position = Settings.Metrics.projectileRestPosition
         addChild(projectile)
         
@@ -76,6 +102,39 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         slingshot_2.position = CGPoint(x: -225, y: -50)
         addChild(slingshot_2)
     }
+    
+    override func update(_ currentTime: CFTimeInterval) {
+        /* Called before each frame is rendered */
+        
+        moveCamera()
+        
+        func checkSpear() {
+            guard let cameraTarget = cameraTarget else {
+                return
+            }
+            
+            /* Check penguin has come to rest */
+            if cameraTarget.physicsBody!.joints.count == 0 && cameraTarget.physicsBody!.velocity.length() < 0.18 {
+                resetCamera()
+            }
+            
+            if cameraTarget.position.y < -200 {
+                cameraTarget.removeFromParent()
+                resetCamera()
+            }
+        }
+        checkSpear()
+    }
+    
+    func resetCamera() {
+        /* Reset camera */
+        let cameraReset = SKAction.move(to: CGPoint(x:0, y:camera!.position.y), duration: 1.5)
+        let cameraDelay = SKAction.wait(forDuration: 0.5)
+        let cameraSequence = SKAction.sequence([cameraDelay,cameraReset])
+        cameraNode.run(cameraSequence)
+        cameraTarget = nil
+    }
+
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         func shouldStartDragging(touchLocation:CGPoint, threshold: CGFloat) -> Bool {
@@ -90,6 +149,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             let touchLocation = touch.location(in: self)
             
             if !projectileIsDragged && shouldStartDragging(touchLocation: touchLocation, threshold: Settings.Metrics.projectileTouchThreshold)  {
+                projectile.isHidden = false
                 touchStartingPoint = touchLocation
                 touchCurrentPoint = touchLocation
                 projectileIsDragged = true
@@ -117,6 +177,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if projectileIsDragged {
+            cameraTarget = projectile
             projectileIsDragged = false
             let distance = fingerDistanceFromProjectileRestPosition(projectileRestPosition: touchCurrentPoint, fingerPosition: touchStartingPoint)
             if distance > Settings.Metrics.projectileSnapLimit {
@@ -136,4 +197,48 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
     }
     
+    func didBegin(_ contact: SKPhysicsContact) {
+        /* Physics contact delegate implementation */
+        /* Get references to the bodies involved in the collision */
+        let contactA:SKPhysicsBody = contact.bodyA
+        let contactB:SKPhysicsBody = contact.bodyB
+        /* Get references to the physics body parent SKSpriteNode */
+        let nodeA = contactA.node as! SKSpriteNode
+        let nodeB = contactB.node as! SKSpriteNode
+        /* Check if either physics bodies was a seal */
+        if contactA.categoryBitMask == 2 || contactB.categoryBitMask == 2 {
+            /* Was the collision more than a gentle nudge? */
+            print("there was contact")
+            if contact.collisionImpulse > 0.1 {
+
+                /* Kill Seal */
+                if contactA.categoryBitMask == 2 {
+                    removeAlien(node: nodeA)
+                }
+                if contactB.categoryBitMask == 2 {
+                    removeAlien(node: nodeB)
+                }
+            }
+        }
+    }
+    
+    func removeAlien(node: SKNode) {
+
+        let wait = SKAction.wait(forDuration: 5)
+        let removeParticles = SKAction.removeFromParent()
+        let seq = SKAction.sequence([wait, removeParticles])
+        run(seq)
+        
+        
+        //        /* Play SFX */
+        //        let sound = SKAction.playSoundFileNamed("sfx_seal", waitForCompletion: false)
+        //        self.run(sound)
+        
+        /* Create our hero death action */
+        let alienDeath = SKAction.run({
+            /* Remove seal node from scene */
+            node.removeFromParent()
+        })
+        self.run(alienDeath)
+    }
 }

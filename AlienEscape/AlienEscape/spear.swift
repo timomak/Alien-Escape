@@ -4,7 +4,7 @@ class spear: SKSpriteNode {
     
     init() {
         // Make a texture from an image, a color, and size
-        let texture = SKTexture(imageNamed: "Arrow")
+        let texture = SKTexture(imageNamed: "Circle")
         let color = UIColor.clear
         let size = texture.size()
         
