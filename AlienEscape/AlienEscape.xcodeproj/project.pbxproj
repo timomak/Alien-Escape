@@ -17,8 +17,8 @@
 		F3165B731F06C8D200A7BD96 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F3165B711F06C8D200A7BD96 /* LaunchScreen.storyboard */; };
 		F3165B7B1F06CAF800A7BD96 /* MSButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3165B7A1F06CAF800A7BD96 /* MSButtonNode.swift */; };
 		F3165B7D1F06CB0B00A7BD96 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3165B7C1F06CB0B00A7BD96 /* GameScene.swift */; };
-		F3165B7F1F06CB2300A7BD96 /* Level_1.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3165B7E1F06CB2300A7BD96 /* Level_1.sks */; };
 		F3165B811F06D46600A7BD96 /* spear.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3165B801F06D46600A7BD96 /* spear.swift */; };
+		F332EA391F0DABFC00DBA958 /* Level_1.sks in Resources */ = {isa = PBXBuildFile; fileRef = F332EA381F0DABFC00DBA958 /* Level_1.sks */; };
 		F39ECAE71F0AC3D100EDE3D5 /* DarkAlienAnimation.sks in Resources */ = {isa = PBXBuildFile; fileRef = F39ECAE61F0AC3D100EDE3D5 /* DarkAlienAnimation.sks */; };
 		F39ECB171F0AC3F500EDE3D5 /* darkgray__0000_idle_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F39ECAE91F0AC3F500EDE3D5 /* darkgray__0000_idle_1.png */; };
 		F39ECB181F0AC3F500EDE3D5 /* darkgray__0001_idle_2.png in Resources */ = {isa = PBXBuildFile; fileRef = F39ECAEA1F0AC3F500EDE3D5 /* darkgray__0001_idle_2.png */; };
@@ -81,8 +81,8 @@
 		F3165B741F06C8D200A7BD96 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F3165B7A1F06CAF800A7BD96 /* MSButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSButtonNode.swift; sourceTree = "<group>"; };
 		F3165B7C1F06CB0B00A7BD96 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
-		F3165B7E1F06CB2300A7BD96 /* Level_1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level_1.sks; sourceTree = "<group>"; };
 		F3165B801F06D46600A7BD96 /* spear.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = spear.swift; sourceTree = "<group>"; };
+		F332EA381F0DABFC00DBA958 /* Level_1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Level_1.sks; path = alien_dark_gray/Level_1.sks; sourceTree = "<group>"; };
 		F39ECAE61F0AC3D100EDE3D5 /* DarkAlienAnimation.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DarkAlienAnimation.sks; sourceTree = "<group>"; };
 		F39ECAE91F0AC3F500EDE3D5 /* darkgray__0000_idle_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkgray__0000_idle_1.png; sourceTree = "<group>"; };
 		F39ECAEA1F0AC3F500EDE3D5 /* darkgray__0001_idle_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkgray__0001_idle_2.png; sourceTree = "<group>"; };
@@ -174,7 +174,6 @@
 				F3165B7A1F06CAF800A7BD96 /* MSButtonNode.swift */,
 				F3165B7C1F06CB0B00A7BD96 /* GameScene.swift */,
 				F39ECB451F0B00D400EDE3D5 /* Objects */,
-				F3165B7E1F06CB2300A7BD96 /* Level_1.sks */,
 			);
 			path = AlienEscape;
 			sourceTree = "<group>";
@@ -239,6 +238,7 @@
 				F39ECAE81F0AC3F500EDE3D5 /* Dark Alien Assets */,
 				F3165B801F06D46600A7BD96 /* spear.swift */,
 				F39ECAE61F0AC3D100EDE3D5 /* DarkAlienAnimation.sks */,
+				F332EA381F0DABFC00DBA958 /* Level_1.sks */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -319,11 +319,11 @@
 				F39ECB3F1F0AC3F500EDE3D5 /* darkgray__0040_fire_6.png in Resources */,
 				F39ECB261F0AC3F500EDE3D5 /* darkgray__0015_run_4.png in Resources */,
 				F39ECB441F0AC3F500EDE3D5 /* darkgray__0045_fire_11.png in Resources */,
-				F3165B7F1F06CB2300A7BD96 /* Level_1.sks in Resources */,
 				F39ECB381F0AC3F500EDE3D5 /* darkgray__0033_attack_3.png in Resources */,
 				F39ECB201F0AC3F500EDE3D5 /* darkgray__0009_walk_4.png in Resources */,
 				F39ECAE71F0AC3D100EDE3D5 /* DarkAlienAnimation.sks in Resources */,
 				F39ECB181F0AC3F500EDE3D5 /* darkgray__0001_idle_2.png in Resources */,
+				F332EA391F0DABFC00DBA958 /* Level_1.sks in Resources */,
 				F39ECB211F0AC3F500EDE3D5 /* darkgray__0010_walk_5.png in Resources */,
 				F39ECB321F0AC3F500EDE3D5 /* darkgray__0027_jump_1.png in Resources */,
 				F39ECB1F1F0AC3F500EDE3D5 /* darkgray__0008_walk_3.png in Resources */,

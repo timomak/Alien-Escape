@@ -47,7 +47,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         cameraNode = childNode(withName: "cameraNode") as! SKCameraNode
         self.physicsWorld.contactDelegate = self
         self.camera = cameraNode
+        
         setupSlingshot()
+        
     }
     
     
@@ -62,11 +64,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             }
             
             /* Check penguin has come to rest */
-            if cameraTarget.physicsBody!.contactTestBitMask == 1 && cameraTarget.physicsBody!.velocity.length() < 1 {
+            if cameraTarget.physicsBody!.contactTestBitMask == 1 && cameraTarget.physicsBody!.velocity.length() < 0.2{
                 resetCamera()
             }
             
-            if cameraTarget.position.y < -200 {
+            if cameraTarget.position.y < -200 || cameraTarget.position.x > 680{
                 cameraTarget.removeFromParent()
                 resetCamera()
             }
@@ -224,11 +226,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         slingshot_1.position = CGPoint(x: -225, y: -50)
         addChild(slingshot_1)
         
-        let projectilePath = UIBezierPath(
+        let _ = UIBezierPath(
             arcCenter: CGPoint.zero,
             radius: Settings.Metrics.projectileRadius,
             startAngle: 0,
-            endAngle: CGFloat(M_PI * 2),
+            endAngle: CGFloat(CGFloat.pi * 2),
             clockwise: true
         )
         projectile = spear()
