@@ -68,7 +68,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 resetCamera()
             }
             
-            if cameraTarget.position.y < -200 || cameraTarget.position.x > 680{
+            if cameraTarget.position.y < -200 || cameraTarget.position.x > 1050{
                 cameraTarget.removeFromParent()
                 resetCamera()
             }
@@ -191,7 +191,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             return
         }
         let targetX = cameraTarget.position.x
-        let x = clamp(value: targetX, lower: 0, upper: 600)
+        let x = clamp(value: targetX, lower: 0, upper: 479)
         cameraNode.position.x = x
     }
     
