@@ -18,6 +18,9 @@
 // TODO: Visuals
 // TODO: Animations
 // TODO: Online highscores
+// TODO: MainMenu Animation
+// TODO: Laser gun with the right angle
+// TODO: Time Rappresentation in game
 import SpriteKit
 
 func clamp<T: Comparable>(value: T, lower: T, upper: T) -> T {
@@ -51,9 +54,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             }
         }
     }
-    
+    var alien: SKSpriteNode!
     var inGameMenu: MSButtonNode!
-    
     // Sets Projectile as an Image
     var projectile: spear!
     
@@ -78,6 +80,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
 
     override func didMove(to view: SKView) {
+        alien = childNode(withName: "//alien") as! SKSpriteNode
         inGameMenu = childNode(withName: "//inGameMenu") as! MSButtonNode
         cameraNode = childNode(withName: "cameraNode") as! SKCameraNode
         self.physicsWorld.contactDelegate = self
@@ -106,12 +109,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             guard let cameraTarget = cameraTarget else {
                 return
             }
-            
-            /* Check penguin has come to rest */
-            if cameraTarget.physicsBody!.contactTestBitMask == 1 && cameraTarget.physicsBody!.velocity.length() < 0.2{
-                resetCamera()
-            }
-            
+
             if cameraTarget.position.y < -200 || cameraTarget.position.x > 1050{
                 cameraTarget.removeFromParent()
                 resetCamera()
@@ -213,11 +211,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     func removeAlien(node: SKNode) {
+        // node.run(SKAction(named: "Boom")!)
+        
+        node.run(SKAction.init(named: "Boom")!)
 
+        
         let wait = SKAction.wait(forDuration: 5)
         let removeParticles = SKAction.removeFromParent()
         let seq = SKAction.sequence([wait, removeParticles])
         run(seq)
+
         gameState = .won
         print(gameState)
         
@@ -241,7 +244,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         let targetX = cameraTarget.position.x
         let targetY = cameraTarget.position.y
-        let x = clamp(value: targetX, lower: 0, upper: 479)
+        let x = clamp(value: targetX, lower: 0, upper: 478)
         let y = clamp(value: targetY, lower: 0, upper: 268)
         cameraNode.position.x = x
         cameraNode.position.y = y
@@ -262,7 +265,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     struct Settings {
         struct Metrics {
             static let projectileRadius = CGFloat(15)
-            static let projectileRestPosition = CGPoint(x: -225, y: 0)
+            static let projectileRestPosition = CGPoint(x: -190, y: 0)
             static let projectileTouchThreshold = CGFloat(10)
             static let projectileSnapLimit = CGFloat(10)
             static let forceMultiplier = CGFloat(1.0)
@@ -275,8 +278,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     func setupSlingshot() {
         let slingshot_1 = SKSpriteNode(imageNamed: "slingshot_1")
-        slingshot_1.position = CGPoint(x: -225, y: -50)
+        slingshot_1.position = CGPoint(x: -190, y: -50)
         addChild(slingshot_1)
+        slingshot_1.isHidden = true
         
         let _ = UIBezierPath(
             arcCenter: CGPoint.zero,
@@ -286,13 +290,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             clockwise: true
         )
         projectile = spear()
-        projectile.isHidden = true
+        projectile.isHidden = false
         projectile.position = Settings.Metrics.projectileRestPosition
         addChild(projectile)
         
         let slingshot_2 = SKSpriteNode(imageNamed: "slingshot_2")
-        slingshot_2.position = CGPoint(x: -225, y: -50)
+        slingshot_2.position = CGPoint(x: -190, y: -50)
         addChild(slingshot_2)
+        slingshot_2.isHidden = true
     }
     
     func resetCamera() {

@@ -18,6 +18,22 @@
 		F3165B7B1F06CAF800A7BD96 /* MSButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3165B7A1F06CAF800A7BD96 /* MSButtonNode.swift */; };
 		F3165B7D1F06CB0B00A7BD96 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3165B7C1F06CB0B00A7BD96 /* GameScene.swift */; };
 		F3165B811F06D46600A7BD96 /* spear.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3165B801F06D46600A7BD96 /* spear.swift */; };
+		F31CE1FE1F0EAAFF00A14038 /* destruction_air_00.png in Resources */ = {isa = PBXBuildFile; fileRef = F31CE1EF1F0EAAFF00A14038 /* destruction_air_00.png */; };
+		F31CE1FF1F0EAAFF00A14038 /* destruction_air_01.png in Resources */ = {isa = PBXBuildFile; fileRef = F31CE1F01F0EAAFF00A14038 /* destruction_air_01.png */; };
+		F31CE2001F0EAAFF00A14038 /* destruction_air_02.png in Resources */ = {isa = PBXBuildFile; fileRef = F31CE1F11F0EAAFF00A14038 /* destruction_air_02.png */; };
+		F31CE2011F0EAAFF00A14038 /* destruction_air_03.png in Resources */ = {isa = PBXBuildFile; fileRef = F31CE1F21F0EAAFF00A14038 /* destruction_air_03.png */; };
+		F31CE2021F0EAAFF00A14038 /* destruction_air_04.png in Resources */ = {isa = PBXBuildFile; fileRef = F31CE1F31F0EAAFF00A14038 /* destruction_air_04.png */; };
+		F31CE2031F0EAAFF00A14038 /* destruction_air_05.png in Resources */ = {isa = PBXBuildFile; fileRef = F31CE1F41F0EAAFF00A14038 /* destruction_air_05.png */; };
+		F31CE2041F0EAAFF00A14038 /* destruction_air_06.png in Resources */ = {isa = PBXBuildFile; fileRef = F31CE1F51F0EAAFF00A14038 /* destruction_air_06.png */; };
+		F31CE2051F0EAAFF00A14038 /* destruction_air_07.png in Resources */ = {isa = PBXBuildFile; fileRef = F31CE1F61F0EAAFF00A14038 /* destruction_air_07.png */; };
+		F31CE2061F0EAAFF00A14038 /* destruction_air_08.png in Resources */ = {isa = PBXBuildFile; fileRef = F31CE1F71F0EAAFF00A14038 /* destruction_air_08.png */; };
+		F31CE2071F0EAAFF00A14038 /* destruction_air_09.png in Resources */ = {isa = PBXBuildFile; fileRef = F31CE1F81F0EAAFF00A14038 /* destruction_air_09.png */; };
+		F31CE2081F0EAAFF00A14038 /* destruction_air_10.png in Resources */ = {isa = PBXBuildFile; fileRef = F31CE1F91F0EAAFF00A14038 /* destruction_air_10.png */; };
+		F31CE2091F0EAAFF00A14038 /* destruction_air_11.png in Resources */ = {isa = PBXBuildFile; fileRef = F31CE1FA1F0EAAFF00A14038 /* destruction_air_11.png */; };
+		F31CE20A1F0EAAFF00A14038 /* destruction_air_12.png in Resources */ = {isa = PBXBuildFile; fileRef = F31CE1FB1F0EAAFF00A14038 /* destruction_air_12.png */; };
+		F31CE20B1F0EAAFF00A14038 /* destruction_air_13.png in Resources */ = {isa = PBXBuildFile; fileRef = F31CE1FC1F0EAAFF00A14038 /* destruction_air_13.png */; };
+		F31CE20C1F0EAAFF00A14038 /* destruction_air_14.png in Resources */ = {isa = PBXBuildFile; fileRef = F31CE1FD1F0EAAFF00A14038 /* destruction_air_14.png */; };
+		F31CE2121F0EB34500A14038 /* Boom.sks in Resources */ = {isa = PBXBuildFile; fileRef = F31CE2111F0EB34500A14038 /* Boom.sks */; };
 		F332EA391F0DABFC00DBA958 /* Level_1.sks in Resources */ = {isa = PBXBuildFile; fileRef = F332EA381F0DABFC00DBA958 /* Level_1.sks */; };
 		F39ECAE71F0AC3D100EDE3D5 /* DarkAlienAnimation.sks in Resources */ = {isa = PBXBuildFile; fileRef = F39ECAE61F0AC3D100EDE3D5 /* DarkAlienAnimation.sks */; };
 		F39ECB171F0AC3F500EDE3D5 /* darkgray__0000_idle_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F39ECAE91F0AC3F500EDE3D5 /* darkgray__0000_idle_1.png */; };
@@ -82,6 +98,22 @@
 		F3165B7A1F06CAF800A7BD96 /* MSButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSButtonNode.swift; sourceTree = "<group>"; };
 		F3165B7C1F06CB0B00A7BD96 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		F3165B801F06D46600A7BD96 /* spear.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = spear.swift; sourceTree = "<group>"; };
+		F31CE1EF1F0EAAFF00A14038 /* destruction_air_00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destruction_air_00.png; sourceTree = "<group>"; };
+		F31CE1F01F0EAAFF00A14038 /* destruction_air_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destruction_air_01.png; sourceTree = "<group>"; };
+		F31CE1F11F0EAAFF00A14038 /* destruction_air_02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destruction_air_02.png; sourceTree = "<group>"; };
+		F31CE1F21F0EAAFF00A14038 /* destruction_air_03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destruction_air_03.png; sourceTree = "<group>"; };
+		F31CE1F31F0EAAFF00A14038 /* destruction_air_04.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destruction_air_04.png; sourceTree = "<group>"; };
+		F31CE1F41F0EAAFF00A14038 /* destruction_air_05.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destruction_air_05.png; sourceTree = "<group>"; };
+		F31CE1F51F0EAAFF00A14038 /* destruction_air_06.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destruction_air_06.png; sourceTree = "<group>"; };
+		F31CE1F61F0EAAFF00A14038 /* destruction_air_07.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destruction_air_07.png; sourceTree = "<group>"; };
+		F31CE1F71F0EAAFF00A14038 /* destruction_air_08.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destruction_air_08.png; sourceTree = "<group>"; };
+		F31CE1F81F0EAAFF00A14038 /* destruction_air_09.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destruction_air_09.png; sourceTree = "<group>"; };
+		F31CE1F91F0EAAFF00A14038 /* destruction_air_10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destruction_air_10.png; sourceTree = "<group>"; };
+		F31CE1FA1F0EAAFF00A14038 /* destruction_air_11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destruction_air_11.png; sourceTree = "<group>"; };
+		F31CE1FB1F0EAAFF00A14038 /* destruction_air_12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destruction_air_12.png; sourceTree = "<group>"; };
+		F31CE1FC1F0EAAFF00A14038 /* destruction_air_13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destruction_air_13.png; sourceTree = "<group>"; };
+		F31CE1FD1F0EAAFF00A14038 /* destruction_air_14.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destruction_air_14.png; sourceTree = "<group>"; };
+		F31CE2111F0EB34500A14038 /* Boom.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Boom.sks; sourceTree = "<group>"; };
 		F332EA381F0DABFC00DBA958 /* Level_1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Level_1.sks; path = alien_dark_gray/Level_1.sks; sourceTree = "<group>"; };
 		F39ECAE61F0AC3D100EDE3D5 /* DarkAlienAnimation.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DarkAlienAnimation.sks; sourceTree = "<group>"; };
 		F39ECAE91F0AC3F500EDE3D5 /* darkgray__0000_idle_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkgray__0000_idle_1.png; sourceTree = "<group>"; };
@@ -163,19 +195,51 @@
 			isa = PBXGroup;
 			children = (
 				F3165B621F06C8D200A7BD96 /* AppDelegate.swift */,
-				F3165B641F06C8D200A7BD96 /* MainMenu.sks */,
 				F3165B661F06C8D200A7BD96 /* Actions.sks */,
-				F3165B681F06C8D200A7BD96 /* MainMenu.swift */,
+				F31CE2111F0EB34500A14038 /* Boom.sks */,
 				F3165B6A1F06C8D200A7BD96 /* GameViewController.swift */,
 				F3165B6C1F06C8D200A7BD96 /* Main.storyboard */,
 				F3165B6F1F06C8D200A7BD96 /* Assets.xcassets */,
 				F3165B711F06C8D200A7BD96 /* LaunchScreen.storyboard */,
 				F3165B741F06C8D200A7BD96 /* Info.plist */,
 				F3165B7A1F06CAF800A7BD96 /* MSButtonNode.swift */,
+				F3165B681F06C8D200A7BD96 /* MainMenu.swift */,
 				F3165B7C1F06CB0B00A7BD96 /* GameScene.swift */,
+				F38BDE9F1F0E9F2B004A9F6A /* Scenes */,
 				F39ECB451F0B00D400EDE3D5 /* Objects */,
 			);
 			path = AlienEscape;
+			sourceTree = "<group>";
+		};
+		F31CE1EE1F0EAAFF00A14038 /* destruction_air */ = {
+			isa = PBXGroup;
+			children = (
+				F31CE1EF1F0EAAFF00A14038 /* destruction_air_00.png */,
+				F31CE1F01F0EAAFF00A14038 /* destruction_air_01.png */,
+				F31CE1F11F0EAAFF00A14038 /* destruction_air_02.png */,
+				F31CE1F21F0EAAFF00A14038 /* destruction_air_03.png */,
+				F31CE1F31F0EAAFF00A14038 /* destruction_air_04.png */,
+				F31CE1F41F0EAAFF00A14038 /* destruction_air_05.png */,
+				F31CE1F51F0EAAFF00A14038 /* destruction_air_06.png */,
+				F31CE1F61F0EAAFF00A14038 /* destruction_air_07.png */,
+				F31CE1F71F0EAAFF00A14038 /* destruction_air_08.png */,
+				F31CE1F81F0EAAFF00A14038 /* destruction_air_09.png */,
+				F31CE1F91F0EAAFF00A14038 /* destruction_air_10.png */,
+				F31CE1FA1F0EAAFF00A14038 /* destruction_air_11.png */,
+				F31CE1FB1F0EAAFF00A14038 /* destruction_air_12.png */,
+				F31CE1FC1F0EAAFF00A14038 /* destruction_air_13.png */,
+				F31CE1FD1F0EAAFF00A14038 /* destruction_air_14.png */,
+			);
+			path = destruction_air;
+			sourceTree = "<group>";
+		};
+		F38BDE9F1F0E9F2B004A9F6A /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				F3165B641F06C8D200A7BD96 /* MainMenu.sks */,
+				F332EA381F0DABFC00DBA958 /* Level_1.sks */,
+			);
+			name = Scenes;
 			sourceTree = "<group>";
 		};
 		F39ECAE81F0AC3F500EDE3D5 /* Dark Alien Assets */ = {
@@ -235,10 +299,10 @@
 		F39ECB451F0B00D400EDE3D5 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
+				F31CE1EE1F0EAAFF00A14038 /* destruction_air */,
 				F39ECAE81F0AC3F500EDE3D5 /* Dark Alien Assets */,
 				F3165B801F06D46600A7BD96 /* spear.swift */,
 				F39ECAE61F0AC3D100EDE3D5 /* DarkAlienAnimation.sks */,
-				F332EA381F0DABFC00DBA958 /* Level_1.sks */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -303,6 +367,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F31CE2121F0EB34500A14038 /* Boom.sks in Resources */,
 				F39ECB1B1F0AC3F500EDE3D5 /* darkgray__0004_turn_2.png in Resources */,
 				F39ECB1C1F0AC3F500EDE3D5 /* darkgray__0005_turn_3.png in Resources */,
 				F39ECB1E1F0AC3F500EDE3D5 /* darkgray__0007_walk_2.png in Resources */,
@@ -310,31 +375,44 @@
 				F39ECB2F1F0AC3F500EDE3D5 /* darkgray__0024_dead_3.png in Resources */,
 				F39ECB361F0AC3F500EDE3D5 /* darkgray__0031_attack_1.png in Resources */,
 				F39ECB2D1F0AC3F500EDE3D5 /* darkgray__0022_dead_1.png in Resources */,
+				F31CE20B1F0EAAFF00A14038 /* destruction_air_13.png in Resources */,
+				F31CE20C1F0EAAFF00A14038 /* destruction_air_14.png in Resources */,
 				F39ECB311F0AC3F500EDE3D5 /* darkgray__0026_dead_5.png in Resources */,
 				F39ECB191F0AC3F500EDE3D5 /* darkgray__0002_idle_3.png in Resources */,
+				F31CE2031F0EAAFF00A14038 /* destruction_air_05.png in Resources */,
 				F39ECB351F0AC3F500EDE3D5 /* darkgray__0030_jump_4.png in Resources */,
 				F39ECB3E1F0AC3F500EDE3D5 /* darkgray__0039_fire_5.png in Resources */,
+				F31CE20A1F0EAAFF00A14038 /* destruction_air_12.png in Resources */,
 				F39ECB3D1F0AC3F500EDE3D5 /* darkgray__0038_fire_4.png in Resources */,
 				F39ECB271F0AC3F500EDE3D5 /* darkgray__0016_run_5.png in Resources */,
 				F39ECB3F1F0AC3F500EDE3D5 /* darkgray__0040_fire_6.png in Resources */,
 				F39ECB261F0AC3F500EDE3D5 /* darkgray__0015_run_4.png in Resources */,
 				F39ECB441F0AC3F500EDE3D5 /* darkgray__0045_fire_11.png in Resources */,
+				F31CE2051F0EAAFF00A14038 /* destruction_air_07.png in Resources */,
 				F39ECB381F0AC3F500EDE3D5 /* darkgray__0033_attack_3.png in Resources */,
 				F39ECB201F0AC3F500EDE3D5 /* darkgray__0009_walk_4.png in Resources */,
 				F39ECAE71F0AC3D100EDE3D5 /* DarkAlienAnimation.sks in Resources */,
+				F31CE1FF1F0EAAFF00A14038 /* destruction_air_01.png in Resources */,
 				F39ECB181F0AC3F500EDE3D5 /* darkgray__0001_idle_2.png in Resources */,
+				F31CE2091F0EAAFF00A14038 /* destruction_air_11.png in Resources */,
 				F332EA391F0DABFC00DBA958 /* Level_1.sks in Resources */,
+				F31CE2081F0EAAFF00A14038 /* destruction_air_10.png in Resources */,
 				F39ECB211F0AC3F500EDE3D5 /* darkgray__0010_walk_5.png in Resources */,
 				F39ECB321F0AC3F500EDE3D5 /* darkgray__0027_jump_1.png in Resources */,
 				F39ECB1F1F0AC3F500EDE3D5 /* darkgray__0008_walk_3.png in Resources */,
+				F31CE2001F0EAAFF00A14038 /* destruction_air_02.png in Resources */,
+				F31CE2011F0EAAFF00A14038 /* destruction_air_03.png in Resources */,
 				F39ECB2B1F0AC3F500EDE3D5 /* darkgray__0020_hurt_3.png in Resources */,
+				F31CE2041F0EAAFF00A14038 /* destruction_air_06.png in Resources */,
 				F3165B6E1F06C8D200A7BD96 /* Main.storyboard in Resources */,
+				F31CE2021F0EAAFF00A14038 /* destruction_air_04.png in Resources */,
 				F39ECB241F0AC3F500EDE3D5 /* darkgray__0013_run_2.png in Resources */,
 				F39ECB371F0AC3F500EDE3D5 /* darkgray__0032_attack_2.png in Resources */,
 				F39ECB391F0AC3F500EDE3D5 /* darkgray__0034_attack_4.png in Resources */,
 				F39ECB1D1F0AC3F500EDE3D5 /* darkgray__0006_walk_1.png in Resources */,
 				F39ECB281F0AC3F500EDE3D5 /* darkgray__0017_run_6.png in Resources */,
 				F39ECB301F0AC3F500EDE3D5 /* darkgray__0025_dead_4.png in Resources */,
+				F31CE2061F0EAAFF00A14038 /* destruction_air_08.png in Resources */,
 				F39ECB2E1F0AC3F500EDE3D5 /* darkgray__0023_dead_2.png in Resources */,
 				F39ECB3A1F0AC3F500EDE3D5 /* darkgray__0035_fire_1.png in Resources */,
 				F39ECB421F0AC3F500EDE3D5 /* darkgray__0043_fire_9.png in Resources */,
@@ -348,6 +426,7 @@
 				F39ECB2C1F0AC3F500EDE3D5 /* darkgray__0021_hurt_4.png in Resources */,
 				F39ECB331F0AC3F500EDE3D5 /* darkgray__0028_jump_2.png in Resources */,
 				F39ECB171F0AC3F500EDE3D5 /* darkgray__0000_idle_1.png in Resources */,
+				F31CE2071F0EAAFF00A14038 /* destruction_air_09.png in Resources */,
 				F39ECB3C1F0AC3F500EDE3D5 /* darkgray__0037_fire_3.png in Resources */,
 				F3165B701F06C8D200A7BD96 /* Assets.xcassets in Resources */,
 				F39ECB231F0AC3F500EDE3D5 /* darkgray__0012_run_1.png in Resources */,
@@ -356,6 +435,7 @@
 				F39ECB291F0AC3F500EDE3D5 /* darkgray__0018_hurt_1.png in Resources */,
 				F3165B671F06C8D200A7BD96 /* Actions.sks in Resources */,
 				F39ECB411F0AC3F500EDE3D5 /* darkgray__0042_fire_8.png in Resources */,
+				F31CE1FE1F0EAAFF00A14038 /* destruction_air_00.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
