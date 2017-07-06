@@ -8,6 +8,16 @@
 
 // print(#file, #function, #line)
 
+
+// TODO: Game Victory when Level up
+// TODO: Game Over with restart Button
+// TODO: Pause Menu
+// TODO: Background set as time
+// TODO: Game Victory based on time it took
+// TODO: Sound effects and Music
+// TODO: Visuals
+// TODO: Animations
+// TODO: Online highscores
 import SpriteKit
 
 func clamp<T: Comparable>(value: T, lower: T, upper: T) -> T {
@@ -20,7 +30,29 @@ extension CGVector {
     }
 }
 
+enum GameState {
+    case paused, playing, gameOver, won
+}
+
 class GameScene: SKScene, SKPhysicsContactDelegate{
+    
+    var gameState: GameState = .playing {
+        didSet {
+            switch gameState {
+            case .gameOver:
+                break
+            case .paused:
+                break
+            case .won:
+                break
+            case .playing:
+                break
+                
+            }
+        }
+    }
+    
+    var inGameMenu: MSButtonNode!
     
     // Sets Projectile as an Image
     var projectile: spear!
@@ -34,6 +66,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var cameraNode:SKCameraNode!
     var cameraTarget:SKSpriteNode!
 
+    
+    // TODO: Create a level up
     // MARK: Loading Levels
     class func level(_ levelNumber: Int) -> GameScene? {
         guard let scene = GameScene(fileNamed: "Level_\(levelNumber)") else {
@@ -44,10 +78,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
 
     override func didMove(to view: SKView) {
+        inGameMenu = childNode(withName: "//inGameMenu") as! MSButtonNode
         cameraNode = childNode(withName: "cameraNode") as! SKCameraNode
         self.physicsWorld.contactDelegate = self
         self.camera = cameraNode
-        
+
+        inGameMenu.selectedHandler = {
+            guard let scene = GameScene.level(1) else {
+                print("Level 1 is missing?")
+                return
+            }
+            
+            scene.scaleMode = .aspectFit
+            view.presentScene(scene)
+        }
         setupSlingshot()
         
     }
@@ -77,22 +121,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        func shouldStartDragging(touchLocation:CGPoint, threshold: CGFloat) -> Bool {
-            let distance = fingerDistanceFromProjectileRestPosition(
-                projectileRestPosition: Settings.Metrics.projectileRestPosition,
-                fingerPosition: touchLocation
-            )
-            return distance < Settings.Metrics.projectileRadius + threshold
-        }
-        
-        if let touch = touches.first {
-            let touchLocation = touch.location(in: self)
+        if gameState == .playing {
+            print(gameState)
+            func shouldStartDragging(touchLocation:CGPoint, threshold: CGFloat) -> Bool {
+                let distance = fingerDistanceFromProjectileRestPosition(
+                    projectileRestPosition: Settings.Metrics.projectileRestPosition,
+                    fingerPosition: touchLocation
+                )
+                return distance < Settings.Metrics.projectileRadius + threshold
+            }
             
-            if !projectileIsDragged && shouldStartDragging(touchLocation: touchLocation, threshold: Settings.Metrics.projectileTouchThreshold)  {
-                projectile.isHidden = false
-                touchStartingPoint = touchLocation
-                touchCurrentPoint = touchLocation
-                projectileIsDragged = true
+            if let touch = touches.first {
+                let touchLocation = touch.location(in: self)
+                
+                if !projectileIsDragged && shouldStartDragging(touchLocation: touchLocation, threshold: Settings.Metrics.projectileTouchThreshold)  {
+                    projectile.isHidden = false
+                    touchStartingPoint = touchLocation
+                    touchCurrentPoint = touchLocation
+                    projectileIsDragged = true
+                }
             }
         }
     }
@@ -171,6 +218,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let removeParticles = SKAction.removeFromParent()
         let seq = SKAction.sequence([wait, removeParticles])
         run(seq)
+        gameState = .won
+        print(gameState)
         
         
         //        /* Play SFX */
@@ -191,8 +240,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             return
         }
         let targetX = cameraTarget.position.x
+        let targetY = cameraTarget.position.y
         let x = clamp(value: targetX, lower: 0, upper: 479)
+        let y = clamp(value: targetY, lower: 0, upper: 268)
         cameraNode.position.x = x
+        cameraNode.position.y = y
     }
     
     // MARK: SlingShot
@@ -245,10 +297,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     func resetCamera() {
         /* Reset camera */
-        let cameraReset = SKAction.move(to: CGPoint(x:0, y:camera!.position.y), duration: 1.5)
+        let cameraReset = SKAction.move(to: CGPoint(x:0, y:0), duration: 1.5)
         let cameraDelay = SKAction.wait(forDuration: 0.5)
         let cameraSequence = SKAction.sequence([cameraDelay,cameraReset])
         cameraNode.run(cameraSequence)
         cameraTarget = nil
+        if gameState == .playing {
+            gameState = .gameOver
+            print(gameState)
+        }
     }
 }
