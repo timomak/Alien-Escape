@@ -33,8 +33,9 @@
 		F31CE20A1F0EAAFF00A14038 /* destruction_air_12.png in Resources */ = {isa = PBXBuildFile; fileRef = F31CE1FB1F0EAAFF00A14038 /* destruction_air_12.png */; };
 		F31CE20B1F0EAAFF00A14038 /* destruction_air_13.png in Resources */ = {isa = PBXBuildFile; fileRef = F31CE1FC1F0EAAFF00A14038 /* destruction_air_13.png */; };
 		F31CE20C1F0EAAFF00A14038 /* destruction_air_14.png in Resources */ = {isa = PBXBuildFile; fileRef = F31CE1FD1F0EAAFF00A14038 /* destruction_air_14.png */; };
-		F31CE2121F0EB34500A14038 /* Boom.sks in Resources */ = {isa = PBXBuildFile; fileRef = F31CE2111F0EB34500A14038 /* Boom.sks */; };
+		F31CE2121F0EB34500A14038 /* Explosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = F31CE2111F0EB34500A14038 /* Explosion.sks */; };
 		F332EA391F0DABFC00DBA958 /* Level_1.sks in Resources */ = {isa = PBXBuildFile; fileRef = F332EA381F0DABFC00DBA958 /* Level_1.sks */; };
+		F387A8281F0EDF660052E0CB /* granade.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F387A8271F0EDF660052E0CB /* granade.mp3 */; };
 		F39ECAE71F0AC3D100EDE3D5 /* DarkAlienAnimation.sks in Resources */ = {isa = PBXBuildFile; fileRef = F39ECAE61F0AC3D100EDE3D5 /* DarkAlienAnimation.sks */; };
 		F39ECB171F0AC3F500EDE3D5 /* darkgray__0000_idle_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F39ECAE91F0AC3F500EDE3D5 /* darkgray__0000_idle_1.png */; };
 		F39ECB181F0AC3F500EDE3D5 /* darkgray__0001_idle_2.png in Resources */ = {isa = PBXBuildFile; fileRef = F39ECAEA1F0AC3F500EDE3D5 /* darkgray__0001_idle_2.png */; };
@@ -113,8 +114,9 @@
 		F31CE1FB1F0EAAFF00A14038 /* destruction_air_12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destruction_air_12.png; sourceTree = "<group>"; };
 		F31CE1FC1F0EAAFF00A14038 /* destruction_air_13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destruction_air_13.png; sourceTree = "<group>"; };
 		F31CE1FD1F0EAAFF00A14038 /* destruction_air_14.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destruction_air_14.png; sourceTree = "<group>"; };
-		F31CE2111F0EB34500A14038 /* Boom.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Boom.sks; sourceTree = "<group>"; };
+		F31CE2111F0EB34500A14038 /* Explosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Explosion.sks; sourceTree = "<group>"; };
 		F332EA381F0DABFC00DBA958 /* Level_1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Level_1.sks; path = alien_dark_gray/Level_1.sks; sourceTree = "<group>"; };
+		F387A8271F0EDF660052E0CB /* granade.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = granade.mp3; sourceTree = "<group>"; };
 		F39ECAE61F0AC3D100EDE3D5 /* DarkAlienAnimation.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DarkAlienAnimation.sks; sourceTree = "<group>"; };
 		F39ECAE91F0AC3F500EDE3D5 /* darkgray__0000_idle_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkgray__0000_idle_1.png; sourceTree = "<group>"; };
 		F39ECAEA1F0AC3F500EDE3D5 /* darkgray__0001_idle_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkgray__0001_idle_2.png; sourceTree = "<group>"; };
@@ -196,7 +198,7 @@
 			children = (
 				F3165B621F06C8D200A7BD96 /* AppDelegate.swift */,
 				F3165B661F06C8D200A7BD96 /* Actions.sks */,
-				F31CE2111F0EB34500A14038 /* Boom.sks */,
+				F31CE2111F0EB34500A14038 /* Explosion.sks */,
 				F3165B6A1F06C8D200A7BD96 /* GameViewController.swift */,
 				F3165B6C1F06C8D200A7BD96 /* Main.storyboard */,
 				F3165B6F1F06C8D200A7BD96 /* Assets.xcassets */,
@@ -299,6 +301,7 @@
 		F39ECB451F0B00D400EDE3D5 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
+				F387A8271F0EDF660052E0CB /* granade.mp3 */,
 				F31CE1EE1F0EAAFF00A14038 /* destruction_air */,
 				F39ECAE81F0AC3F500EDE3D5 /* Dark Alien Assets */,
 				F3165B801F06D46600A7BD96 /* spear.swift */,
@@ -367,7 +370,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F31CE2121F0EB34500A14038 /* Boom.sks in Resources */,
+				F31CE2121F0EB34500A14038 /* Explosion.sks in Resources */,
 				F39ECB1B1F0AC3F500EDE3D5 /* darkgray__0004_turn_2.png in Resources */,
 				F39ECB1C1F0AC3F500EDE3D5 /* darkgray__0005_turn_3.png in Resources */,
 				F39ECB1E1F0AC3F500EDE3D5 /* darkgray__0007_walk_2.png in Resources */,
@@ -405,6 +408,7 @@
 				F39ECB2B1F0AC3F500EDE3D5 /* darkgray__0020_hurt_3.png in Resources */,
 				F31CE2041F0EAAFF00A14038 /* destruction_air_06.png in Resources */,
 				F3165B6E1F06C8D200A7BD96 /* Main.storyboard in Resources */,
+				F387A8281F0EDF660052E0CB /* granade.mp3 in Resources */,
 				F31CE2021F0EAAFF00A14038 /* destruction_air_04.png in Resources */,
 				F39ECB241F0AC3F500EDE3D5 /* darkgray__0013_run_2.png in Resources */,
 				F39ECB371F0AC3F500EDE3D5 /* darkgray__0032_attack_2.png in Resources */,

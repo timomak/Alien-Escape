@@ -21,6 +21,7 @@
 // TODO: MainMenu Animation
 // TODO: Laser gun with the right angle
 // TODO: Time Rappresentation in game
+// TODO: Dotted line
 import SpriteKit
 
 func clamp<T: Comparable>(value: T, lower: T, upper: T) -> T {
@@ -195,44 +196,49 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let nodeA = contactA.node as! SKSpriteNode
         let nodeB = contactB.node as! SKSpriteNode
         /* Check if either physics bodies was a seal */
+        if contactA.categoryBitMask == 0 || contactB.categoryBitMask == 0 {
+            if contactA.categoryBitMask == 0{
+                animateExplosion(node: nodeA)
+            }
+            if contactB.categoryBitMask == 0{
+                animateExplosion(node: nodeB)
+            }
+        }
         if contactA.categoryBitMask == 2 || contactB.categoryBitMask == 2 {
             /* Was the collision more than a gentle nudge? */
-            if contact.collisionImpulse > 10 {
-
+            if contact.collisionImpulse > 5 {
+                
                 /* Kill Seal */
                 if contactA.categoryBitMask == 2 {
                     removeAlien(node: nodeA)
                 }
                 if contactB.categoryBitMask == 2 {
                     removeAlien(node: nodeB)
+                    
                 }
             }
         }
     }
     
+    func animateExplosion(node: SKNode) {
+        print("There was contact ", node)
+        node.run(SKAction(named: "Boom")!)
+        /* Play SFX */
+        let sound = SKAction.playSoundFileNamed("granade", waitForCompletion: false)
+        self.run(sound)
+
+    }
+    
+    
     func removeAlien(node: SKNode) {
-        // node.run(SKAction(named: "Boom")!)
-        
-        node.run(SKAction.init(named: "Boom")!)
-
-        
-        let wait = SKAction.wait(forDuration: 5)
-        let removeParticles = SKAction.removeFromParent()
-        let seq = SKAction.sequence([wait, removeParticles])
-        run(seq)
-
         gameState = .won
         print(gameState)
-        
-        
-        //        /* Play SFX */
-        //        let sound = SKAction.playSoundFileNamed("sfx_seal", waitForCompletion: false)
-        //        self.run(sound)
         
         /* Create our hero death action */
         let alienDeath = SKAction.run({
             /* Remove seal node from scene */
             node.removeFromParent()
+            
         })
         self.run(alienDeath)
     }
