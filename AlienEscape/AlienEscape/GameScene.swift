@@ -57,7 +57,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     let fixedDelta: CFTimeInterval = 1.0 / 60.0 /* 60 FPS */
     var gameStart: CFTimeInterval = 0
+    var timer: CFTimeInterval = 0
     
+    var pauseMenu: SKSpriteNode!
+    var resumeButton: MSButtonNode!
+    
+    var background: SKSpriteNode!
     var portal1: SKSpriteNode!
     var portal2: SKSpriteNode!
     
@@ -95,20 +100,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         // rayGun = childNode(withName: "rayGun") as! SKSpriteNode
         portal1 = childNode(withName: "portal_1") as! SKSpriteNode
         portal2 = childNode(withName: "portal_2") as! SKSpriteNode
+        background = childNode(withName: "background") as! SKSpriteNode
+        pauseMenu = childNode(withName: "pauseMenu") as! SKSpriteNode
+        resumeButton = childNode(withName: "//resumeButton") as! MSButtonNode
         
         self.physicsWorld.contactDelegate = self
         
         self.camera = cameraNode
 
         inGameMenu.selectedHandler = {
-            guard let scene = GameScene.level(1) else {
-                print("Level 1 is missing?")
-                return
+//            guard let scene = GameScene.level(1) else {
+//                print("Level 1 is missing?")
+//                return
+//            }
+//
+//            scene.scaleMode = .aspectFit
+//            view.presentScene(scene)
+            if self.gameState == .playing {
+                self.pauseMenu.position.y = 150
+                self.resumeButton.position.y = 238
+                self.gameState = .paused
+                self.inGameMenu.isHidden = true
             }
-            
-            scene.scaleMode = .aspectFit
-            view.presentScene(scene)
         }
+        resumeButton.selectedHandler = {
+            self.pauseMenu.position.y = -430
+            self.resumeButton.position.y = -350
+            self.gameState = .playing
+            self.inGameMenu.isHidden = false
+        }
+        
         setupSlingshot()
         
     }
@@ -117,8 +138,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     override func update(_ currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         
-        moveCamera()
-        
+        // moveCamera()
+        if background.position.y > -1000 && gameState == .playing{
+        background.position.y -= 5
+        } else {
+            gameState = .gameOver
+        }
         func checkSpear() {
             guard let cameraTarget = cameraTarget else {
                 return
@@ -131,6 +156,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         checkSpear()
         gameStart += fixedDelta
+        timer += fixedDelta
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -289,17 +315,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     // MARK: Move Camera function
-    func moveCamera() {
-        guard let cameraTarget = cameraTarget else {
-            return
-        }
-        let targetX = cameraTarget.position.x
-        let targetY = cameraTarget.position.y
-        let x = clamp(value: targetX, lower: 0, upper: 478)
-        let y = clamp(value: targetY, lower: 0, upper: 268)
-        cameraNode.position.x = x
-        cameraNode.position.y = y
-    }
+//    func moveCamera() {
+//        guard let cameraTarget = cameraTarget else {
+//            return
+//        }
+//        let targetX = cameraTarget.position.x
+//        let targetY = cameraTarget.position.y
+//        let x = clamp(value: targetX, lower: 0, upper: 478)
+//        let y = clamp(value: targetY, lower: 0, upper: 268)
+//        cameraNode.position.x = x
+//        cameraNode.position.y = y
+//    }
     
     // MARK: SlingShot
     func fingerDistanceFromProjectileRestPosition(projectileRestPosition: CGPoint, fingerPosition: CGPoint) -> CGFloat {
@@ -316,7 +342,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     struct Settings {
         struct Metrics {
             static let projectileRadius = CGFloat(15)
-            static let projectileRestPosition = CGPoint(x: -190, y: 0)
+            static let projectileRestPosition = CGPoint(x: -120, y: 0)
             static let projectileTouchThreshold = CGFloat(10)
             static let projectileSnapLimit = CGFloat(10)
             static let forceMultiplier = CGFloat(1.0)
@@ -329,7 +355,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     func setupSlingshot() {
         let slingshot_1 = SKSpriteNode(imageNamed: "slingshot_1")
-        slingshot_1.position = CGPoint(x: -190, y: -50)
+        slingshot_1.position = CGPoint(x: -120, y: -50)
         addChild(slingshot_1)
         slingshot_1.isHidden = false
         
@@ -339,7 +365,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         addChild(projectile)
         
         let slingshot_2 = SKSpriteNode(imageNamed: "slingshot_2")
-        slingshot_2.position = CGPoint(x: -190, y: -50)
+        slingshot_2.position = CGPoint(x: -120, y: -50)
         addChild(slingshot_2)
         slingshot_2.isHidden = false
     }
