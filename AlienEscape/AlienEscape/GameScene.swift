@@ -55,10 +55,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             }
         }
     }
+    let fixedDelta: CFTimeInterval = 1.0 / 60.0 /* 60 FPS */
+    var gameStart: CFTimeInterval = 0
+    
+    var portal1: SKSpriteNode!
+    var portal2: SKSpriteNode!
+    
     var alien: SKSpriteNode!
     var inGameMenu: MSButtonNode!
     // Sets Projectile as an Image
     var projectile: spear!
+    
+    // var rayGun: SKSpriteNode!
     
     //Touch dragging vars
     var projectileIsDragged = false
@@ -84,7 +92,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         alien = childNode(withName: "//alien") as! SKSpriteNode
         inGameMenu = childNode(withName: "//inGameMenu") as! MSButtonNode
         cameraNode = childNode(withName: "cameraNode") as! SKCameraNode
+        // rayGun = childNode(withName: "rayGun") as! SKSpriteNode
+        portal1 = childNode(withName: "portal_1") as! SKSpriteNode
+        portal2 = childNode(withName: "portal_2") as! SKSpriteNode
+        
         self.physicsWorld.contactDelegate = self
+        
         self.camera = cameraNode
 
         inGameMenu.selectedHandler = {
@@ -117,6 +130,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             }
         }
         checkSpear()
+        gameStart += fixedDelta
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -171,7 +185,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 let vectorY = touchStartingPoint.y - touchCurrentPoint.y
                 projectile.physicsBody = SKPhysicsBody(circleOfRadius: Settings.Metrics.projectileRadius)
                 projectile.physicsBody?.categoryBitMask = 1
-                projectile.physicsBody?.contactTestBitMask = 1
+                projectile.physicsBody?.contactTestBitMask = 6
+                projectile.physicsBody?.collisionBitMask = 9
                 physicsBody?.friction = 0.6
                 physicsBody?.mass = 0.5
                 projectile.physicsBody?.applyImpulse(
@@ -180,6 +195,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                         dy: vectorY * Settings.Metrics.forceMultiplier
                     )
                 )
+
             } else {
                 projectile.physicsBody = nil
                 projectile.position = Settings.Metrics.projectileRestPosition
@@ -188,6 +204,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
+//        if gameStart > 0.2 {
+//            let zoomInAction = SKAction.scale(to: 1, duration: 2)
+//            let moveStartPoint = SKAction.moveBy(x: -36, y: -20, duration: 2)
+//            
+//            cameraNode.run(moveStartPoint)
+//            cameraNode.run(zoomInAction)
+//        }
         /* Physics contact delegate implementation */
         /* Get references to the bodies involved in the collision */
         let contactA:SKPhysicsBody = contact.bodyA
@@ -196,6 +219,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let nodeA = contactA.node as! SKSpriteNode
         let nodeB = contactB.node as! SKSpriteNode
         /* Check if either physics bodies was a seal */
+        if contactA.categoryBitMask == 4 || contactB.categoryBitMask == 4{
+            print("there was contact between category 3 and ball")
+            if contactA.categoryBitMask != 4{
+                print(nodeA)
+                teleportBall(node: nodeA)
+            }
+            if contactB.categoryBitMask != 4{
+                print(nodeB)
+                teleportBall(node: nodeB)
+            }
+        }
+        
+        
         if contactA.categoryBitMask == 0 || contactB.categoryBitMask == 0 {
             if contactA.categoryBitMask == 0{
                 animateExplosion(node: nodeA)
@@ -218,6 +254,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 }
             }
         }
+    }
+    
+    func teleportBall(node: SKNode) {
+        print(node.speed)
+        
+        let moveBall = SKAction.move(to: portal2.position, duration:0)
+        node.run(moveBall)
+        // node = speed1
+        print(node.speed)
     }
     
     func animateExplosion(node: SKNode) {
@@ -286,15 +331,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let slingshot_1 = SKSpriteNode(imageNamed: "slingshot_1")
         slingshot_1.position = CGPoint(x: -190, y: -50)
         addChild(slingshot_1)
-        slingshot_1.isHidden = true
+        slingshot_1.isHidden = false
         
-        let _ = UIBezierPath(
-            arcCenter: CGPoint.zero,
-            radius: Settings.Metrics.projectileRadius,
-            startAngle: 0,
-            endAngle: CGFloat(CGFloat.pi * 2),
-            clockwise: true
-        )
         projectile = spear()
         projectile.isHidden = false
         projectile.position = Settings.Metrics.projectileRestPosition
@@ -303,7 +341,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let slingshot_2 = SKSpriteNode(imageNamed: "slingshot_2")
         slingshot_2.position = CGPoint(x: -190, y: -50)
         addChild(slingshot_2)
-        slingshot_2.isHidden = true
+        slingshot_2.isHidden = false
     }
     
     func resetCamera() {
