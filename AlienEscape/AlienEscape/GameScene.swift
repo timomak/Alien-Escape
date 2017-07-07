@@ -44,22 +44,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         didSet {
             switch gameState {
             case .gameOver:
-                break
+                GameOver()
             case .paused:
                 break
             case .won:
-                break
+                win()
             case .playing:
                 break
                 
             }
         }
     }
+    // MARK: Next Level Menu
+    var starOne :SKSpriteNode!
+    var starTwo :SKSpriteNode!
+    var starThree :SKSpriteNode!
+    var winMenu: SKSpriteNode!
+    var nextLevelButton: MSButtonNode!
+    
     let fixedDelta: CFTimeInterval = 1.0 / 60.0 /* 60 FPS */
     var gameStart: CFTimeInterval = 0
     var timer: CFTimeInterval = 0
     
     var pauseMenu: SKSpriteNode!
+    var resetButton: MSButtonNode!
     var resumeButton: MSButtonNode!
     
     var background: SKSpriteNode!
@@ -81,7 +89,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     // Setting up camera
     var cameraNode:SKCameraNode!
     var cameraTarget:SKSpriteNode!
-
+    
     
     // TODO: Create a level up
     // MARK: Loading Levels
@@ -92,7 +100,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         scene.scaleMode = .aspectFit
         return scene
     }
-
+    
     override func didMove(to view: SKView) {
         alien = childNode(withName: "//alien") as! SKSpriteNode
         inGameMenu = childNode(withName: "//inGameMenu") as! MSButtonNode
@@ -103,20 +111,41 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         background = childNode(withName: "background") as! SKSpriteNode
         pauseMenu = childNode(withName: "pauseMenu") as! SKSpriteNode
         resumeButton = childNode(withName: "//resumeButton") as! MSButtonNode
+        resetButton = childNode(withName: "resetButton") as! MSButtonNode
+        
+        starOne = childNode(withName: "starOne") as! SKSpriteNode
+        starTwo = childNode(withName: "starTwo") as! SKSpriteNode
+        starThree = childNode(withName: "starThree") as! SKSpriteNode
+        winMenu = childNode(withName: "winMenu") as! SKSpriteNode
+        nextLevelButton = childNode(withName: "//nextLevelButton") as! MSButtonNode
         
         self.physicsWorld.contactDelegate = self
         
         self.camera = cameraNode
+        
+        resetButton.selectedHandler = {
+            guard let scene = GameScene.level(1) else {
+                print("Level 1 is missing?")
+                return
+            }
+            
+            scene.scaleMode = .aspectFit
+            view.presentScene(scene)
+        }
+
+        nextLevelButton.selectedHandler = {
+            guard let scene = GameScene.level(1) else {
+                print("Level 2 is missing?")
+                return
+            }
+            
+            scene.scaleMode = .aspectFit
+            view.presentScene(scene)
+        }
 
         inGameMenu.selectedHandler = {
-//            guard let scene = GameScene.level(1) else {
-//                print("Level 1 is missing?")
-//                return
-//            }
-//
-//            scene.scaleMode = .aspectFit
-//            view.presentScene(scene)
             if self.gameState == .playing {
+                self.resetButton.position.y = 120
                 self.pauseMenu.position.y = 150
                 self.resumeButton.position.y = 238
                 self.gameState = .paused
@@ -124,6 +153,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             }
         }
         resumeButton.selectedHandler = {
+            self.resetButton.position.y = -341
             self.pauseMenu.position.y = -430
             self.resumeButton.position.y = -350
             self.gameState = .playing
@@ -140,15 +170,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         // moveCamera()
         if background.position.y > -1000 && gameState == .playing{
-        background.position.y -= 5
-        } else {
+            background.position.y -= 5
+        } else if gameState != .won{
             gameState = .gameOver
         }
         func checkSpear() {
             guard let cameraTarget = cameraTarget else {
                 return
             }
-
+            
             if cameraTarget.position.y < -200 || cameraTarget.position.x > 1050{
                 cameraTarget.removeFromParent()
                 resetCamera()
@@ -158,7 +188,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         gameStart += fixedDelta
         timer += fixedDelta
     }
-
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if gameState == .playing {
             print(gameState)
@@ -221,7 +251,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                         dy: vectorY * Settings.Metrics.forceMultiplier
                     )
                 )
-
+                
             } else {
                 projectile.physicsBody = nil
                 projectile.position = Settings.Metrics.projectileRestPosition
@@ -230,13 +260,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
-//        if gameStart > 0.2 {
-//            let zoomInAction = SKAction.scale(to: 1, duration: 2)
-//            let moveStartPoint = SKAction.moveBy(x: -36, y: -20, duration: 2)
-//            
-//            cameraNode.run(moveStartPoint)
-//            cameraNode.run(zoomInAction)
-//        }
+        //        if gameStart > 0.2 {
+        //            let zoomInAction = SKAction.scale(to: 1, duration: 2)
+        //            let moveStartPoint = SKAction.moveBy(x: -36, y: -20, duration: 2)
+        //
+        //            cameraNode.run(moveStartPoint)
+        //            cameraNode.run(zoomInAction)
+        //        }
         /* Physics contact delegate implementation */
         /* Get references to the bodies involved in the collision */
         let contactA:SKPhysicsBody = contact.bodyA
@@ -272,9 +302,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 
                 /* Kill Seal */
                 if contactA.categoryBitMask == 2 {
+                    gameState = .won
+                    print(gameState)
                     removeAlien(node: nodeA)
                 }
                 if contactB.categoryBitMask == 2 {
+                    gameState = .won
+                    print(gameState)
                     removeAlien(node: nodeB)
                     
                 }
@@ -297,13 +331,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         /* Play SFX */
         let sound = SKAction.playSoundFileNamed("granade", waitForCompletion: false)
         self.run(sound)
-
+        
     }
     
     
     func removeAlien(node: SKNode) {
-        gameState = .won
-        print(gameState)
         
         /* Create our hero death action */
         let alienDeath = SKAction.run({
@@ -315,17 +347,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     // MARK: Move Camera function
-//    func moveCamera() {
-//        guard let cameraTarget = cameraTarget else {
-//            return
-//        }
-//        let targetX = cameraTarget.position.x
-//        let targetY = cameraTarget.position.y
-//        let x = clamp(value: targetX, lower: 0, upper: 478)
-//        let y = clamp(value: targetY, lower: 0, upper: 268)
-//        cameraNode.position.x = x
-//        cameraNode.position.y = y
-//    }
+    //    func moveCamera() {
+    //        guard let cameraTarget = cameraTarget else {
+    //            return
+    //        }
+    //        let targetX = cameraTarget.position.x
+    //        let targetY = cameraTarget.position.y
+    //        let x = clamp(value: targetX, lower: 0, upper: 478)
+    //        let y = clamp(value: targetY, lower: 0, upper: 268)
+    //        cameraNode.position.x = x
+    //        cameraNode.position.y = y
+    //    }
     
     // MARK: SlingShot
     func fingerDistanceFromProjectileRestPosition(projectileRestPosition: CGPoint, fingerPosition: CGPoint) -> CGFloat {
@@ -381,5 +413,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             gameState = .gameOver
             print(gameState)
         }
+    }
+    
+    func GameOver() {
+        print("gameOver")
+        
+    }
+    func win() {
+        winMenu.position.y = 150
+        nextLevelButton.position.y = 5
+        resetButton.position.y = 150
+        
+        if background.position.y > -1000 {
+                starOne.position.y = 312
+            if background.position.y > -232{
+                starTwo.position.y = 344
+                if background.position.y > 538 {
+                    starThree.position.y = 312
+                }
+            }
+        }
+        
+        print("You Won")
     }
 }
