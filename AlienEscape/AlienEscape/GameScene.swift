@@ -55,6 +55,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             }
         }
     }
+    var gameOverSign: MSButtonNode!
     // MARK: Next Level Menu
     var starOne :SKSpriteNode!
     var starTwo :SKSpriteNode!
@@ -118,12 +119,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         starThree = childNode(withName: "starThree") as! SKSpriteNode
         winMenu = childNode(withName: "winMenu") as! SKSpriteNode
         nextLevelButton = childNode(withName: "//nextLevelButton") as! MSButtonNode
+        gameOverSign = childNode(withName: "//gameOverSign") as! MSButtonNode
         
         self.physicsWorld.contactDelegate = self
         
         self.camera = cameraNode
         
         resetButton.selectedHandler = {
+            guard let scene = GameScene.level(1) else {
+                print("Level 1 is missing?")
+                return
+            }
+            
+            scene.scaleMode = .aspectFit
+            view.presentScene(scene)
+        }
+        
+        gameOverSign.selectedHandler = {
             guard let scene = GameScene.level(1) else {
                 print("Level 1 is missing?")
                 return
@@ -416,6 +428,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     func GameOver() {
+        gameOverSign.position.y = 150
         print("gameOver")
         
     }
