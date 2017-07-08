@@ -144,7 +144,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             scene.scaleMode = .aspectFit
             view.presentScene(scene)
         }
-
         nextLevelButton.selectedHandler = {
             guard let scene = GameScene.level(1) else {
                 print("Level 2 is missing?")
@@ -429,10 +428,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     func GameOver() {
         gameOverSign.position.y = 150
+        inGameMenu.isHidden = true
         print("gameOver")
         
     }
     func win() {
+        inGameMenu.isHidden = true
         winMenu.position.y = 150
         nextLevelButton.position.y = 5
         resetButton.position.y = 150
