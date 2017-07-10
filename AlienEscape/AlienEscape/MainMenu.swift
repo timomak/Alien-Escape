@@ -20,11 +20,11 @@ class MainMenu: SKScene {
         startButton = self.childNode(withName: "startButton") as! MSButtonNode
         
         startButton.selectedHandler = {
-            self.loadGame()
+            self.gameSelect()
         }
     }
     
-    func loadGame() {
+    func gameSelect() {
         /* 1) Grab reference to our SpriteKit view */
         guard let skView = self.view as SKView! else {
             print("Could not get Skview")
@@ -32,7 +32,7 @@ class MainMenu: SKScene {
         }
         
         /* 2) Load Game scene */
-        guard let scene = GameScene.level(1) else {
+        guard let scene = SKScene(fileNamed: "LevelSelect") else {
             print("Could not load GameScene with level 1")
             return
         }
@@ -48,4 +48,5 @@ class MainMenu: SKScene {
         /* 4) Start game scene */
         skView.presentScene(scene)
     }
+
 }

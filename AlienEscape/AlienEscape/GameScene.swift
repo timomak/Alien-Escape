@@ -8,9 +8,6 @@
 
 // print(#file, #function, #line)
 
-
-// TODO: Level up
-// TODO: Game Victory based on time it took
 // TODO: Sound effects and Music
 // TODO: Visuals
 // TODO: Animations
@@ -18,6 +15,10 @@
 // TODO: MainMenu Animation
 // TODO: Laser gun with the right angle
 // TODO: Dotted line
+// TODO: Game level Select
+// TODO: Win animation
+// TODO: Locked Levels
+// TODO: Secret levels based on number of collected stars
 
 import SpriteKit
 
@@ -91,6 +92,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     var currentLevel = 1
     var loadingLevel = ""
+    
+    var levelScore = [ 0: 0]
     
     var plusOne = false
     
@@ -377,19 +380,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         slingshot_2.isHidden = false
     }
     
-//    func resetCamera() {
-//        /* Reset camera */
-//        let cameraReset = SKAction.move(to: CGPoint(x:0, y:0), duration: 1.5)
-//        let cameraDelay = SKAction.wait(forDuration: 0.5)
-//        let cameraSequence = SKAction.sequence([cameraDelay,cameraReset])
-//        cameraNode.run(cameraSequence)
-//        cameraTarget = nil
-//        if gameState == .playing {
-//            gameState = .gameOver
-//            print(gameState)
-//        }
-//    }
-    
     func GameOver() {
         print("game Over is called")
         gameOverSign.isHidden = false
@@ -436,9 +426,5 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             UserDefaults.standard.synchronize()
             print("score isin't highscore")
         }
-    }
-    
-    func newHighScore() {
-        
     }
 }
