@@ -127,35 +127,37 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         self.camera = cameraNode
         
+        var newLevel = currentLevel
+        
         resetButton.selectedHandler = {
-            print(self.currentLevel)
-            guard let scene = GameScene.level(self.currentLevel) else {
+            print(newLevel)
+            guard let scene = GameScene.level(newLevel) else {
                 print("Level 1 is missing?")
                 return
             }
-            
+            scene.currentLevel = newLevel
             scene.scaleMode = .aspectFit
             view.presentScene(scene)
         }
         
         gameOverSign.selectedHandler = {
-            print(self.currentLevel)
-            guard let scene = GameScene.level(self.currentLevel) else {
+            print(newLevel)
+            guard let scene = GameScene.level(newLevel) else {
                 print("Level 1 is missing?")
                 return
             }
-            
+            scene.currentLevel = newLevel
             scene.scaleMode = .aspectFit
             view.presentScene(scene)
         }
         nextLevelButton.selectedHandler = {
-            self.levelUP()
-            print(self.currentLevel)
-            guard let scene = GameScene.level(self.currentLevel) else {
+            newLevel += 1
+            print(newLevel)
+            guard let scene = GameScene.level(newLevel) else {
                 print("Level 1 is missing?")
                 return
             }
-            
+            scene.currentLevel = newLevel
             scene.scaleMode = .aspectFit
             view.presentScene(scene)
         }
