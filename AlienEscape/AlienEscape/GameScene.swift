@@ -9,10 +9,7 @@
 // print(#file, #function, #line)
 
 
-// TODO: Game Victory when Level up
-// TODO: Game Over with restart Button
-// TODO: Pause Menu
-// TODO: Background set as time
+// TODO: Level up
 // TODO: Game Victory based on time it took
 // TODO: Sound effects and Music
 // TODO: Visuals
@@ -20,8 +17,8 @@
 // TODO: Online highscores
 // TODO: MainMenu Animation
 // TODO: Laser gun with the right angle
-// TODO: Time Rappresentation in game
 // TODO: Dotted line
+
 import SpriteKit
 
 func clamp<T: Comparable>(value: T, lower: T, upper: T) -> T {
@@ -91,11 +88,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var cameraNode:SKCameraNode!
     var cameraTarget:SKSpriteNode!
     
+    var currentLevel = 1
+    var loadingLevel = ""
+    
+    var plusOne = false
     
     // TODO: Create a level up
     // MARK: Loading Levels
-    class func level(_ levelNumber: Int) -> GameScene? {
-        guard let scene = GameScene(fileNamed: "Level_\(levelNumber)") else {
+    class func level(_ currentLevel: Int) -> GameScene? {
+        guard let scene = GameScene(fileNamed: "Level_\(currentLevel)") else {
             return nil
         }
         scene.scaleMode = .aspectFit
@@ -103,6 +104,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     override func didMove(to view: SKView) {
+        
         alien = childNode(withName: "//alien") as! SKSpriteNode
         inGameMenu = childNode(withName: "//inGameMenu") as! MSButtonNode
         cameraNode = childNode(withName: "cameraNode") as! SKCameraNode
@@ -126,7 +128,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.camera = cameraNode
         
         resetButton.selectedHandler = {
-            guard let scene = GameScene.level(1) else {
+            print(self.currentLevel)
+            guard let scene = GameScene.level(self.currentLevel) else {
                 print("Level 1 is missing?")
                 return
             }
@@ -136,7 +139,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         
         gameOverSign.selectedHandler = {
-            guard let scene = GameScene.level(1) else {
+            print(self.currentLevel)
+            guard let scene = GameScene.level(self.currentLevel) else {
                 print("Level 1 is missing?")
                 return
             }
@@ -145,8 +149,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             view.presentScene(scene)
         }
         nextLevelButton.selectedHandler = {
-            guard let scene = GameScene.level(1) else {
-                print("Level 2 is missing?")
+            self.levelUP()
+            print(self.currentLevel)
+            guard let scene = GameScene.level(self.currentLevel) else {
+                print("Level 1 is missing?")
                 return
             }
             
@@ -175,6 +181,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
     }
     
+    func levelUP(){
+
+        if currentLevel == 1 {
+            currentLevel = 2
+
+        }
+        else if currentLevel == 2 {
+            currentLevel = 3
+        }
+        else if currentLevel == 3 {
+            loadingLevel = "Level_3"
+        }
+    }
     
     override func update(_ currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
@@ -185,24 +204,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         } else if gameState != .won{
             gameState = .gameOver
         }
-        func checkSpear() {
-            guard let cameraTarget = cameraTarget else {
-                return
-            }
-            
-            if cameraTarget.position.y < -200 || cameraTarget.position.x > 1050{
-                cameraTarget.removeFromParent()
-                resetCamera()
-            }
-        }
-        checkSpear()
         gameStart += fixedDelta
         timer += fixedDelta
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if gameState == .playing {
-            print(gameState)
             func shouldStartDragging(touchLocation:CGPoint, threshold: CGFloat) -> Bool {
                 let distance = fingerDistanceFromProjectileRestPosition(
                     projectileRestPosition: Settings.Metrics.projectileRestPosition,
@@ -271,13 +278,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
-        //        if gameStart > 0.2 {
-        //            let zoomInAction = SKAction.scale(to: 1, duration: 2)
-        //            let moveStartPoint = SKAction.moveBy(x: -36, y: -20, duration: 2)
-        //
-        //            cameraNode.run(moveStartPoint)
-        //            cameraNode.run(zoomInAction)
-        //        }
         /* Physics contact delegate implementation */
         /* Get references to the bodies involved in the collision */
         let contactA:SKPhysicsBody = contact.bodyA
@@ -287,13 +287,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let nodeB = contactB.node as! SKSpriteNode
         /* Check if either physics bodies was a seal */
         if contactA.categoryBitMask == 4 || contactB.categoryBitMask == 4{
-            print("there was contact between category 3 and ball")
             if contactA.categoryBitMask != 4{
-                print(nodeA)
                 teleportBall(node: nodeA)
             }
             if contactB.categoryBitMask != 4{
-                print(nodeB)
                 teleportBall(node: nodeB)
             }
         }
@@ -314,12 +311,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 /* Kill Seal */
                 if contactA.categoryBitMask == 2 {
                     gameState = .won
-                    print(gameState)
                     removeAlien(node: nodeA)
                 }
                 if contactB.categoryBitMask == 2 {
                     gameState = .won
-                    print(gameState)
                     removeAlien(node: nodeB)
                     
                 }
@@ -328,16 +323,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     func teleportBall(node: SKNode) {
-        print(node.speed)
-        
+
         let moveBall = SKAction.move(to: portal2.position, duration:0)
         node.run(moveBall)
-        // node = speed1
-        print(node.speed)
     }
     
     func animateExplosion(node: SKNode) {
-        print("There was contact ", node)
         node.run(SKAction(named: "Boom")!)
         /* Play SFX */
         let sound = SKAction.playSoundFileNamed("granade", waitForCompletion: false)
@@ -356,19 +347,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         })
         self.run(alienDeath)
     }
-    
-    // MARK: Move Camera function
-    //    func moveCamera() {
-    //        guard let cameraTarget = cameraTarget else {
-    //            return
-    //        }
-    //        let targetX = cameraTarget.position.x
-    //        let targetY = cameraTarget.position.y
-    //        let x = clamp(value: targetX, lower: 0, upper: 478)
-    //        let y = clamp(value: targetY, lower: 0, upper: 268)
-    //        cameraNode.position.x = x
-    //        cameraNode.position.y = y
-    //    }
     
     // MARK: SlingShot
     func fingerDistanceFromProjectileRestPosition(projectileRestPosition: CGPoint, fingerPosition: CGPoint) -> CGFloat {
@@ -413,23 +391,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         slingshot_2.isHidden = false
     }
     
-    func resetCamera() {
-        /* Reset camera */
-        let cameraReset = SKAction.move(to: CGPoint(x:0, y:0), duration: 1.5)
-        let cameraDelay = SKAction.wait(forDuration: 0.5)
-        let cameraSequence = SKAction.sequence([cameraDelay,cameraReset])
-        cameraNode.run(cameraSequence)
-        cameraTarget = nil
-        if gameState == .playing {
-            gameState = .gameOver
-            print(gameState)
-        }
-    }
+//    func resetCamera() {
+//        /* Reset camera */
+//        let cameraReset = SKAction.move(to: CGPoint(x:0, y:0), duration: 1.5)
+//        let cameraDelay = SKAction.wait(forDuration: 0.5)
+//        let cameraSequence = SKAction.sequence([cameraDelay,cameraReset])
+//        cameraNode.run(cameraSequence)
+//        cameraTarget = nil
+//        if gameState == .playing {
+//            gameState = .gameOver
+//            print(gameState)
+//        }
+//    }
     
     func GameOver() {
         gameOverSign.position.y = 150
         inGameMenu.isHidden = true
-        print("gameOver")
         
     }
     func win() {
@@ -447,7 +424,5 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 }
             }
         }
-        
-        print("You Won")
     }
 }
