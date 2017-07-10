@@ -52,6 +52,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             }
         }
     }
+    
     var gameOverSign: MSButtonNode!
     // MARK: Next Level Menu
     var starOne :SKSpriteNode!
@@ -104,7 +105,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     override func didMove(to view: SKView) {
-        
         alien = childNode(withName: "//alien") as! SKSpriteNode
         inGameMenu = childNode(withName: "//inGameMenu") as! MSButtonNode
         cameraNode = childNode(withName: "cameraNode") as! SKCameraNode
@@ -127,48 +127,45 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         self.camera = cameraNode
         
-        var newLevel = currentLevel
-        
         resetButton.selectedHandler = {
-            print(newLevel)
-            guard let scene = GameScene.level(newLevel) else {
+            guard let scene = GameScene.level(self.currentLevel) else {
                 print("Level 1 is missing?")
                 return
             }
-            scene.currentLevel = newLevel
+            scene.currentLevel = self.currentLevel
             scene.scaleMode = .aspectFit
             view.presentScene(scene)
         }
         
         gameOverSign.selectedHandler = {
-            print(newLevel)
-            guard let scene = GameScene.level(newLevel) else {
+            guard let scene = GameScene.level(self.currentLevel) else {
                 print("Level 1 is missing?")
                 return
             }
-            scene.currentLevel = newLevel
+            scene.currentLevel = self.currentLevel
             scene.scaleMode = .aspectFit
             view.presentScene(scene)
         }
         nextLevelButton.selectedHandler = {
-            newLevel += 1
-            print(newLevel)
-            guard let scene = GameScene.level(newLevel) else {
+            self.currentLevel += 1
+            guard let scene = GameScene.level(self.currentLevel) else {
                 print("Level 1 is missing?")
                 return
             }
-            scene.currentLevel = newLevel
+            scene.currentLevel = self.currentLevel
             scene.scaleMode = .aspectFit
             view.presentScene(scene)
         }
 
         inGameMenu.selectedHandler = {
+            
             if self.gameState == .playing {
                 self.resetButton.position.y = 120
                 self.pauseMenu.position.y = 150
                 self.resumeButton.position.y = 238
                 self.gameState = .paused
                 self.inGameMenu.isHidden = true
+                self.gameOverSign.isHidden = true
             }
         }
         resumeButton.selectedHandler = {
@@ -180,21 +177,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         
         setupSlingshot()
+        gameOverSign.isHidden = true
         
-    }
-    
-    func levelUP(){
-
-        if currentLevel == 1 {
-            currentLevel = 2
-
-        }
-        else if currentLevel == 2 {
-            currentLevel = 3
-        }
-        else if currentLevel == 3 {
-            loadingLevel = "Level_3"
-        }
     }
     
     override func update(_ currentTime: CFTimeInterval) {
@@ -203,9 +187,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         // moveCamera()
         if background.position.y > -1000 && gameState == .playing{
             background.position.y -= 5
-        } else if gameState != .won{
+        } else if gameState == .playing{
             gameState = .gameOver
         }
+        
         gameStart += fixedDelta
         timer += fixedDelta
     }
@@ -312,11 +297,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 
                 /* Kill Seal */
                 if contactA.categoryBitMask == 2 {
-                    gameState = .won
                     removeAlien(node: nodeA)
                 }
                 if contactB.categoryBitMask == 2 {
-                    gameState = .won
                     removeAlien(node: nodeB)
                     
                 }
@@ -347,6 +330,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             node.removeFromParent()
             
         })
+        gameState = .won
         self.run(alienDeath)
     }
     
@@ -407,11 +391,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
 //    }
     
     func GameOver() {
+        print("game Over is called")
+        gameOverSign.isHidden = false
         gameOverSign.position.y = 150
         inGameMenu.isHidden = true
         
     }
     func win() {
+        var stars = 0
         inGameMenu.isHidden = true
         winMenu.position.y = 150
         nextLevelButton.position.y = 5
@@ -419,12 +406,39 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         if background.position.y > -1000 {
                 starOne.position.y = 312
+                stars = 1
             if background.position.y > -232{
                 starTwo.position.y = 344
+                stars = 2
                 if background.position.y > 538 {
                     starThree.position.y = 312
+                    stars = 3
                 }
             }
         }
+        var name = String(currentLevel)
+        if levelScore.count == 1 {
+            levelScore[currentLevel] = stars
+            UserDefaults.standard.set(levelScore[currentLevel]!, forKey: name)
+            UserDefaults.standard.synchronize()
+        }
+        if levelScore[currentLevel] != nil{
+            if stars > UserDefaults.standard.integer(forKey: name){
+                levelScore[currentLevel] = stars
+                UserDefaults.standard.set(levelScore[currentLevel]!, forKey: name)
+                UserDefaults.standard.synchronize()
+            }
+            print(levelScore)
+            print("highscore:", UserDefaults.standard.integer(forKey: name))
+        } else {
+            levelScore[currentLevel] = stars
+            UserDefaults.standard.set(levelScore[currentLevel]!, forKey: name)
+            UserDefaults.standard.synchronize()
+            print("score isin't highscore")
+        }
+    }
+    
+    func newHighScore() {
+        
     }
 }

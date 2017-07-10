@@ -81,6 +81,7 @@
 		F328300B1F14113F00CB0A9D /* lazer_20_Purple.png in Resources */ = {isa = PBXBuildFile; fileRef = F3282FF41F14113F00CB0A9D /* lazer_20_Purple.png */; };
 		F328300C1F14113F00CB0A9D /* lazer_21_Purple.png in Resources */ = {isa = PBXBuildFile; fileRef = F3282FF51F14113F00CB0A9D /* lazer_21_Purple.png */; };
 		F328300D1F14113F00CB0A9D /* lazer_22_Purple.png in Resources */ = {isa = PBXBuildFile; fileRef = F3282FF61F14113F00CB0A9D /* lazer_22_Purple.png */; };
+		F328300F1F14294A00CB0A9D /* LevelScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F328300E1F14294A00CB0A9D /* LevelScore.swift */; };
 		F332EA391F0DABFC00DBA958 /* Level_1.sks in Resources */ = {isa = PBXBuildFile; fileRef = F332EA381F0DABFC00DBA958 /* Level_1.sks */; };
 		F37FA6981F11941500D7C115 /* Level_2.sks in Resources */ = {isa = PBXBuildFile; fileRef = F37FA6971F11941500D7C115 /* Level_2.sks */; };
 		F387A8281F0EDF660052E0CB /* granade.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F387A8271F0EDF660052E0CB /* granade.mp3 */; };
@@ -315,6 +316,7 @@
 		F3282FF41F14113F00CB0A9D /* lazer_20_Purple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lazer_20_Purple.png; sourceTree = "<group>"; };
 		F3282FF51F14113F00CB0A9D /* lazer_21_Purple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lazer_21_Purple.png; sourceTree = "<group>"; };
 		F3282FF61F14113F00CB0A9D /* lazer_22_Purple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lazer_22_Purple.png; sourceTree = "<group>"; };
+		F328300E1F14294A00CB0A9D /* LevelScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelScore.swift; sourceTree = "<group>"; };
 		F332EA381F0DABFC00DBA958 /* Level_1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Level_1.sks; path = alien_dark_gray/Level_1.sks; sourceTree = "<group>"; };
 		F37FA6971F11941500D7C115 /* Level_2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Level_2.sks; path = alien_dark_gray/Level_2.sks; sourceTree = "<group>"; };
 		F387A8271F0EDF660052E0CB /* granade.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = granade.mp3; sourceTree = "<group>"; };
@@ -513,6 +515,7 @@
 				F3165B7A1F06CAF800A7BD96 /* MSButtonNode.swift */,
 				F3165B681F06C8D200A7BD96 /* MainMenu.swift */,
 				F3165B7C1F06CB0B00A7BD96 /* GameScene.swift */,
+				F328300E1F14294A00CB0A9D /* LevelScore.swift */,
 				F38BDE9F1F0E9F2B004A9F6A /* Scenes */,
 				F39ECB451F0B00D400EDE3D5 /* Objects */,
 			);
@@ -1106,6 +1109,7 @@
 				F3165B7D1F06CB0B00A7BD96 /* GameScene.swift in Sources */,
 				F3165B811F06D46600A7BD96 /* spear.swift in Sources */,
 				F3165B691F06C8D200A7BD96 /* MainMenu.swift in Sources */,
+				F328300F1F14294A00CB0A9D /* LevelScore.swift in Sources */,
 				F3165B6B1F06C8D200A7BD96 /* GameViewController.swift in Sources */,
 				F3165B631F06C8D200A7BD96 /* AppDelegate.swift in Sources */,
 				F3165B7B1F06CAF800A7BD96 /* MSButtonNode.swift in Sources */,
