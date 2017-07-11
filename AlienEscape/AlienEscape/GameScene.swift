@@ -9,9 +9,7 @@
 // print(#file, #function, #line)
 
 // TODO: Sound effects and Music
-// TODO: Visuals
 // TODO: Animations
-// TODO: Online highscores
 // TODO: MainMenu Animation
 // TODO: Laser gun with the right angle
 // TODO: Dotted line
@@ -19,6 +17,17 @@
 // TODO: Win animation
 // TODO: Locked Levels
 // TODO: Secret levels based on number of collected stars
+// TODO: Change Game Over Button
+// TODO: Change start button
+// TODO: Allow placement of portals
+// TODO: Limit lifes and a buy systems for the lifes or ads or sharing on social Media
+// TODO: Change UI system Completely
+// TODO: Raplace Slingshot with alien "stuff"
+// TODO: Improve Game over (add animation GTA style [wasted])
+// TODO: Add interchangeble items
+// TODO: Add stars and Labels in level Select
+// TODO: For Loop the level select
+
 
 import SpriteKit
 
@@ -108,6 +117,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     override func didMove(to view: SKView) {
+        currentLevel = UserDefaults.standard.integer(forKey: "currentLevel")
         alien = childNode(withName: "//alien") as! SKSpriteNode
         inGameMenu = childNode(withName: "//inGameMenu") as! MSButtonNode
         cameraNode = childNode(withName: "cameraNode") as! SKCameraNode
@@ -179,8 +189,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         nextLevelButton.selectedHandler = {
             self.lastLevel = UserDefaults.standard.integer(forKey: "checkpoint") + 1
-            self.currentLevel += 1
-            guard let scene = GameScene.level(self.currentLevel) else {
+            UserDefaults.standard.set(self.currentLevel + 1, forKey: "currentLevel")
+            UserDefaults.standard.synchronize()
+            print("current level is ", UserDefaults.standard.integer(forKey: "currentLevel"))
+            guard let scene = GameScene.level(UserDefaults.standard.integer(forKey: "currentLevel")) else {
                 print("Level 1 is missing?")
                 return
             }

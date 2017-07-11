@@ -26,10 +26,11 @@ class MainMenu: SKScene {
         startButton = self.childNode(withName: "startButton") as! MSButtonNode
         levelSelectButton = self.childNode(withName: "levelSelectButton") as! MSButtonNode
         levelSelectButton.isHidden = true
-
+        startButton.position.y = 160
         
         if UserDefaults.standard.integer(forKey: "firstTime") == 1 {
             levelSelectButton.isHidden = false
+            startButton.position.y = 200
         }
         
         startButton.selectedHandler = {
@@ -74,6 +75,8 @@ class MainMenu: SKScene {
                 print("Level 1 is missing?")
                 return
             }
+            UserDefaults.standard.set(1, forKey: "currentLevel")
+            UserDefaults.standard.synchronize()
             scene.scaleMode = .aspectFit
             view?.presentScene(scene)
             
@@ -81,10 +84,12 @@ class MainMenu: SKScene {
             UserDefaults.standard.set(number, forKey: "firstTime")
             UserDefaults.standard.synchronize()
         } else {
-            guard let scene = GameScene.level(self.level) else {
+            guard let scene = GameScene.level(level) else {
                 print("Level 1 is missing?")
                 return
             }
+            UserDefaults.standard.set(level, forKey: "currentLevel")
+            UserDefaults.standard.synchronize()
             scene.scaleMode = .aspectFit
             view?.presentScene(scene)
             
