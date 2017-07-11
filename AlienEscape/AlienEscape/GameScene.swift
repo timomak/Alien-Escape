@@ -69,6 +69,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var pauseMenu: SKSpriteNode!
     var resetButton: MSButtonNode!
     var resumeButton: MSButtonNode!
+    var levelSelectButton: MSButtonNode!
     
     var background: SKSpriteNode!
     var portal1: SKSpriteNode!
@@ -125,10 +126,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         winMenu = childNode(withName: "winMenu") as! SKSpriteNode
         nextLevelButton = childNode(withName: "//nextLevelButton") as! MSButtonNode
         gameOverSign = childNode(withName: "//gameOverSign") as! MSButtonNode
+        levelSelectButton = childNode(withName: "levelSelectButton") as! MSButtonNode
         
         self.physicsWorld.contactDelegate = self
         
         self.camera = cameraNode
+        
+        levelSelectButton.selectedHandler = {
+            /* 1) Grab reference to our SpriteKit view */
+            guard let skView = self.view as SKView! else {
+                print("Could not get Skview")
+                return
+            }
+            
+            /* 2) Load Game scene */
+            guard let scene = SKScene(fileNamed: "LevelSelect") else {
+                print("Could not load GameScene with level 1")
+                return
+            }
+            
+            /* 3) Ensure correct aspect mode */
+            scene.scaleMode = .aspectFit
+            
+            /* Show debug */
+            skView.showsPhysics = false
+            skView.showsDrawCount = true
+            skView.showsFPS = true
+            
+            /* 4) Start game scene */
+            skView.presentScene(scene)
+        }
         
         resetButton.selectedHandler = {
             guard let scene = GameScene.level(self.currentLevel) else {
@@ -163,18 +190,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         inGameMenu.selectedHandler = {
             
             if self.gameState == .playing {
-                self.resetButton.position.y = 120
                 self.pauseMenu.position.y = 150
-                self.resumeButton.position.y = 238
-                self.gameState = .paused
+                self.resumeButton.position.y = 240
+                self.levelSelectButton.position.y = 140
+                self.resetButton.position.y = 40
                 self.inGameMenu.isHidden = true
                 self.gameOverSign.isHidden = true
+                self.gameState = .paused
             }
         }
         resumeButton.selectedHandler = {
-            self.resetButton.position.y = -341
             self.pauseMenu.position.y = -430
-            self.resumeButton.position.y = -350
+            self.resumeButton.position.y = -340
+            self.levelSelectButton.position.y = -440
+            self.resetButton.position.y = -540
             self.gameState = .playing
             self.inGameMenu.isHidden = false
         }
@@ -391,8 +420,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         var stars = 0
         inGameMenu.isHidden = true
         winMenu.position.y = 150
-        nextLevelButton.position.y = 5
-        resetButton.position.y = 150
+        levelSelectButton.position.y = 190
+        resetButton.position.y = 90
+        nextLevelButton.position.y = -10
         
         if background.position.y > -1000 {
                 starOne.position.y = 312
@@ -406,7 +436,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 }
             }
         }
-        var name = String(currentLevel)
+        let name = String(currentLevel)
         if levelScore.count == 1 {
             levelScore[currentLevel] = stars
             UserDefaults.standard.set(levelScore[currentLevel]!, forKey: name)
