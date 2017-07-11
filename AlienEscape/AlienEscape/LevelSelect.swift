@@ -23,6 +23,8 @@ class LevelSelect: SKScene {
                 print("Level 1 is missing?")
                 return
             }
+            UserDefaults.standard.set(1, forKey: "currentLevel")
+            UserDefaults.standard.synchronize()
             scene.scaleMode = .aspectFit
             view.presentScene(scene)
         }
@@ -32,6 +34,9 @@ class LevelSelect: SKScene {
                 print("Level 1 is missing?")
                 return
             }
+            UserDefaults.standard.set(2, forKey: "currentLevel")
+            UserDefaults.standard.synchronize()
+
             scene.scaleMode = .aspectFit
             view.presentScene(scene)
         }
@@ -41,6 +46,8 @@ class LevelSelect: SKScene {
                 print("Level 1 is missing?")
                 return
             }
+            UserDefaults.standard.set(3, forKey: "currentLevel")
+            UserDefaults.standard.synchronize()
             scene.scaleMode = .aspectFit
             view.presentScene(scene)
         }

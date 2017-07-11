@@ -12,16 +12,35 @@ class MainMenu: SKScene {
     
     /* UI Connections */
     var startButton: MSButtonNode!
+    var levelSelectButton: MSButtonNode!
+    
+    var level = 0
     
     override func didMove(to view: SKView) {
         /* Setup your scene here */
+        print(UserDefaults.standard.integer(forKey: "checkpoint"))
+        level = Int(UserDefaults.standard.integer(forKey: "checkpoint"))
+        print(level)
         
         /* Set UI connections */
         startButton = self.childNode(withName: "startButton") as! MSButtonNode
+        levelSelectButton = self.childNode(withName: "levelSelectButton") as! MSButtonNode
+        levelSelectButton.isHidden = true
+
+        
+        if UserDefaults.standard.integer(forKey: "firstTime") == 1 {
+            levelSelectButton.isHidden = false
+        }
         
         startButton.selectedHandler = {
+            self.lastGame()
+            
+        }
+        levelSelectButton.selectedHandler = {
             self.gameSelect()
         }
+        
+        
     }
     
     func gameSelect() {
@@ -48,5 +67,27 @@ class MainMenu: SKScene {
         /* 4) Start game scene */
         skView.presentScene(scene)
     }
-
+    
+    func lastGame() {
+        if UserDefaults.standard.integer(forKey: "firstTime") != 1 {
+            guard let scene = GameScene.level(1) else {
+                print("Level 1 is missing?")
+                return
+            }
+            scene.scaleMode = .aspectFit
+            view?.presentScene(scene)
+            
+            let number = 1
+            UserDefaults.standard.set(number, forKey: "firstTime")
+            UserDefaults.standard.synchronize()
+        } else {
+            guard let scene = GameScene.level(self.level) else {
+                print("Level 1 is missing?")
+                return
+            }
+            scene.scaleMode = .aspectFit
+            view?.presentScene(scene)
+            
+        }
+    }
 }

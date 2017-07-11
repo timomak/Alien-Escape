@@ -92,13 +92,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var cameraTarget:SKSpriteNode!
     
     var currentLevel = 1
-    var loadingLevel = ""
     
     var levelScore = [ 0: 0]
     
-    var plusOne = false
+    var lastLevel = 1
+    var winCount = 1
     
-    // TODO: Create a level up
     // MARK: Loading Levels
     class func level(_ currentLevel: Int) -> GameScene? {
         guard let scene = GameScene(fileNamed: "Level_\(currentLevel)") else {
@@ -131,6 +130,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.physicsWorld.contactDelegate = self
         
         self.camera = cameraNode
+        
+        print("At did begin ",UserDefaults.standard.integer(forKey: "checkpoint"))
         
         levelSelectButton.selectedHandler = {
             /* 1) Grab reference to our SpriteKit view */
@@ -177,16 +178,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             view.presentScene(scene)
         }
         nextLevelButton.selectedHandler = {
+            self.lastLevel = UserDefaults.standard.integer(forKey: "checkpoint") + 1
             self.currentLevel += 1
             guard let scene = GameScene.level(self.currentLevel) else {
                 print("Level 1 is missing?")
                 return
             }
+            scene.lastLevel = self.lastLevel
             scene.currentLevel = self.currentLevel
             scene.scaleMode = .aspectFit
             view.presentScene(scene)
         }
-
+        
         inGameMenu.selectedHandler = {
             
             if self.gameState == .playing {
@@ -327,33 +330,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             /* Was the collision more than a gentle nudge? */
             if contact.collisionImpulse > 5 {
                 
-                /* Kill Seal */
+                /* Kill Alien */
                 if contactA.categoryBitMask == 2 {
                     removeAlien(node: nodeA)
                 }
                 if contactB.categoryBitMask == 2 {
                     removeAlien(node: nodeB)
-                    
                 }
             }
         }
     }
     
     func teleportBall(node: SKNode) {
-
+        
         let moveBall = SKAction.move(to: portal2.position, duration:0)
         node.run(moveBall)
     }
     
     func animateExplosion(node: SKNode) {
         node.run(SKAction(named: "Boom")!)
-        /* Play SFX */
+        // MARK: Sound Effect
         let sound = SKAction.playSoundFileNamed("granade", waitForCompletion: false)
         self.run(sound)
         
     }
     
-    
+    // MARK: Remove Alien
     func removeAlien(node: SKNode) {
         
         /* Create our hero death action */
@@ -362,7 +364,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             node.removeFromParent()
             
         })
-        gameState = .won
+        if winCount == 1 {
+            gameState = .won
+            winCount += 1
+        }
         self.run(alienDeath)
     }
     
@@ -425,8 +430,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         nextLevelButton.position.y = -10
         
         if background.position.y > -1000 {
-                starOne.position.y = 312
-                stars = 1
+            starOne.position.y = 312
+            stars = 1
             if background.position.y > -232{
                 starTwo.position.y = 344
                 stars = 2
@@ -436,6 +441,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 }
             }
         }
+        if UserDefaults.standard.integer(forKey: "checkpoint") < 2 {
+            lastLevel = 2
+            UserDefaults.standard.set(lastLevel, forKey: "checkpoint")
+            UserDefaults.standard.synchronize()
+            print("set to two", UserDefaults.standard.integer(forKey: "checkpoint"))
+        } else {
+            UserDefaults.standard.set(lastLevel, forKey: "checkpoint")
+            UserDefaults.standard.synchronize()
+            print("At won ",UserDefaults.standard.integer(forKey: "checkpoint"))
+        }
+        
+        if UserDefaults.standard.integer(forKey: "checkpoint") > 3 {
+            lastLevel = 3
+            UserDefaults.standard.set(lastLevel, forKey: "checkpoint")
+            UserDefaults.standard.synchronize()
+            print("At won ",UserDefaults.standard.integer(forKey: "checkpoint"))
+        }
+        
         let name = String(currentLevel)
         if levelScore.count == 1 {
             levelScore[currentLevel] = stars
@@ -449,7 +472,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 UserDefaults.standard.synchronize()
             }
             print(levelScore)
-            print("highscore:", UserDefaults.standard.integer(forKey: name))
+            print("highscore:", UserDefaults.standard.integer(forKey: "1"))
+            print("highscore:", UserDefaults.standard.integer(forKey: "2"))
+            print("highscore:", UserDefaults.standard.integer(forKey: "3"))
         } else {
             levelScore[currentLevel] = stars
             UserDefaults.standard.set(levelScore[currentLevel]!, forKey: name)
