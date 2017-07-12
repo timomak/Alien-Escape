@@ -12,11 +12,40 @@ var level1: MSButtonNode!
 var level2: MSButtonNode!
 var level3: MSButtonNode!
 
+var mainManu: MSButtonNode!
 class LevelSelect: SKScene {
     override func didMove(to view: SKView) {
         level1 = childNode(withName: "level1") as! MSButtonNode
         level2 = childNode(withName: "level2") as! MSButtonNode
         level3 = childNode(withName: "level3") as! MSButtonNode
+        
+        mainManu = childNode(withName: "mainMenuButton") as! MSButtonNode
+        
+        mainManu.selectedHandler = {
+            /* 1) Grab reference to our SpriteKit view */
+            guard let skView = self.view as SKView! else {
+                print("Could not get Skview")
+                return
+            }
+            
+            /* 2) Load Game scene */
+            guard let scene = SKScene(fileNamed: "MainMenu") else {
+                print("Could not load GameScene with level 1")
+                return
+            }
+            
+            /* 3) Ensure correct aspect mode */
+            scene.scaleMode = .aspectFit
+            
+            /* Show debug */
+            skView.showsPhysics = false
+            skView.showsDrawCount = true
+            skView.showsFPS = true
+            
+            /* 4) Start game scene */
+            skView.presentScene(scene)
+
+        }
         
         level1.selectedHandler = {
         guard let scene = GameScene.level(1) else {
