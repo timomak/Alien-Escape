@@ -476,6 +476,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 levelScore[currentLevel] = stars
                 UserDefaults.standard.set(levelScore[currentLevel]!, forKey: name)
                 UserDefaults.standard.synchronize()
-            }
+        }
     }
 }

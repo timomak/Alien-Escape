@@ -17,18 +17,21 @@ var star_1: SKSpriteNode!
 var star_2: SKSpriteNode!
 var star_3: SKSpriteNode!
 
+var starCounter: SKLabelNode!
+var numberOfStars = 0
 
 class LevelSelect: SKScene {
     override func didMove(to view: SKView) {
+        
         level1 = childNode(withName: "level1") as! MSButtonNode
         level2 = childNode(withName: "level2") as! MSButtonNode
         level3 = childNode(withName: "level3") as! MSButtonNode
+        mainManu = childNode(withName: "mainMenuButton") as! MSButtonNode
         star_1 = childNode(withName: "//star_1_1") as! SKSpriteNode
         star_2 = childNode(withName: "//star_1_2") as! SKSpriteNode
         star_3 = childNode(withName: "//star_1_3") as! SKSpriteNode
-
-
-
+        starCounter = childNode(withName: "//starCounter") as! SKLabelNode
+        
         if UserDefaults.standard.integer(forKey: "1") == 0 {
             star_1.isHidden = true
             star_2.isHidden = true
@@ -38,11 +41,14 @@ class LevelSelect: SKScene {
                 star_1.isHidden = false
                 star_2.isHidden = true
                 star_3.isHidden = true
+                numberOfStars += 1
                 if UserDefaults.standard.integer(forKey: "1") > 1 {
                     star_2.isHidden = false
                     star_3.isHidden = true
+                    numberOfStars += 1
                     if UserDefaults.standard.integer(forKey: "1") == 3 {
                         star_3.isHidden = false
+                        numberOfStars += 1
                     }
                 }
             }
@@ -67,11 +73,14 @@ class LevelSelect: SKScene {
                 starLeft.isHidden = false
                 starMiddle.isHidden = true
                 starRight.isHidden = true
+                numberOfStars += 1
                 if UserDefaults.standard.integer(forKey: "2") > 1 {
                     starMiddle.isHidden = false
                     starRight.isHidden = true
+                    numberOfStars += 1
                     if UserDefaults.standard.integer(forKey: "2") == 3 {
                         starRight.isHidden = false
+                        numberOfStars += 1
                     }
                 }
             }
@@ -97,17 +106,20 @@ class LevelSelect: SKScene {
                 starLeft.isHidden = false
                 starMiddle.isHidden = true
                 starRight.isHidden = true
+                numberOfStars += 1
                 if UserDefaults.standard.integer(forKey: "3") > 1 {
                     starMiddle.isHidden = false
                     starRight.isHidden = true
+                    numberOfStars += 1
                     if UserDefaults.standard.integer(forKey: "3") == 3 {
                         starRight.isHidden = false
+                        numberOfStars += 1
                     }
                 }
             }
         }
         
-        mainManu = childNode(withName: "mainMenuButton") as! MSButtonNode
+        starCounter.text = String(numberOfStars)
         
         mainManu.selectedHandler = {
             /* 1) Grab reference to our SpriteKit view */
