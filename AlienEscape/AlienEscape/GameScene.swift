@@ -107,6 +107,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var lastLevel = 1
     var winCount = 1
     
+    var lifeCounter: SKLabelNode!
+    
+    
     // MARK: Loading Levels
     class func level(_ currentLevel: Int) -> GameScene? {
         guard let scene = GameScene(fileNamed: "Level_\(currentLevel)") else {
@@ -136,6 +139,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         nextLevelButton = childNode(withName: "//nextLevelButton") as! MSButtonNode
         gameOverSign = childNode(withName: "//gameOverSign") as! MSButtonNode
         levelSelectButton = childNode(withName: "levelSelectButton") as! MSButtonNode
+        
+        lifeCounter = childNode(withName: "//lifeCounter") as! SKLabelNode
+        
+        let numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes")
+        
+        lifeCounter.text = String(numberOfLives)
         
         self.physicsWorld.contactDelegate = self
         
@@ -428,8 +437,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     func GameOver() {
         print("game Over is called")
+        let numberOfLifes = UserDefaults.standard.integer(forKey: "numberOfLifes") - 1
+        UserDefaults.standard.set(numberOfLifes, forKey: "numberOfLifes")
+        UserDefaults.standard.synchronize()
+        
+        
         gameOverSign.isHidden = false
-        gameOverSign.position.y = 150
+        pauseMenu.position.y = 150
+        levelSelectButton.position.y = 220
+        resetButton.position.y = 90
+        gameOverSign.position.y = 326
         inGameMenu.isHidden = true
         
     }

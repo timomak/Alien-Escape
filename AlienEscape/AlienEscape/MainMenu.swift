@@ -75,6 +75,8 @@ class MainMenu: SKScene {
                 print("Level 1 is missing?")
                 return
             }
+            UserDefaults.standard.set(5, forKey: "numberOfLifes")
+            UserDefaults.standard.synchronize()
             UserDefaults.standard.set(1, forKey: "currentLevel")
             UserDefaults.standard.synchronize()
             scene.scaleMode = .aspectFit
