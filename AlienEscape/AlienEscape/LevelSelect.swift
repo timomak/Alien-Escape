@@ -13,11 +13,18 @@ var level2: MSButtonNode!
 var level3: MSButtonNode!
 
 var mainManu: MSButtonNode!
+var star_1: SKSpriteNode!
+
+
 class LevelSelect: SKScene {
     override func didMove(to view: SKView) {
         level1 = childNode(withName: "level1") as! MSButtonNode
         level2 = childNode(withName: "level2") as! MSButtonNode
         level3 = childNode(withName: "level3") as! MSButtonNode
+        
+        if UserDefaults.standard.integer(forKey: "1") > 1 {
+            
+        }
         
         mainManu = childNode(withName: "mainMenuButton") as! MSButtonNode
         
@@ -81,5 +88,4 @@ class LevelSelect: SKScene {
             view.presentScene(scene)
         }
     }
-    
 }
