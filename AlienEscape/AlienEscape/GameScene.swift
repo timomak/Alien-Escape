@@ -472,26 +472,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         
         let name = String(currentLevel)
-        if levelScore.count == 1 {
-            levelScore[currentLevel] = stars
-            UserDefaults.standard.set(levelScore[currentLevel]!, forKey: name)
-            UserDefaults.standard.synchronize()
-        }
-        if levelScore[currentLevel] != nil{
             if stars > UserDefaults.standard.integer(forKey: name){
                 levelScore[currentLevel] = stars
                 UserDefaults.standard.set(levelScore[currentLevel]!, forKey: name)
                 UserDefaults.standard.synchronize()
             }
-            print(levelScore)
-            print("highscore:", UserDefaults.standard.integer(forKey: "1"))
-            print("highscore:", UserDefaults.standard.integer(forKey: "2"))
-            print("highscore:", UserDefaults.standard.integer(forKey: "3"))
-        } else {
-            levelScore[currentLevel] = stars
-            UserDefaults.standard.set(levelScore[currentLevel]!, forKey: name)
-            UserDefaults.standard.synchronize()
-            print("score isin't highscore")
-        }
     }
 }

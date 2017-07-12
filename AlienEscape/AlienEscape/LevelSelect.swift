@@ -14,6 +14,8 @@ var level3: MSButtonNode!
 
 var mainManu: MSButtonNode!
 var star_1: SKSpriteNode!
+var star_2: SKSpriteNode!
+var star_3: SKSpriteNode!
 
 
 class LevelSelect: SKScene {
@@ -21,9 +23,88 @@ class LevelSelect: SKScene {
         level1 = childNode(withName: "level1") as! MSButtonNode
         level2 = childNode(withName: "level2") as! MSButtonNode
         level3 = childNode(withName: "level3") as! MSButtonNode
+        star_1 = childNode(withName: "//star_1_1") as! SKSpriteNode
+        star_2 = childNode(withName: "//star_1_2") as! SKSpriteNode
+        star_3 = childNode(withName: "//star_1_3") as! SKSpriteNode
+
+
+
+        if UserDefaults.standard.integer(forKey: "1") == 0 {
+            star_1.isHidden = true
+            star_2.isHidden = true
+            star_3.isHidden = true
+        } else {
+            if UserDefaults.standard.integer(forKey: "1") > 0 {
+                star_1.isHidden = false
+                star_2.isHidden = true
+                star_3.isHidden = true
+                if UserDefaults.standard.integer(forKey: "1") > 1 {
+                    star_2.isHidden = false
+                    star_3.isHidden = true
+                    if UserDefaults.standard.integer(forKey: "1") == 3 {
+                        star_3.isHidden = false
+                    }
+                }
+            }
+        }
         
-        if UserDefaults.standard.integer(forKey: "1") > 1 {
-            
+        if UserDefaults.standard.integer(forKey: "2") == 0 {
+            let starLeft = star_1.copy() as! SKSpriteNode
+            let starMiddle = star_2.copy() as! SKSpriteNode
+            let starRight = star_3.copy() as! SKSpriteNode
+            level2.addChild(starLeft)
+            level2.addChild(starMiddle)
+            level2.addChild(starRight)
+            level2.isHidden = true
+        } else {
+            if UserDefaults.standard.integer(forKey: "2") > 0 {
+                let starLeft = star_1.copy() as! SKSpriteNode
+                let starMiddle = star_2.copy() as! SKSpriteNode
+                let starRight = star_3.copy() as! SKSpriteNode
+                level2.addChild(starLeft)
+                level2.addChild(starMiddle)
+                level2.addChild(starRight)
+                starLeft.isHidden = false
+                starMiddle.isHidden = true
+                starRight.isHidden = true
+                if UserDefaults.standard.integer(forKey: "2") > 1 {
+                    starMiddle.isHidden = false
+                    starRight.isHidden = true
+                    if UserDefaults.standard.integer(forKey: "2") == 3 {
+                        starRight.isHidden = false
+                    }
+                }
+            }
+        }
+        
+        
+        if UserDefaults.standard.integer(forKey: "3") == 0 {
+            let starLeft = star_1.copy() as! SKSpriteNode
+            let starMiddle = star_2.copy() as! SKSpriteNode
+            let starRight = star_3.copy() as! SKSpriteNode
+            level3.addChild(starLeft)
+            level3.addChild(starMiddle)
+            level3.addChild(starRight)
+            level3.isHidden = true
+        } else {
+            if UserDefaults.standard.integer(forKey: "3") > 0 {
+                let starLeft = star_1.copy() as! SKSpriteNode
+                let starMiddle = star_2.copy() as! SKSpriteNode
+                let starRight = star_3.copy() as! SKSpriteNode
+                level3.addChild(starLeft)
+                level3.addChild(starMiddle)
+                level3.addChild(starRight)
+                starLeft.isHidden = false
+                starMiddle.isHidden = true
+                starRight.isHidden = true
+                if UserDefaults.standard.integer(forKey: "3") > 1 {
+                    starMiddle.isHidden = false
+                    starRight.isHidden = true
+                    if UserDefaults.standard.integer(forKey: "3") == 3 {
+                        starRight.isHidden = false
+                    }
+                }
+            }
         }
         
         mainManu = childNode(withName: "mainMenuButton") as! MSButtonNode
