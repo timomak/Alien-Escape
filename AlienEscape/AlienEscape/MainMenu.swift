@@ -40,8 +40,6 @@ class MainMenu: SKScene {
         levelSelectButton.selectedHandler = {
             self.gameSelect()
         }
-        
-        
     }
     
     func gameSelect() {

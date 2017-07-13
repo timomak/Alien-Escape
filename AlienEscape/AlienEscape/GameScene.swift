@@ -13,19 +13,15 @@
 // TODO: MainMenu Animation
 // TODO: Laser gun with the right angle
 // TODO: Dotted line
-// TODO: Game level Select
 // TODO: Win animation
-// TODO: Locked Levels
 // TODO: Secret levels based on number of collected stars
-// TODO: Change Game Over Button
 // TODO: Change start button
 // TODO: Allow placement of portals
-// TODO: Limit lifes and a buy systems for the lifes or ads or sharing on social Media
+// TODO: Buy systems for the lifes or ads or sharing on social Media
 // TODO: Change UI system Completely
 // TODO: Raplace Slingshot with alien "stuff"
 // TODO: Improve Game over (add animation GTA style [wasted])
 // TODO: Add interchangeble items
-// TODO: Add stars and Labels in level Select
 // TODO: For Loop the level select
 
 
