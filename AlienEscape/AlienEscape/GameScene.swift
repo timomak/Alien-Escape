@@ -59,6 +59,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
     }
     
+    var springField: SKFieldNode!
+    var fieldNodeSize: SKSpriteNode!
+    
     var gameOverSign: MSButtonNode!
     // MARK: Next Level Menu
     var starOne :SKSpriteNode!
@@ -136,7 +139,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         gameOverSign = childNode(withName: "//gameOverSign") as! MSButtonNode
         levelSelectButton = childNode(withName: "levelSelectButton") as! MSButtonNode
         
+        if UserDefaults.standard.integer(forKey: "currentLevel") > 4 {
+        springField = childNode(withName: "springField") as! SKFieldNode
+        fieldNodeSize = childNode(withName: "fieldNodeSize") as! SKSpriteNode
+        springField.region = SKRegion(size: fieldNodeSize.size)
+        }
+        
         lifeCounter = childNode(withName: "//lifeCounter") as! SKLabelNode
+        
+        // let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinchAction(sender:)))
+        // view.addGestureRecognizer(pinchGesture)
         
         let numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes")
         
@@ -233,6 +245,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
     }
     
+//    func pinchAction(sender:UIPinchGestureRecognizer){
+//        if sender.state == .began{
+//            print("Pinch began")
+//        }
+//        if sender.state == .changed{
+//            print("Pinch Changed")
+//            cameraNode.xScale = sender.scale
+//            cameraNode.yScale = sender.scale
+//        }
+//        if sender.state == .ended{
+//            print("Pinch ended")
+//        }
+//    }
+//    
     override func update(_ currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         
@@ -343,9 +369,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 animateExplosion(node: nodeB)
             }
         }
-        if contactA.categoryBitMask == 2 || contactB.categoryBitMask == 2 {
+        if contactA.categoryBitMask == 2 && contactB.categoryBitMask == 1 {
             /* Was the collision more than a gentle nudge? */
-            if contact.collisionImpulse > 5 {
                 
                 /* Kill Alien */
                 if contactA.categoryBitMask == 2 {
@@ -353,9 +378,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 }
                 if contactB.categoryBitMask == 2 {
                     removeAlien(node: nodeB)
-                }
             }
         }
+        if contactB.categoryBitMask == 2 && contactA.categoryBitMask == 1 {
+            /* Kill Alien */
+            if contactA.categoryBitMask == 2 {
+                removeAlien(node: nodeA)
+            }
+            if contactB.categoryBitMask == 2 {
+                removeAlien(node: nodeB)
+            }
+        }
+        
     }
     
     func teleportBall(node: SKNode) {
