@@ -139,7 +139,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         gameOverSign = childNode(withName: "//gameOverSign") as! MSButtonNode
         levelSelectButton = childNode(withName: "levelSelectButton") as! MSButtonNode
         
-        if UserDefaults.standard.integer(forKey: "currentLevel") > 4 {
+        if UserDefaults.standard.integer(forKey: "currentLevel") > 5 {
         springField = childNode(withName: "springField") as! SKFieldNode
         fieldNodeSize = childNode(withName: "fieldNodeSize") as! SKSpriteNode
         springField.region = SKRegion(size: fieldNodeSize.size)

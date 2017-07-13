@@ -13,7 +13,7 @@ var level2: MSButtonNode!
 var level3: MSButtonNode!
 var level4: MSButtonNode!
 var level5: MSButtonNode!
-//var level4: MSButtonNode!
+var level6: MSButtonNode!
 //var level4: MSButtonNode!
 //var level4: MSButtonNode!
 
@@ -35,7 +35,7 @@ class LevelSelect: SKScene {
         level3 = childNode(withName: "level3") as! MSButtonNode
         level4 = childNode(withName: "level4") as! MSButtonNode
         level5 = childNode(withName: "level5") as! MSButtonNode
-//        level4 = childNode(withName: "level4") as! MSButtonNode
+        level6 = childNode(withName: "level6") as! MSButtonNode
 //        level4 = childNode(withName: "level4") as! MSButtonNode
 //        level4 = childNode(withName: "level4") as! MSButtonNode
         
@@ -181,7 +181,36 @@ class LevelSelect: SKScene {
                 }
             }
         }
-        numberOfStars = UserDefaults.standard.integer(forKey: "1") + UserDefaults.standard.integer(forKey: "2") + UserDefaults.standard.integer(forKey: "3") + UserDefaults.standard.integer(forKey: "4") + UserDefaults.standard.integer(forKey: "5")
+        if UserDefaults.standard.integer(forKey: "6") == 0 {
+            let starLeft = star_1.copy() as! SKSpriteNode
+            let starMiddle = star_2.copy() as! SKSpriteNode
+            let starRight = star_3.copy() as! SKSpriteNode
+            level6.addChild(starLeft)
+            level6.addChild(starMiddle)
+            level6.addChild(starRight)
+            level5.isHidden = true
+        } else {
+            if UserDefaults.standard.integer(forKey: "6") > 0 {
+                let starLeft = star_1.copy() as! SKSpriteNode
+                let starMiddle = star_2.copy() as! SKSpriteNode
+                let starRight = star_3.copy() as! SKSpriteNode
+                level6.addChild(starLeft)
+                level6.addChild(starMiddle)
+                level6.addChild(starRight)
+                starLeft.isHidden = false
+                starMiddle.isHidden = true
+                starRight.isHidden = true
+                if UserDefaults.standard.integer(forKey: "6") > 1 {
+                    starMiddle.isHidden = false
+                    starRight.isHidden = true
+                    if UserDefaults.standard.integer(forKey: "6") == 3 {
+                        starRight.isHidden = false
+                    }
+                }
+            }
+        }
+        
+        numberOfStars = UserDefaults.standard.integer(forKey: "1") + UserDefaults.standard.integer(forKey: "2") + UserDefaults.standard.integer(forKey: "3") + UserDefaults.standard.integer(forKey: "4") + UserDefaults.standard.integer(forKey: "5") + UserDefaults.standard.integer(forKey: "6")
         let numberOfLifes = UserDefaults.standard.integer(forKey: "numberOfLifes")
         lifeCounter.text = String(numberOfLifes)
         starCounter.text = String(numberOfStars)
@@ -261,6 +290,16 @@ class LevelSelect: SKScene {
                 return
             }
             UserDefaults.standard.set(5, forKey: "currentLevel")
+            UserDefaults.standard.synchronize()
+            scene.scaleMode = .aspectFit
+            view.presentScene(scene)
+        }
+        level6.selectedHandler = {
+            guard let scene = GameScene.level(6) else {
+                print("Level 1 is missing?")
+                return
+            }
+            UserDefaults.standard.set(6, forKey: "currentLevel")
             UserDefaults.standard.synchronize()
             scene.scaleMode = .aspectFit
             view.presentScene(scene)
