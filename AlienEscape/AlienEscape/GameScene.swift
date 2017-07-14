@@ -147,8 +147,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         lifeCounter = childNode(withName: "//lifeCounter") as! SKLabelNode
         
-        // let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinchAction(sender:)))
-        // view.addGestureRecognizer(pinchGesture)
+         let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinchAction(sender:)))
+         view.addGestureRecognizer(pinchGesture)
         
         let numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes")
         
@@ -243,22 +243,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         setupSlingshot()
         gameOverSign.isHidden = true
         
+        print("cameraNode xscale = \(cameraNode.xScale)")
+
     }
     
-//    func pinchAction(sender:UIPinchGestureRecognizer){
-//        if sender.state == .began{
-//            print("Pinch began")
-//        }
-//        if sender.state == .changed{
-//            print("Pinch Changed")
-//            cameraNode.xScale = sender.scale
-//            cameraNode.yScale = sender.scale
-//        }
-//        if sender.state == .ended{
-//            print("Pinch ended")
-//        }
-//    }
-//    
+    func pinchAction(sender:UIPinchGestureRecognizer){
+        if sender.state == .began{
+            print("Pinch began")
+        }
+        if sender.state == .changed{
+            cameraNode.yScale = sender.scale
+            cameraNode.xScale = sender.scale
+            print("sender velocity =  \(sender.velocity)")
+            print("sender scale =  \(sender.scale)")
+        }
+        if sender.state == .ended{
+            print("Pinch ended")
+        }
+    }
+    
     override func update(_ currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         
@@ -312,6 +315,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 }
             }
             projectile.position = touchCurrentPoint
+        } else {
+            guard let touch = touches.first else {
+                return
+            }
+            
+            let location = touch.location(in: self)
+            let previousLocation = touch.previousLocation(in: self)
+            
+            camera?.position.x += (location.x - previousLocation.x) * -1
+            camera?.position.y += (location.y - previousLocation.y) * -1
         }
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
