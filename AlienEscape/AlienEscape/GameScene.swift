@@ -300,7 +300,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             }
             projectile.position = touchCurrentPoint
         } else {
-            if gameState == .playing {
+            if gameState == .playing && UserDefaults.standard.integer(forKey: "currentLevel") == 5 {
                 guard let touch = touches.first else {
                     return
                 }
