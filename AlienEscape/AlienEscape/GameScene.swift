@@ -139,16 +139,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         gameOverSign = childNode(withName: "//gameOverSign") as! MSButtonNode
         levelSelectButton = childNode(withName: "levelSelectButton") as! MSButtonNode
         
-        if UserDefaults.standard.integer(forKey: "currentLevel") > 5 {
+        if UserDefaults.standard.integer(forKey: "currentLevel") == 4 {
         springField = childNode(withName: "springField") as! SKFieldNode
         fieldNodeSize = childNode(withName: "fieldNodeSize") as! SKSpriteNode
         springField.region = SKRegion(size: fieldNodeSize.size)
         }
         
         lifeCounter = childNode(withName: "//lifeCounter") as! SKLabelNode
-        
-         let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinchAction(sender:)))
-         view.addGestureRecognizer(pinchGesture)
         
         let numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes")
         
@@ -242,25 +239,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         setupSlingshot()
         gameOverSign.isHidden = true
-        
-        print("cameraNode xscale = \(cameraNode.xScale)")
 
     }
-    
-    func pinchAction(sender:UIPinchGestureRecognizer){
-        if sender.state == .began{
-            print("Pinch began")
-        }
-        if sender.state == .changed{
-            cameraNode.yScale = sender.scale
-            cameraNode.xScale = sender.scale
-            print("sender velocity =  \(sender.velocity)")
-            print("sender scale =  \(sender.scale)")
-        }
-        if sender.state == .ended{
-            print("Pinch ended")
-        }
-    }
+
     
     override func update(_ currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
@@ -274,8 +255,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         gameStart += fixedDelta
         timer += fixedDelta
+        
+        if  gameState != .playing {
+            cameraNode.position.x = 239
+        }
     }
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if gameState == .playing {
             func shouldStartDragging(touchLocation:CGPoint, threshold: CGFloat) -> Bool {
@@ -316,16 +300,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             }
             projectile.position = touchCurrentPoint
         } else {
-            guard let touch = touches.first else {
-                return
+            if gameState == .playing {
+                guard let touch = touches.first else {
+                    return
+                }
+                let location = touch.location(in: self)
+                let previousLocation = touch.previousLocation(in: self)
+                
+                let targetX = cameraNode.position.x
+                let x = clamp(value: targetX, lower: 239, upper: 600)
+                cameraNode.position.x = x
+                if cameraNode.position.x != x {
+                    cameraNode.position.x = x
+                } else {
+                    camera?.position.x += (location.x - previousLocation.x) * -1
+                }
             }
-            
-            let location = touch.location(in: self)
-            let previousLocation = touch.previousLocation(in: self)
-            
-            camera?.position.x += (location.x - previousLocation.x) * -1
-            camera?.position.y += (location.y - previousLocation.y) * -1
         }
+    }
+    
+    func canDrag() {
+        
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if projectileIsDragged {

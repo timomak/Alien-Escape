@@ -83,6 +83,7 @@
 		F328300D1F14113F00CB0A9D /* lazer_22_Purple.png in Resources */ = {isa = PBXBuildFile; fileRef = F3282FF61F14113F00CB0A9D /* lazer_22_Purple.png */; };
 		F328300F1F14294A00CB0A9D /* LevelSelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = F328300E1F14294A00CB0A9D /* LevelSelect.swift */; };
 		F32830111F143B5C00CB0A9D /* LevelSelect.sks in Resources */ = {isa = PBXBuildFile; fileRef = F32830101F143B5C00CB0A9D /* LevelSelect.sks */; };
+		F3411CF51F1978FB0046DC5F /* Level_5.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3411CF41F1978FA0046DC5F /* Level_5.sks */; };
 		F387A8281F0EDF660052E0CB /* granade.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F387A8271F0EDF660052E0CB /* granade.mp3 */; };
 		F39ECAE71F0AC3D100EDE3D5 /* DarkAlienAnimation.sks in Resources */ = {isa = PBXBuildFile; fileRef = F39ECAE61F0AC3D100EDE3D5 /* DarkAlienAnimation.sks */; };
 		F39ECB171F0AC3F500EDE3D5 /* darkgray__0000_idle_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F39ECAE91F0AC3F500EDE3D5 /* darkgray__0000_idle_1.png */; };
@@ -320,6 +321,7 @@
 		F3282FF61F14113F00CB0A9D /* lazer_22_Purple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lazer_22_Purple.png; sourceTree = "<group>"; };
 		F328300E1F14294A00CB0A9D /* LevelSelect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelSelect.swift; sourceTree = "<group>"; };
 		F32830101F143B5C00CB0A9D /* LevelSelect.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LevelSelect.sks; sourceTree = "<group>"; };
+		F3411CF41F1978FA0046DC5F /* Level_5.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Level_5.sks; path = alien_dark_gray/Level_5.sks; sourceTree = "<group>"; };
 		F387A8271F0EDF660052E0CB /* granade.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = granade.mp3; sourceTree = "<group>"; };
 		F39ECAE61F0AC3D100EDE3D5 /* DarkAlienAnimation.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DarkAlienAnimation.sks; sourceTree = "<group>"; };
 		F39ECAE91F0AC3F500EDE3D5 /* darkgray__0000_idle_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkgray__0000_idle_1.png; sourceTree = "<group>"; };
@@ -618,6 +620,7 @@
 				F3155F381F1832F500B9C387 /* Level_2.sks */,
 				F3C790581F182BAF00CAE308 /* Level_3.sks */,
 				F3C790561F1818C000CAE308 /* Level_4.sks */,
+				F3411CF41F1978FA0046DC5F /* Level_5.sks */,
 			);
 			name = Scenes;
 			sourceTree = "<group>";
@@ -881,6 +884,7 @@
 			files = (
 				F31CE2121F0EB34500A14038 /* Explosion.sks in Resources */,
 				F3282FF71F14113F00CB0A9D /* lazer_00_Purple.png in Resources */,
+				F3411CF51F1978FB0046DC5F /* Level_5.sks in Resources */,
 				F39ECB1B1F0AC3F500EDE3D5 /* darkgray__0004_turn_2.png in Resources */,
 				F3C7C7901F1039A100B859F2 /* r_run_shoot_7.png in Resources */,
 				F39ECB1C1F0AC3F500EDE3D5 /* darkgray__0005_turn_3.png in Resources */,
