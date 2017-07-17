@@ -108,6 +108,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     var lifeCounter: SKLabelNode!
     
+    func cameraMove() {
+        guard let cameraTarget = cameraTarget else {
+            return
+        }
+        let targetX = cameraTarget.position.x
+        let x = clamp(value: targetX, lower: 50, upper: 600)
+        cameraNode.position.x = x
+    }
+
     
     // MARK: Loading Levels
     class func level(_ currentLevel: Int) -> GameScene? {
@@ -245,8 +254,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     override func update(_ currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+
+        func cameraToCenter() {
+            let cameraReset = SKAction.move(to: CGPoint(x:239, y:camera!.position.y), duration: 1.5)
+            let cameraDelay = SKAction.wait(forDuration: 0.5)
+            let cameraSequence = SKAction.sequence([cameraDelay,cameraReset])
+            cameraNode.run(cameraSequence)
+            cameraTarget = nil
+        }
         
-        // moveCamera()
+        if UserDefaults.standard.integer(forKey: "currentLevel") > 4 {
+            cameraMove()
+            background.position.x = cameraNode.position.x
+            if gameState == .gameOver || gameState == .won {
+                cameraToCenter()
+            }
+        }
+        
         if background.position.y > -1000 && gameState == .playing{
             background.position.y -= 5
         } else if gameState == .playing{
@@ -256,9 +280,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         gameStart += fixedDelta
         timer += fixedDelta
         
-        if  gameState != .playing {
-            cameraNode.position.x = 239
-        }
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if gameState == .playing {
@@ -274,7 +295,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 let touchLocation = touch.location(in: self)
                 
                 if !projectileIsDragged && shouldStartDragging(touchLocation: touchLocation, threshold: Settings.Metrics.projectileTouchThreshold)  {
-                    projectile.isHidden = false
                     touchStartingPoint = touchLocation
                     touchCurrentPoint = touchLocation
                     projectileIsDragged = true
@@ -318,10 +338,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             }
         }
     }
-    
-    func canDrag() {
-        
-    }
+
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if projectileIsDragged {
             cameraTarget = projectile
@@ -367,7 +384,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 teleportBall(node: nodeB)
             }
         }
-        
+        if gameState != .gameOver && gameState != .won {
+            if contactA.categoryBitMask == 8 || contactB.categoryBitMask == 8{
+                print("there was contact with the ground")
+                gameState = .gameOver
+            }
+        }
         
         if contactA.categoryBitMask == 0 || contactB.categoryBitMask == 0 {
             if contactA.categoryBitMask == 0{
@@ -423,7 +445,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             node.removeFromParent()
             
         })
-        if winCount == 1 {
+        if winCount == 1 && gameState != .gameOver{
             gameState = .won
             winCount += 1
         }
@@ -463,7 +485,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         slingshot_1.isHidden = false
         
         projectile = spear()
-        projectile.isHidden = false
         projectile.position = Settings.Metrics.projectileRestPosition
         addChild(projectile)
         

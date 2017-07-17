@@ -47,6 +47,14 @@ class LevelSelect: SKScene {
         starCounter = childNode(withName: "//starCounter") as! SKLabelNode
         lifeCounter = childNode(withName: "//lifeCounter") as! SKLabelNode
         
+        level2.isHidden = true
+        level3.isHidden = true
+        level4.isHidden = true
+        level5.isHidden = true
+        level6.isHidden = true
+
+        
+        
         if UserDefaults.standard.integer(forKey: "1") == 0 {
             star_1.isHidden = true
             star_2.isHidden = true
@@ -56,6 +64,7 @@ class LevelSelect: SKScene {
                 star_1.isHidden = false
                 star_2.isHidden = true
                 star_3.isHidden = true
+                level2.isHidden = false
                 if UserDefaults.standard.integer(forKey: "1") > 1 {
                     star_2.isHidden = false
                     star_3.isHidden = true
@@ -73,9 +82,12 @@ class LevelSelect: SKScene {
             level2.addChild(starLeft)
             level2.addChild(starMiddle)
             level2.addChild(starRight)
-            level2.isHidden = true
+            starLeft.isHidden = true
+            starMiddle.isHidden = true
+            starRight.isHidden = true
         } else {
             if UserDefaults.standard.integer(forKey: "2") > 0 {
+                level3.isHidden = false
                 let starLeft = star_1.copy() as! SKSpriteNode
                 let starMiddle = star_2.copy() as! SKSpriteNode
                 let starRight = star_3.copy() as! SKSpriteNode
@@ -103,9 +115,12 @@ class LevelSelect: SKScene {
             level3.addChild(starLeft)
             level3.addChild(starMiddle)
             level3.addChild(starRight)
-            level3.isHidden = true
+            starLeft.isHidden = true
+            starMiddle.isHidden = true
+            starRight.isHidden = true
         } else {
             if UserDefaults.standard.integer(forKey: "3") > 0 {
+                level4.isHidden = false
                 let starLeft = star_1.copy() as! SKSpriteNode
                 let starMiddle = star_2.copy() as! SKSpriteNode
                 let starRight = star_3.copy() as! SKSpriteNode
@@ -132,9 +147,12 @@ class LevelSelect: SKScene {
             level4.addChild(starLeft)
             level4.addChild(starMiddle)
             level4.addChild(starRight)
-            level4.isHidden = true
+            starLeft.isHidden = true
+            starMiddle.isHidden = true
+            starRight.isHidden = true
         } else {
             if UserDefaults.standard.integer(forKey: "4") > 0 {
+                level5.isHidden = false
                 let starLeft = star_1.copy() as! SKSpriteNode
                 let starMiddle = star_2.copy() as! SKSpriteNode
                 let starRight = star_3.copy() as! SKSpriteNode
@@ -160,9 +178,12 @@ class LevelSelect: SKScene {
             level5.addChild(starLeft)
             level5.addChild(starMiddle)
             level5.addChild(starRight)
-            level5.isHidden = true
+            starLeft.isHidden = true
+            starMiddle.isHidden = true
+            starRight.isHidden = true
         } else {
             if UserDefaults.standard.integer(forKey: "5") > 0 {
+                level6.isHidden = false
                 let starLeft = star_1.copy() as! SKSpriteNode
                 let starMiddle = star_2.copy() as! SKSpriteNode
                 let starRight = star_3.copy() as! SKSpriteNode
@@ -181,34 +202,7 @@ class LevelSelect: SKScene {
                 }
             }
         }
-        if UserDefaults.standard.integer(forKey: "6") == 0 {
-            let starLeft = star_1.copy() as! SKSpriteNode
-            let starMiddle = star_2.copy() as! SKSpriteNode
-            let starRight = star_3.copy() as! SKSpriteNode
-            level6.addChild(starLeft)
-            level6.addChild(starMiddle)
-            level6.addChild(starRight)
-            level5.isHidden = true
-        } else {
-            if UserDefaults.standard.integer(forKey: "6") > 0 {
-                let starLeft = star_1.copy() as! SKSpriteNode
-                let starMiddle = star_2.copy() as! SKSpriteNode
-                let starRight = star_3.copy() as! SKSpriteNode
-                level6.addChild(starLeft)
-                level6.addChild(starMiddle)
-                level6.addChild(starRight)
-                starLeft.isHidden = false
-                starMiddle.isHidden = true
-                starRight.isHidden = true
-                if UserDefaults.standard.integer(forKey: "6") > 1 {
-                    starMiddle.isHidden = false
-                    starRight.isHidden = true
-                    if UserDefaults.standard.integer(forKey: "6") == 3 {
-                        starRight.isHidden = false
-                    }
-                }
-            }
-        }
+
         
         numberOfStars = UserDefaults.standard.integer(forKey: "1") + UserDefaults.standard.integer(forKey: "2") + UserDefaults.standard.integer(forKey: "3") + UserDefaults.standard.integer(forKey: "4") + UserDefaults.standard.integer(forKey: "5") + UserDefaults.standard.integer(forKey: "6")
         let numberOfLifes = UserDefaults.standard.integer(forKey: "numberOfLifes")
