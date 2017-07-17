@@ -113,7 +113,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             return
         }
         let targetX = cameraTarget.position.x
-        let x = clamp(value: targetX, lower: 50, upper: 600)
+        let x = clamp(value: targetX, lower: 150, upper: 600)
         cameraNode.position.x = x
     }
 
@@ -143,6 +143,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         starOne = childNode(withName: "starOne") as! SKSpriteNode
         starTwo = childNode(withName: "starTwo") as! SKSpriteNode
         starThree = childNode(withName: "starThree") as! SKSpriteNode
+        
         winMenu = childNode(withName: "winMenu") as! SKSpriteNode
         nextLevelButton = childNode(withName: "//nextLevelButton") as! MSButtonNode
         gameOverSign = childNode(withName: "//gameOverSign") as! MSButtonNode
@@ -256,7 +257,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         /* Called before each frame is rendered */
 
         func cameraToCenter() {
-            let cameraReset = SKAction.move(to: CGPoint(x:239, y:camera!.position.y), duration: 1.5)
+            let cameraReset = SKAction.move(to: CGPoint(x: 239, y:camera!.position.y), duration: 1.5)
             let cameraDelay = SKAction.wait(forDuration: 0.5)
             let cameraSequence = SKAction.sequence([cameraDelay,cameraReset])
             cameraNode.run(cameraSequence)
@@ -264,11 +265,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         
         if UserDefaults.standard.integer(forKey: "currentLevel") > 4 {
+            background.position.x = cameraNode.position.x
+        }
+        
+        if UserDefaults.standard.integer(forKey: "currentLevel") > 15 {
             cameraMove()
             background.position.x = cameraNode.position.x
-            if gameState == .gameOver || gameState == .won {
-                cameraToCenter()
-            }
+//            if gameState == .gameOver || gameState == .won {
+//                cameraToCenter()
+//            }
         }
         
         if background.position.y > -1000 && gameState == .playing{
@@ -320,7 +325,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             }
             projectile.position = touchCurrentPoint
         } else {
-            if gameState == .playing && UserDefaults.standard.integer(forKey: "currentLevel") == 5 {
+            if gameState == .playing && UserDefaults.standard.integer(forKey: "currentLevel") > 15 {
                 guard let touch = touches.first else {
                     return
                 }
@@ -426,6 +431,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         let moveBall = SKAction.move(to: portal2.position, duration:0)
         node.run(moveBall)
+        if UserDefaults.standard.integer(forKey: "currentLevel") > 4 {
+            cameraNode.position.x = 1764.218
+            cameraNode.position.y = 123.14
+        }
     }
     
     func animateExplosion(node: SKNode) {
