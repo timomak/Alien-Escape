@@ -116,7 +116,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let x = clamp(value: targetX, lower: 150, upper: 600)
         cameraNode.position.x = x
     }
-
+    
     
     // MARK: Loading Levels
     class func level(_ currentLevel: Int) -> GameScene? {
@@ -150,9 +150,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         levelSelectButton = childNode(withName: "levelSelectButton") as! MSButtonNode
         
         if UserDefaults.standard.integer(forKey: "currentLevel") == 4 || UserDefaults.standard.integer(forKey: "currentLevel") == 6{
-        springField = childNode(withName: "springField") as! SKFieldNode
-        fieldNodeSize = childNode(withName: "fieldNodeSize") as! SKSpriteNode
-        springField.region = SKRegion(size: fieldNodeSize.size)
+            springField = childNode(withName: "springField") as! SKFieldNode
+            fieldNodeSize = childNode(withName: "fieldNodeSize") as! SKSpriteNode
+            springField.region = SKRegion(size: fieldNodeSize.size)
         }
         
         
@@ -256,13 +256,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         setupSlingshot()
         gameOverSign.isHidden = true
-
+        
     }
-
+    
     
     override func update(_ currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
-
+        
         func cameraToCenter() {
             let cameraReset = SKAction.move(to: CGPoint(x: 239, y:camera!.position.y), duration: 1.5)
             let cameraDelay = SKAction.wait(forDuration: 0.5)
@@ -278,9 +278,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         if UserDefaults.standard.integer(forKey: "currentLevel") > 15 {
             cameraMove()
             background.position.x = cameraNode.position.x
-//            if gameState == .gameOver || gameState == .won {
-//                cameraToCenter()
-//            }
+            //            if gameState == .gameOver || gameState == .won {
+            //                cameraToCenter()
+            //            }
         }
         
         if background.position.y > -1000 && gameState == .playing{
@@ -350,7 +350,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             }
         }
     }
-
+    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if projectileIsDragged {
             cameraTarget = projectile
@@ -413,13 +413,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         if contactA.categoryBitMask == 2 && contactB.categoryBitMask == 1 {
             /* Was the collision more than a gentle nudge? */
-                
-                /* Kill Alien */
-                if contactA.categoryBitMask == 2 {
-                    removeAlien(node: nodeA)
-                }
-                if contactB.categoryBitMask == 2 {
-                    removeAlien(node: nodeB)
+            
+            /* Kill Alien */
+            if contactA.categoryBitMask == 2 {
+                removeAlien(node: nodeA)
+            }
+            if contactB.categoryBitMask == 2 {
+                removeAlien(node: nodeB)
             }
         }
         if contactB.categoryBitMask == 2 && contactA.categoryBitMask == 1 {
@@ -520,13 +520,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         gameOverSign.position.x = cameraNode.position.x
         levelSelectButton.position.x = cameraNode.position.x
         pauseMenu.position.x = cameraNode.position.x
-
+        
         
         gameOverSign.isHidden = false
         gameOverSign.position.y = 326
-
+        
         pauseMenu.position.y = 150
-
+        
         levelSelectButton.position.y = 220
         
         resetButton.position.y = 90
@@ -535,19 +535,41 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
     }
     func win() {
+        
+        let moveMenu = SKAction.move(to: CGPoint(x: cameraNode.position.x, y:150), duration: 1)
+        let moveDelay = SKAction.wait(forDuration: 0.5)
+        let menuSequence = SKAction.sequence([moveDelay,moveMenu])
+        winMenu.run(menuSequence)
+        
+        let moveMenu2 = SKAction.move(to: CGPoint(x: cameraNode.position.x, y:-10), duration: 1)
+        let menuSequence2 = SKAction.sequence([moveDelay,moveMenu2])
 
-        winMenu.position.x = cameraNode.position.x
-        nextLevelButton.position.x = cameraNode.position.x
-        levelSelectButton.position.x = cameraNode.position.x
-        resetButton.position.x = cameraNode.position.x
+        nextLevelButton.run(menuSequence2)
+        
+        let moveMenu3 = SKAction.move(to: CGPoint(x: cameraNode.position.x, y:190), duration: 1)
+        let menuSequence3 = SKAction.sequence([moveDelay,moveMenu3])
+
+        levelSelectButton.run(menuSequence3)
+        
+        let moveMenu4 = SKAction.move(to: CGPoint(x: cameraNode.position.x, y:90), duration: 1)
+        let menuSequence4 = SKAction.sequence([moveDelay,moveMenu4])
+
+        resetButton.run(menuSequence4)
+        
+        
+        
+        //winMenu.position.x = cameraNode.position.x
+//        nextLevelButton.position.x = cameraNode.position.x
+//        levelSelectButton.position.x = cameraNode.position.x
+//        resetButton.position.x = cameraNode.position.x
         
         var stars = 0
         inGameMenu.isHidden = true
         
-        winMenu.position.y = 150
-        levelSelectButton.position.y = 190
-        resetButton.position.y = 90
-        nextLevelButton.position.y = -10
+        //winMenu.position.y = 150
+//        levelSelectButton.position.y = 190
+//        resetButton.position.y = 90
+//        nextLevelButton.position.y = -10
         
         starOne.isHidden = true
         starTwo.isHidden = true
@@ -584,10 +606,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         
         let name = String(currentLevel)
-            if stars > UserDefaults.standard.integer(forKey: name){
-                levelScore[currentLevel] = stars
-                UserDefaults.standard.set(levelScore[currentLevel]!, forKey: name)
-                UserDefaults.standard.synchronize()
+        if stars > UserDefaults.standard.integer(forKey: name){
+            levelScore[currentLevel] = stars
+            UserDefaults.standard.set(levelScore[currentLevel]!, forKey: name)
+            UserDefaults.standard.synchronize()
         }
     }
 }
