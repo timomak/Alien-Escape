@@ -140,20 +140,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         resumeButton = childNode(withName: "//resumeButton") as! MSButtonNode
         resetButton = childNode(withName: "resetButton") as! MSButtonNode
         
-        starOne = childNode(withName: "starOne") as! SKSpriteNode
-        starTwo = childNode(withName: "starTwo") as! SKSpriteNode
-        starThree = childNode(withName: "starThree") as! SKSpriteNode
+        starOne = childNode(withName: "//starOne") as! SKSpriteNode
+        starTwo = childNode(withName: "//starTwo") as! SKSpriteNode
+        starThree = childNode(withName: "//starThree") as! SKSpriteNode
         
         winMenu = childNode(withName: "winMenu") as! SKSpriteNode
         nextLevelButton = childNode(withName: "//nextLevelButton") as! MSButtonNode
         gameOverSign = childNode(withName: "//gameOverSign") as! MSButtonNode
         levelSelectButton = childNode(withName: "levelSelectButton") as! MSButtonNode
         
-        if UserDefaults.standard.integer(forKey: "currentLevel") == 4 {
+        if UserDefaults.standard.integer(forKey: "currentLevel") == 4 || UserDefaults.standard.integer(forKey: "currentLevel") == 6{
         springField = childNode(withName: "springField") as! SKFieldNode
         fieldNodeSize = childNode(withName: "fieldNodeSize") as! SKSpriteNode
         springField.region = SKRegion(size: fieldNodeSize.size)
         }
+        
         
         lifeCounter = childNode(withName: "//lifeCounter") as! SKLabelNode
         
@@ -229,6 +230,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         inGameMenu.selectedHandler = {
             
             if self.gameState == .playing {
+                self.pauseMenu.position.x = self.cameraNode.position.x
+                self.resetButton.position.x = self.cameraNode.position.x
+                self.levelSelectButton.position.x = self.cameraNode.position.x
+                self.resetButton.position.x = self.cameraNode.position.x
+                
+                
                 self.pauseMenu.position.y = 150
                 self.resumeButton.position.y = 240
                 self.levelSelectButton.position.y = 140
@@ -509,31 +516,51 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         UserDefaults.standard.set(numberOfLifes, forKey: "numberOfLifes")
         UserDefaults.standard.synchronize()
         
+        resetButton.position.x = cameraNode.position.x
+        gameOverSign.position.x = cameraNode.position.x
+        levelSelectButton.position.x = cameraNode.position.x
+        pauseMenu.position.x = cameraNode.position.x
+
         
         gameOverSign.isHidden = false
-        pauseMenu.position.y = 150
-        levelSelectButton.position.y = 220
-        resetButton.position.y = 90
         gameOverSign.position.y = 326
+
+        pauseMenu.position.y = 150
+
+        levelSelectButton.position.y = 220
+        
+        resetButton.position.y = 90
+        
         inGameMenu.isHidden = true
         
     }
     func win() {
+
+        winMenu.position.x = cameraNode.position.x
+        nextLevelButton.position.x = cameraNode.position.x
+        levelSelectButton.position.x = cameraNode.position.x
+        resetButton.position.x = cameraNode.position.x
+        
         var stars = 0
         inGameMenu.isHidden = true
+        
         winMenu.position.y = 150
         levelSelectButton.position.y = 190
         resetButton.position.y = 90
         nextLevelButton.position.y = -10
         
+        starOne.isHidden = true
+        starTwo.isHidden = true
+        starThree.isHidden = true
+        
         if background.position.y > -1000 {
-            starOne.position.y = 312
+            starOne.isHidden = false
             stars = 1
             if background.position.y > -232{
-                starTwo.position.y = 344
+                starTwo.isHidden = false
                 stars = 2
                 if background.position.y > 538 {
-                    starThree.position.y = 312
+                    starThree.isHidden = false
                     stars = 3
                 }
             }

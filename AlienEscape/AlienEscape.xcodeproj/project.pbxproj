@@ -242,6 +242,7 @@
 		F3C7C79F1F1039A100B859F2 /* Red_Bot_hero.ai in Resources */ = {isa = PBXBuildFile; fileRef = F3C7C7371F1039A100B859F2 /* Red_Bot_hero.ai */; };
 		F3C7C7A01F1039A100B859F2 /* Red_Bot_hero.eps in Resources */ = {isa = PBXBuildFile; fileRef = F3C7C7381F1039A100B859F2 /* Red_Bot_hero.eps */; };
 		F3C7C7A21F1039D800B859F2 /* hero.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3C7C7A11F1039D800B859F2 /* hero.sks */; };
+		F3FAC3A31F1D7941009F47AC /* Level_6.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3FAC3A21F1D7941009F47AC /* Level_6.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -482,6 +483,7 @@
 		F3C7C7371F1039A100B859F2 /* Red_Bot_hero.ai */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Red_Bot_hero.ai; sourceTree = "<group>"; };
 		F3C7C7381F1039A100B859F2 /* Red_Bot_hero.eps */ = {isa = PBXFileReference; lastKnownFileType = file; path = Red_Bot_hero.eps; sourceTree = "<group>"; };
 		F3C7C7A11F1039D800B859F2 /* hero.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = hero.sks; sourceTree = "<group>"; };
+		F3FAC3A21F1D7941009F47AC /* Level_6.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level_6.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -625,6 +627,7 @@
 				F3C790581F182BAF00CAE308 /* Level_3.sks */,
 				F3C790561F1818C000CAE308 /* Level_4.sks */,
 				F3A38F521F1D55FC000C59FE /* Level_5.sks */,
+				F3FAC3A21F1D7941009F47AC /* Level_6.sks */,
 				F3411CF41F1978FA0046DC5F /* Level_16.sks */,
 				F3BEB69B1F1D544D0016F385 /* Level_17.sks */,
 			);
@@ -939,6 +942,7 @@
 				F3C7C7981F1039A100B859F2 /* r_slide_5.png in Resources */,
 				F3C7C78B1F1039A100B859F2 /* r_run_shoot_2.png in Resources */,
 				F3C7C77F1F1039A100B859F2 /* r_run_6.png in Resources */,
+				F3FAC3A31F1D7941009F47AC /* Level_6.sks in Resources */,
 				F3C7C7401F1039A100B859F2 /* r_death_14.png in Resources */,
 				F3C7C74E1F1039A100B859F2 /* r_hit_2.png in Resources */,
 				F3C7C79D1F1039A100B859F2 /* r_stand_shoot.png in Resources */,
