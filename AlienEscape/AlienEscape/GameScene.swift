@@ -109,6 +109,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     var lifeCounter: SKLabelNode!
     
+    var released = false
+    
     func cameraMove() {
         guard let cameraTarget = cameraTarget else {
             return
@@ -308,7 +310,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             
             if let touch = touches.first {
                 let touchLocation = touch.location(in: self)
-                
                 if !projectileIsDragged && shouldStartDragging(touchLocation: touchLocation, threshold: Settings.Metrics.projectileTouchThreshold)  {
                     touchStartingPoint = touchLocation
                     touchCurrentPoint = touchLocation
@@ -375,7 +376,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                     )
                 )
                 trajectoryTimeOut = 0
-                
+                released = true
                 print("This should be 0: \(trajectoryTimeOut)")
             } else {
                 projectile.physicsBody = nil
@@ -401,7 +402,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 teleportBall(node: nodeB)
             }
         }
-        if gameState != .gameOver && gameState != .won {
+        if gameState != .gameOver && gameState != .won && released == true{
             if contactA.categoryBitMask == 8 || contactB.categoryBitMask == 8{
                 print("there was contact with the ground")
                 if contactA.categoryBitMask != 8{
@@ -535,10 +536,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         slingshot_1.position = CGPoint(x: -120, y: -50)
         addChild(slingshot_1)
         slingshot_1.isHidden = false
-        
+
         projectile = spear()
         projectile.position = Settings.Metrics.projectileRestPosition
         addChild(projectile)
+        
         let slingshot_2 = SKSpriteNode(imageNamed: "slingshot_2")
         slingshot_2.position = CGPoint(x: -120, y: -50)
         addChild(slingshot_2)
@@ -546,6 +548,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     func GameOver() {
+        cameraTarget = nil
         print("game Over is called")
         let numberOfLifes = UserDefaults.standard.integer(forKey: "numberOfLifes") - 1
         UserDefaults.standard.set(numberOfLifes, forKey: "numberOfLifes")
@@ -576,6 +579,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
     }
     func win() {
+        cameraTarget = nil
         starOne.alpha = 0
         starTwo.alpha = 0
         starThree.alpha = 0

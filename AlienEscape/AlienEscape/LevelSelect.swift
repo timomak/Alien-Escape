@@ -14,8 +14,8 @@ var level3: MSButtonNode!
 var level4: MSButtonNode!
 var level5: MSButtonNode!
 var level6: MSButtonNode!
-//var level4: MSButtonNode!
-//var level4: MSButtonNode!
+var level7: MSButtonNode!
+var level8: MSButtonNode!
 
 var mainManu: MSButtonNode!
 var star_1: SKSpriteNode!
@@ -35,7 +35,10 @@ class LevelSelect: SKScene {
         level3 = childNode(withName: "level3") as! MSButtonNode
         level4 = childNode(withName: "level4") as! MSButtonNode
         level5 = childNode(withName: "level5") as! MSButtonNode
-        level6 = childNode(withName: "//level6") as! MSButtonNode
+        level6 = childNode(withName: "level6") as! MSButtonNode
+        level7 = childNode(withName: "level7") as! MSButtonNode
+        level8 = childNode(withName: "level8") as! MSButtonNode
+
         
         
         mainManu = childNode(withName: "mainMenuButton") as! MSButtonNode
@@ -50,7 +53,8 @@ class LevelSelect: SKScene {
         level4.isHidden = true
         level5.isHidden = true
         level6.isHidden = true
-
+        level7.isHidden = true
+        level8.isHidden = true
         
         
         if UserDefaults.standard.integer(forKey: "1") == 0 {
@@ -213,7 +217,7 @@ class LevelSelect: SKScene {
             starRight.isHidden = true
         } else {
             if UserDefaults.standard.integer(forKey: "6") > 0 {
-                //level7.isHidden = false
+                level7.isHidden = false
                 let starLeft = star_1.copy() as! SKSpriteNode
                 let starMiddle = star_2.copy() as! SKSpriteNode
                 let starRight = star_3.copy() as! SKSpriteNode
@@ -232,9 +236,71 @@ class LevelSelect: SKScene {
                 }
             }
         }
+        if UserDefaults.standard.integer(forKey: "7") == 0 {
+            let starLeft = star_1.copy() as! SKSpriteNode
+            let starMiddle = star_2.copy() as! SKSpriteNode
+            let starRight = star_3.copy() as! SKSpriteNode
+            level7.addChild(starLeft)
+            level7.addChild(starMiddle)
+            level7.addChild(starRight)
+            starLeft.isHidden = true
+            starMiddle.isHidden = true
+            starRight.isHidden = true
+        } else {
+            if UserDefaults.standard.integer(forKey: "7") > 0 {
+                level8.isHidden = false
+                let starLeft = star_1.copy() as! SKSpriteNode
+                let starMiddle = star_2.copy() as! SKSpriteNode
+                let starRight = star_3.copy() as! SKSpriteNode
+                level7.addChild(starLeft)
+                level7.addChild(starMiddle)
+                level7.addChild(starRight)
+                starLeft.isHidden = false
+                starMiddle.isHidden = true
+                starRight.isHidden = true
+                if UserDefaults.standard.integer(forKey: "7") > 1 {
+                    starMiddle.isHidden = false
+                    starRight.isHidden = true
+                    if UserDefaults.standard.integer(forKey: "7") == 3 {
+                        starRight.isHidden = false
+                    }
+                }
+            }
+        }
+        if UserDefaults.standard.integer(forKey: "8") == 0 {
+            let starLeft = star_1.copy() as! SKSpriteNode
+            let starMiddle = star_2.copy() as! SKSpriteNode
+            let starRight = star_3.copy() as! SKSpriteNode
+            level8.addChild(starLeft)
+            level8.addChild(starMiddle)
+            level8.addChild(starRight)
+            starLeft.isHidden = true
+            starMiddle.isHidden = true
+            starRight.isHidden = true
+        } else {
+            if UserDefaults.standard.integer(forKey: "8") > 0 {
+                //level9.isHidden = false
+                let starLeft = star_1.copy() as! SKSpriteNode
+                let starMiddle = star_2.copy() as! SKSpriteNode
+                let starRight = star_3.copy() as! SKSpriteNode
+                level8.addChild(starLeft)
+                level8.addChild(starMiddle)
+                level8.addChild(starRight)
+                starLeft.isHidden = false
+                starMiddle.isHidden = true
+                starRight.isHidden = true
+                if UserDefaults.standard.integer(forKey: "8") > 1 {
+                    starMiddle.isHidden = false
+                    starRight.isHidden = true
+                    if UserDefaults.standard.integer(forKey: "8") == 3 {
+                        starRight.isHidden = false
+                    }
+                }
+            }
+        }
 
         
-        numberOfStars = UserDefaults.standard.integer(forKey: "1") + UserDefaults.standard.integer(forKey: "2") + UserDefaults.standard.integer(forKey: "3") + UserDefaults.standard.integer(forKey: "4") + UserDefaults.standard.integer(forKey: "5") + UserDefaults.standard.integer(forKey: "6")
+        numberOfStars = UserDefaults.standard.integer(forKey: "1") + UserDefaults.standard.integer(forKey: "2") + UserDefaults.standard.integer(forKey: "3") + UserDefaults.standard.integer(forKey: "4") + UserDefaults.standard.integer(forKey: "5") + UserDefaults.standard.integer(forKey: "6") + UserDefaults.standard.integer(forKey: "7") + UserDefaults.standard.integer(forKey: "8")
         let numberOfLifes = UserDefaults.standard.integer(forKey: "numberOfLifes")
         lifeCounter.text = String(numberOfLifes)
         starCounter.text = String(numberOfStars)
@@ -324,6 +390,26 @@ class LevelSelect: SKScene {
                 return
             }
             UserDefaults.standard.set(6, forKey: "currentLevel")
+            UserDefaults.standard.synchronize()
+            scene.scaleMode = .aspectFit
+            view.presentScene(scene)
+        }
+        level7.selectedHandler = {
+            guard let scene = GameScene.level(7) else {
+                print("Level 1 is missing?")
+                return
+            }
+            UserDefaults.standard.set(7, forKey: "currentLevel")
+            UserDefaults.standard.synchronize()
+            scene.scaleMode = .aspectFit
+            view.presentScene(scene)
+        }
+        level8.selectedHandler = {
+            guard let scene = GameScene.level(8) else {
+                print("Level 1 is missing?")
+                return
+            }
+            UserDefaults.standard.set(8, forKey: "currentLevel")
             UserDefaults.standard.synchronize()
             scene.scaleMode = .aspectFit
             view.presentScene(scene)
