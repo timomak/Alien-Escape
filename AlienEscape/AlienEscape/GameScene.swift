@@ -73,6 +73,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     let fixedDelta: CFTimeInterval = 1.0 / 60.0 /* 60 FPS */
     var gameStart: CFTimeInterval = 0
     var timer: CFTimeInterval = 0
+    var trajectoryTimeOut: CFTimeInterval = 1
     
     var pauseMenu: SKSpriteNode!
     var resetButton: MSButtonNode!
@@ -154,7 +155,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             fieldNodeSize = childNode(withName: "fieldNodeSize") as! SKSpriteNode
             springField.region = SKRegion(size: fieldNodeSize.size)
         }
-        
+
         
         lifeCounter = childNode(withName: "//lifeCounter") as! SKLabelNode
         
@@ -278,9 +279,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         if UserDefaults.standard.integer(forKey: "currentLevel") > 15 {
             cameraMove()
             background.position.x = cameraNode.position.x
-            //            if gameState == .gameOver || gameState == .won {
-            //                cameraToCenter()
-            //            }
         }
         
         if background.position.y > -1000 && gameState == .playing{
@@ -291,6 +289,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         gameStart += fixedDelta
         timer += fixedDelta
+        trajectoryTimeOut += fixedDelta
+        
+        if trajectoryTimeOut > 0.03 && trajectoryTimeOut < 0.082 {
+            print("This shouldn't be 0: \(trajectoryTimeOut)")
+            trajectoryLine(Point: projectile.position)
+        }
         
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -371,7 +375,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                         dy: vectorY * Settings.Metrics.forceMultiplier
                     )
                 )
+                trajectoryTimeOut = 0
                 
+                print("This should be 0: \(trajectoryTimeOut)")
             } else {
                 projectile.physicsBody = nil
                 projectile.position = Settings.Metrics.projectileRestPosition
@@ -557,18 +563,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         
         
-        //winMenu.position.x = cameraNode.position.x
-//        nextLevelButton.position.x = cameraNode.position.x
-//        levelSelectButton.position.x = cameraNode.position.x
-//        resetButton.position.x = cameraNode.position.x
+        winMenu.position.x = cameraNode.position.x
+        nextLevelButton.position.x = cameraNode.position.x
+        levelSelectButton.position.x = cameraNode.position.x
+        resetButton.position.x = cameraNode.position.x
         
         var stars = 0
         inGameMenu.isHidden = true
-        
-        //winMenu.position.y = 150
-//        levelSelectButton.position.y = 190
-//        resetButton.position.y = 90
-//        nextLevelButton.position.y = -10
         
         starOne.isHidden = true
         starTwo.isHidden = true
@@ -610,5 +611,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             UserDefaults.standard.set(levelScore[currentLevel]!, forKey: name)
             UserDefaults.standard.synchronize()
         }
+    }
+    func trajectoryLine(Point: CGPoint) {
+
+        let point = SKSpriteNode(imageNamed: "Circle")
+        point.position.x = Point.x
+        point.position.y = Point.y
+        addChild(point)
+
     }
 }

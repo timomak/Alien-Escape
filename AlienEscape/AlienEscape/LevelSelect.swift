@@ -202,6 +202,38 @@ class LevelSelect: SKScene {
                 }
             }
         }
+        
+        if UserDefaults.standard.integer(forKey: "6") == 0 {
+            let starLeft = star_1.copy() as! SKSpriteNode
+            let starMiddle = star_2.copy() as! SKSpriteNode
+            let starRight = star_3.copy() as! SKSpriteNode
+            level6.addChild(starLeft)
+            level6.addChild(starMiddle)
+            level6.addChild(starRight)
+            starLeft.isHidden = true
+            starMiddle.isHidden = true
+            starRight.isHidden = true
+        } else {
+            if UserDefaults.standard.integer(forKey: "6") > 0 {
+                //level7.isHidden = false
+                let starLeft = star_1.copy() as! SKSpriteNode
+                let starMiddle = star_2.copy() as! SKSpriteNode
+                let starRight = star_3.copy() as! SKSpriteNode
+                level6.addChild(starLeft)
+                level6.addChild(starMiddle)
+                level6.addChild(starRight)
+                starLeft.isHidden = false
+                starMiddle.isHidden = true
+                starRight.isHidden = true
+                if UserDefaults.standard.integer(forKey: "6") > 1 {
+                    starMiddle.isHidden = false
+                    starRight.isHidden = true
+                    if UserDefaults.standard.integer(forKey: "6") == 3 {
+                        starRight.isHidden = false
+                    }
+                }
+            }
+        }
 
         
         numberOfStars = UserDefaults.standard.integer(forKey: "1") + UserDefaults.standard.integer(forKey: "2") + UserDefaults.standard.integer(forKey: "3") + UserDefaults.standard.integer(forKey: "4") + UserDefaults.standard.integer(forKey: "5") + UserDefaults.standard.integer(forKey: "6")
