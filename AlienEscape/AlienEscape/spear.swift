@@ -11,6 +11,7 @@ class spear: SKSpriteNode {
         
         // Call the designated initializer
         super.init(texture: texture, color: color, size: size)
+        // Set physics properties
     }
     
     required init?(coder aDecoder: NSCoder) {

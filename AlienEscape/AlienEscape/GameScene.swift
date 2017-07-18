@@ -185,7 +185,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             scene.scaleMode = .aspectFit
             
             /* Show debug */
-            skView.showsPhysics = false
+            skView.showsPhysics = true
             skView.showsDrawCount = true
             skView.showsFPS = true
             
@@ -503,7 +503,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         projectile = spear()
         projectile.position = Settings.Metrics.projectileRestPosition
         addChild(projectile)
-        
         let slingshot_2 = SKSpriteNode(imageNamed: "slingshot_2")
         slingshot_2.position = CGPoint(x: -120, y: -50)
         addChild(slingshot_2)
