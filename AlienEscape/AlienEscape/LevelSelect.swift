@@ -35,9 +35,7 @@ class LevelSelect: SKScene {
         level3 = childNode(withName: "level3") as! MSButtonNode
         level4 = childNode(withName: "level4") as! MSButtonNode
         level5 = childNode(withName: "level5") as! MSButtonNode
-        level6 = childNode(withName: "level6") as! MSButtonNode
-//        level4 = childNode(withName: "level4") as! MSButtonNode
-//        level4 = childNode(withName: "level4") as! MSButtonNode
+        level6 = childNode(withName: "//level6") as! MSButtonNode
         
         
         mainManu = childNode(withName: "mainMenuButton") as! MSButtonNode

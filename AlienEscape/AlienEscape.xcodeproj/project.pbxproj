@@ -83,7 +83,7 @@
 		F328300D1F14113F00CB0A9D /* lazer_22_Purple.png in Resources */ = {isa = PBXBuildFile; fileRef = F3282FF61F14113F00CB0A9D /* lazer_22_Purple.png */; };
 		F328300F1F14294A00CB0A9D /* LevelSelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = F328300E1F14294A00CB0A9D /* LevelSelect.swift */; };
 		F32830111F143B5C00CB0A9D /* LevelSelect.sks in Resources */ = {isa = PBXBuildFile; fileRef = F32830101F143B5C00CB0A9D /* LevelSelect.sks */; };
-		F3411CF51F1978FB0046DC5F /* Level_16.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3411CF41F1978FA0046DC5F /* Level_16.sks */; };
+		F3411CF51F1978FB0046DC5F /* Level_7.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3411CF41F1978FA0046DC5F /* Level_7.sks */; };
 		F387A8281F0EDF660052E0CB /* granade.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F387A8271F0EDF660052E0CB /* granade.mp3 */; };
 		F39ECAE71F0AC3D100EDE3D5 /* DarkAlienAnimation.sks in Resources */ = {isa = PBXBuildFile; fileRef = F39ECAE61F0AC3D100EDE3D5 /* DarkAlienAnimation.sks */; };
 		F39ECB171F0AC3F500EDE3D5 /* darkgray__0000_idle_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F39ECAE91F0AC3F500EDE3D5 /* darkgray__0000_idle_1.png */; };
@@ -134,7 +134,7 @@
 		F39ECB441F0AC3F500EDE3D5 /* darkgray__0045_fire_11.png in Resources */ = {isa = PBXBuildFile; fileRef = F39ECB161F0AC3F500EDE3D5 /* darkgray__0045_fire_11.png */; };
 		F3A20A421F17F0A80066BB3B /* Level_1.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3A20A411F17F0A80066BB3B /* Level_1.sks */; };
 		F3A38F531F1D55FC000C59FE /* Level_5.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3A38F521F1D55FC000C59FE /* Level_5.sks */; };
-		F3BEB69C1F1D544D0016F385 /* Level_17.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3BEB69B1F1D544D0016F385 /* Level_17.sks */; };
+		F3BEB69C1F1D544D0016F385 /* Level_8.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3BEB69B1F1D544D0016F385 /* Level_8.sks */; };
 		F3C790571F1818C000CAE308 /* Level_4.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3C790561F1818C000CAE308 /* Level_4.sks */; };
 		F3C790591F182BAF00CAE308 /* Level_3.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3C790581F182BAF00CAE308 /* Level_3.sks */; };
 		F3C7C7391F1039A100B859F2 /* r_crouch.png in Resources */ = {isa = PBXBuildFile; fileRef = F3C7C6D01F1039A100B859F2 /* r_crouch.png */; };
@@ -370,7 +370,7 @@
 		F3282FF61F14113F00CB0A9D /* lazer_22_Purple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lazer_22_Purple.png; sourceTree = "<group>"; };
 		F328300E1F14294A00CB0A9D /* LevelSelect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelSelect.swift; sourceTree = "<group>"; };
 		F32830101F143B5C00CB0A9D /* LevelSelect.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LevelSelect.sks; sourceTree = "<group>"; };
-		F3411CF41F1978FA0046DC5F /* Level_16.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Level_16.sks; path = alien_dark_gray/Level_16.sks; sourceTree = "<group>"; };
+		F3411CF41F1978FA0046DC5F /* Level_7.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Level_7.sks; path = alien_dark_gray/Level_7.sks; sourceTree = "<group>"; };
 		F387A8271F0EDF660052E0CB /* granade.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = granade.mp3; sourceTree = "<group>"; };
 		F39ECAE61F0AC3D100EDE3D5 /* DarkAlienAnimation.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DarkAlienAnimation.sks; sourceTree = "<group>"; };
 		F39ECAE91F0AC3F500EDE3D5 /* darkgray__0000_idle_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkgray__0000_idle_1.png; sourceTree = "<group>"; };
@@ -421,7 +421,7 @@
 		F39ECB161F0AC3F500EDE3D5 /* darkgray__0045_fire_11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkgray__0045_fire_11.png; sourceTree = "<group>"; };
 		F3A20A411F17F0A80066BB3B /* Level_1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Level_1.sks; path = alien_dark_gray/Level_1.sks; sourceTree = "<group>"; };
 		F3A38F521F1D55FC000C59FE /* Level_5.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level_5.sks; sourceTree = "<group>"; };
-		F3BEB69B1F1D544D0016F385 /* Level_17.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level_17.sks; sourceTree = "<group>"; };
+		F3BEB69B1F1D544D0016F385 /* Level_8.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level_8.sks; sourceTree = "<group>"; };
 		F3C790561F1818C000CAE308 /* Level_4.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Level_4.sks; path = alien_dark_gray/Level_4.sks; sourceTree = "<group>"; };
 		F3C790581F182BAF00CAE308 /* Level_3.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Level_3.sks; path = alien_dark_gray/Level_3.sks; sourceTree = "<group>"; };
 		F3C7C6D01F1039A100B859F2 /* r_crouch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = r_crouch.png; sourceTree = "<group>"; };
@@ -720,8 +720,8 @@
 				F3C790561F1818C000CAE308 /* Level_4.sks */,
 				F3A38F521F1D55FC000C59FE /* Level_5.sks */,
 				F3FAC3A21F1D7941009F47AC /* Level_6.sks */,
-				F3411CF41F1978FA0046DC5F /* Level_16.sks */,
-				F3BEB69B1F1D544D0016F385 /* Level_17.sks */,
+				F3411CF41F1978FA0046DC5F /* Level_7.sks */,
+				F3BEB69B1F1D544D0016F385 /* Level_8.sks */,
 			);
 			name = Scenes;
 			sourceTree = "<group>";
@@ -1040,7 +1040,7 @@
 			files = (
 				F31CE2121F0EB34500A14038 /* Explosion.sks in Resources */,
 				F3282FF71F14113F00CB0A9D /* lazer_00_Purple.png in Resources */,
-				F3411CF51F1978FB0046DC5F /* Level_16.sks in Resources */,
+				F3411CF51F1978FB0046DC5F /* Level_7.sks in Resources */,
 				F39ECB1B1F0AC3F500EDE3D5 /* darkgray__0004_turn_2.png in Resources */,
 				F3FAC3DF1F1D7F12009F47AC /* green__0012_run_1.png in Resources */,
 				F3C7C7901F1039A100B859F2 /* r_run_shoot_7.png in Resources */,
@@ -1218,7 +1218,7 @@
 				F3C7C74B1F1039A100B859F2 /* r_flip.png in Resources */,
 				F3FAC3DD1F1D7F12009F47AC /* green__0010_walk_5.png in Resources */,
 				F3C7C75C1F1039A100B859F2 /* r_idle_20.png in Resources */,
-				F3BEB69C1F1D544D0016F385 /* Level_17.sks in Resources */,
+				F3BEB69C1F1D544D0016F385 /* Level_8.sks in Resources */,
 				F32830051F14113F00CB0A9D /* lazer_14_Purple.png in Resources */,
 				F3C7C7751F1039A100B859F2 /* r_run_11.png in Resources */,
 				F3282FD11F13F88E00CB0A9D /* lazer_09.png in Resources */,

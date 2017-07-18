@@ -114,7 +114,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             return
         }
         let targetX = cameraTarget.position.x
-        let x = clamp(value: targetX, lower: 150, upper: 600)
+        let x = clamp(value: targetX, lower: 240, upper: 600)
         cameraNode.position.x = x
     }
     
@@ -186,7 +186,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             scene.scaleMode = .aspectFit
             
             /* Show debug */
-            skView.showsPhysics = true
+            skView.showsPhysics = false
             skView.showsDrawCount = true
             skView.showsFPS = true
             
@@ -276,9 +276,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             background.position.x = cameraNode.position.x
         }
         
-        if UserDefaults.standard.integer(forKey: "currentLevel") > 15 {
+        if UserDefaults.standard.integer(forKey: "currentLevel") > 6 {
             cameraMove()
-            background.position.x = cameraNode.position.x
         }
         
         if background.position.y > -1000 && gameState == .playing{
@@ -290,12 +289,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         gameStart += fixedDelta
         timer += fixedDelta
         trajectoryTimeOut += fixedDelta
-        
-        if trajectoryTimeOut > 0.03 && trajectoryTimeOut < 0.082 {
+        if projectile.position.x > -120 && projectile.position.x < 0 {
+         if trajectoryTimeOut > 0.06 && trajectoryTimeOut < 0.15 {
             print("This shouldn't be 0: \(trajectoryTimeOut)")
             trajectoryLine(Point: projectile.position)
         }
-        
+        }
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if gameState == .playing {
@@ -336,7 +335,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             }
             projectile.position = touchCurrentPoint
         } else {
-            if gameState == .playing && UserDefaults.standard.integer(forKey: "currentLevel") > 15 {
+            if gameState == .playing && UserDefaults.standard.integer(forKey: "currentLevel") > 6 {
                 guard let touch = touches.first else {
                     return
                 }
@@ -405,6 +404,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         if gameState != .gameOver && gameState != .won {
             if contactA.categoryBitMask == 8 || contactB.categoryBitMask == 8{
                 print("there was contact with the ground")
+                if contactA.categoryBitMask != 8{
+                    removeBall(node: nodeA)
+                }
+                if contactB.categoryBitMask != 8{
+                    removeBall(node: nodeB)
+                }
                 gameState = .gameOver
             }
         }
@@ -412,9 +417,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         if contactA.categoryBitMask == 0 || contactB.categoryBitMask == 0 {
             if contactA.categoryBitMask == 0{
                 animateExplosion(node: nodeA)
+                alien.removeFromParent()
+                if winCount == 1 && gameState != .gameOver{
+                    gameState = .won
+                    winCount += 1
+                }
+
             }
             if contactB.categoryBitMask == 0{
                 animateExplosion(node: nodeB)
+                alien.removeFromParent()
+                if winCount == 1 && gameState != .gameOver{
+                    gameState = .won
+                    winCount += 1
+                }
+
             }
         }
         if contactA.categoryBitMask == 2 && contactB.categoryBitMask == 1 {
@@ -456,6 +473,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let sound = SKAction.playSoundFileNamed("granade", waitForCompletion: false)
         self.run(sound)
         
+    }
+    
+    func removeBall(node: SKNode) {
+        projectile.physicsBody?.angularDamping = 1
+        projectile.physicsBody?.allowsRotation = false
+        projectile.physicsBody?.angularVelocity = 0
+        projectile.physicsBody?.pinned = true
+        let removingBall = SKAction.run({
+            /* Remove seal node from scene */
+            self.animateExplosion(node: node)
+            // node.removeFromParent()
+        })
+        run(removingBall)
     }
     
     // MARK: Remove Alien
@@ -521,89 +551,108 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         UserDefaults.standard.set(numberOfLifes, forKey: "numberOfLifes")
         UserDefaults.standard.synchronize()
         
+        starOne.alpha = 0
+        starTwo.alpha = 0
+        starThree.alpha = 0
+        
         resetButton.position.x = cameraNode.position.x
-        gameOverSign.position.x = cameraNode.position.x
         levelSelectButton.position.x = cameraNode.position.x
-        pauseMenu.position.x = cameraNode.position.x
-        
-        
-        gameOverSign.isHidden = false
-        gameOverSign.position.y = 326
-        
-        pauseMenu.position.y = 150
-        
-        levelSelectButton.position.y = 220
-        
-        resetButton.position.y = 90
-        
-        inGameMenu.isHidden = true
-        
-    }
-    func win() {
+        winMenu.position.x = cameraNode.position.x
         
         let moveMenu = SKAction.move(to: CGPoint(x: cameraNode.position.x, y:150), duration: 1)
         let moveDelay = SKAction.wait(forDuration: 0.5)
         let menuSequence = SKAction.sequence([moveDelay,moveMenu])
         winMenu.run(menuSequence)
         
-        let moveMenu2 = SKAction.move(to: CGPoint(x: cameraNode.position.x, y:-10), duration: 1)
+        let moveMenu2 = SKAction.move(to: CGPoint(x: cameraNode.position.x, y:160), duration: 1)
         let menuSequence2 = SKAction.sequence([moveDelay,moveMenu2])
-
-        nextLevelButton.run(menuSequence2)
+        levelSelectButton.run(menuSequence2)
         
-        let moveMenu3 = SKAction.move(to: CGPoint(x: cameraNode.position.x, y:190), duration: 1)
-        let menuSequence3 = SKAction.sequence([moveDelay,moveMenu3])
-
-        levelSelectButton.run(menuSequence3)
-        
-        let moveMenu4 = SKAction.move(to: CGPoint(x: cameraNode.position.x, y:90), duration: 1)
+        let moveMenu4 = SKAction.move(to: CGPoint(x: cameraNode.position.x, y: 40 ), duration: 1)
         let menuSequence4 = SKAction.sequence([moveDelay,moveMenu4])
-
         resetButton.run(menuSequence4)
-        
-        
-        
-        winMenu.position.x = cameraNode.position.x
-        nextLevelButton.position.x = cameraNode.position.x
-        levelSelectButton.position.x = cameraNode.position.x
-        resetButton.position.x = cameraNode.position.x
-        
-        var stars = 0
+
         inGameMenu.isHidden = true
         
-        starOne.isHidden = true
-        starTwo.isHidden = true
-        starThree.isHidden = true
+    }
+    func win() {
+        starOne.alpha = 0
+        starTwo.alpha = 0
+        starThree.alpha = 0
+        
+        winMenu.position.x = cameraNode.position.x
+        nextLevelButton.position.x = cameraNode.position.x + 50
+        levelSelectButton.position.x = cameraNode.position.x
+        resetButton.position.x = cameraNode.position.x - 50
+        nextLevelButton.position.y = resetButton.position.y
+        
+        let moveMenu = SKAction.move(to: CGPoint(x: cameraNode.position.x, y:150), duration: 1)
+        let moveDelay = SKAction.wait(forDuration: 0.5)
+        let menuSequence = SKAction.sequence([moveDelay,moveMenu])
+        winMenu.run(menuSequence)
+        
+        let moveMenu2 = SKAction.move(to: CGPoint(x: cameraNode.position.x + 50, y:40), duration: 1)
+        let menuSequence2 = SKAction.sequence([moveDelay,moveMenu2])
+        nextLevelButton.run(menuSequence2)
+        
+        let moveMenu3 = SKAction.move(to: CGPoint(x: cameraNode.position.x, y:160), duration: 1)
+        let menuSequence3 = SKAction.sequence([moveDelay,moveMenu3])
+        levelSelectButton.run(menuSequence3)
+        
+        let moveMenu4 = SKAction.move(to: CGPoint(x: cameraNode.position.x - 50, y:40), duration: 1)
+        let menuSequence4 = SKAction.sequence([moveDelay,moveMenu4])
+        resetButton.run(menuSequence4)
+        
+        var stars = 0
+        
+        inGameMenu.isHidden = true
         
         if background.position.y > -1000 {
-            starOne.isHidden = false
             stars = 1
             if background.position.y > -232{
-                starTwo.isHidden = false
                 stars = 2
                 if background.position.y > 538 {
-                    starThree.isHidden = false
                     stars = 3
                 }
             }
         }
+        print(stars)
+        let fadeStar = SKAction.fadeAlpha(by: 1, duration: 0.6)
+        let fadeDelay = SKAction.wait(forDuration: 1.5)
+        let starSequence = SKAction.sequence([fadeDelay,fadeStar])
+        
+        let fadeStar2 = SKAction.fadeAlpha(by: 1, duration: 0.6)
+        let fadeDelay2 = SKAction.wait(forDuration: 2.1)
+        let starSequence2 = SKAction.sequence([fadeDelay2,fadeStar2])
+        
+        let fadeStar3 = SKAction.fadeAlpha(by: 1, duration: 0.6)
+        let fadeDelay3 = SKAction.wait(forDuration: 2.7)
+        let starSequence3 = SKAction.sequence([fadeDelay3,fadeStar3])
+        
+        if stars == 1 {
+            starOne.run(starSequence)
+        } else if stars == 2 {
+            starOne.run(starSequence)
+            starTwo.run(starSequence2)
+            
+        } else if stars == 3 {
+            starOne.run(starSequence)
+            starTwo.run(starSequence2)
+            starThree.run(starSequence3)
+        }
+        
         if UserDefaults.standard.integer(forKey: "checkpoint") < 2 {
             lastLevel = 2
             UserDefaults.standard.set(lastLevel, forKey: "checkpoint")
             UserDefaults.standard.synchronize()
             print("set to two", UserDefaults.standard.integer(forKey: "checkpoint"))
-        } else {
-            UserDefaults.standard.set(lastLevel, forKey: "checkpoint")
+        }
+        if UserDefaults.standard.integer(forKey: "checkpoint") > 1{
+            UserDefaults.standard.set(currentLevel, forKey: "checkpoint")
             UserDefaults.standard.synchronize()
             print("At won ",UserDefaults.standard.integer(forKey: "checkpoint"))
         }
-        
-        if UserDefaults.standard.integer(forKey: "checkpoint") > 3 {
-            lastLevel = 3
-            UserDefaults.standard.set(lastLevel, forKey: "checkpoint")
-            UserDefaults.standard.synchronize()
-            print("At won ",UserDefaults.standard.integer(forKey: "checkpoint"))
-        }
+
         
         let name = String(currentLevel)
         if stars > UserDefaults.standard.integer(forKey: name){
@@ -614,7 +663,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     func trajectoryLine(Point: CGPoint) {
 
-        let point = SKSpriteNode(imageNamed: "Circle")
+        let point = SKSpriteNode(imageNamed: "Circle_small")
         point.position.x = Point.x
         point.position.y = Point.y
         addChild(point)
