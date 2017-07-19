@@ -127,6 +127,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let targetX = cameraTarget.position.x
         let x = clamp(value: targetX, lower: 240, upper: 600)
         cameraNode.position.x = x
+        
+        if UserDefaults.standard.integer(forKey: "currentLevel") == 8 {
+            let targetY = cameraTarget.position.y
+            let y = clamp(value: targetY, lower: 128, upper: 400)
+            cameraNode.position.y = y
+        }
     }
     
     
@@ -148,7 +154,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         portal1 = childNode(withName: "portal_1") as! SKSpriteNode
         portal2 = childNode(withName: "portal_2") as! SKSpriteNode
         
-        if UserDefaults.standard.integer(forKey: "currentLevel") == 8 {
+        if UserDefaults.standard.integer(forKey: "currentLevel") == 8 || UserDefaults.standard.integer(forKey: "currentLevel") == 3{
             portalA = childNode(withName: "portal_A") as! SKSpriteNode
             portalB = childNode(withName: "portal_B") as! SKSpriteNode
         }
