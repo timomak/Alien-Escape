@@ -103,13 +103,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var currentLevel = 1
     
     var levelScore = [ 0: 0]
+//    var dotPositionX = [ 0.0: CGFloat()]
+//    var dotPositionY = [ 0.0: CGFloat()]
     
     var lastLevel = 1
     var winCount = 1
     
     var lifeCounter: SKLabelNode!
     
+//    var dotX = 0.0
+//    var dotY = 1.0
+    
     var released = false
+    
+    var projectileBox: Projectile!
     
     func cameraMove() {
         guard let cameraTarget = cameraTarget else {
@@ -169,6 +176,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         self.camera = cameraNode
         
+        // drawTrajectory()
+        
         print("At did begin ",UserDefaults.standard.integer(forKey: "checkpoint"))
         
         levelSelectButton.selectedHandler = {
@@ -188,7 +197,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             scene.scaleMode = .aspectFit
             
             /* Show debug */
-            skView.showsPhysics = false
+            skView.showsPhysics = true
             skView.showsDrawCount = true
             skView.showsFPS = true
             
@@ -363,7 +372,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             if distance > Settings.Metrics.projectileSnapLimit {
                 let vectorX = touchStartingPoint.x - touchCurrentPoint.x
                 let vectorY = touchStartingPoint.y - touchCurrentPoint.y
-                projectile.physicsBody = SKPhysicsBody(circleOfRadius: Settings.Metrics.projectileRadius)
+                projectile.physicsBody = SKPhysicsBody(circleOfRadius: 15)
                 projectile.physicsBody?.categoryBitMask = 1
                 projectile.physicsBody?.contactTestBitMask = 6
                 projectile.physicsBody?.collisionBitMask = 9
@@ -519,7 +528,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     struct Settings {
         struct Metrics {
-            static let projectileRadius = CGFloat(15)
+            static let projectileRadius = CGFloat(68)
             static let projectileRestPosition = CGPoint(x: -120, y: 0)
             static let projectileTouchThreshold = CGFloat(10)
             static let projectileSnapLimit = CGFloat(10)
@@ -540,6 +549,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         projectile = spear()
         projectile.position = Settings.Metrics.projectileRestPosition
         addChild(projectile)
+
         
         let slingshot_2 = SKSpriteNode(imageNamed: "slingshot_2")
         slingshot_2.position = CGPoint(x: -120, y: -50)
@@ -666,11 +676,38 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
     }
     func trajectoryLine(Point: CGPoint) {
-
+//        if dotX < 0.5 {
+//        dotX += 0.1
+//        dotY += 0.1
+//        }
         let point = SKSpriteNode(imageNamed: "Circle_small")
         point.position.x = Point.x
         point.position.y = Point.y
         addChild(point)
-
+        
+//        let dotLabelX = String(dotX)
+//        dotPositionX[dotX] = point.position.x
+//        UserDefaults.standard.set(dotPositionX[dotX]!, forKey: dotLabelX)
+//        
+//        let dotLabelY = String(dotY)
+//        dotPositionY[dotY] = point.position.y
+//        UserDefaults.standard.set(dotPositionY[dotY]!, forKey: dotLabelY)
+//        UserDefaults.standard.synchronize()
     }
+//    
+//    func drawTrajectory() {
+//        var pointPositionX = 0.1
+//        var pointPositionY = 1.1
+//        for _ in 0...5 {
+//        let Xposition = String(pointPositionX)
+//        let Yposition = String(pointPositionY)
+//            
+//        let point = SKSpriteNode(imageNamed: "Circle_small")
+//        point.position.x = CGFloat(UserDefaults.standard.float(forKey: Xposition))
+//        point.position.y = CGFloat(UserDefaults.standard.float(forKey: Yposition))
+//        addChild(point)
+//            pointPositionX += 0.1
+//            pointPositionY += 0.1
+//        }
+//    }
 }

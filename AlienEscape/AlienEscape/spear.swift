@@ -18,3 +18,12 @@ class spear: SKSpriteNode {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+class Projectile: SKShapeNode {
+    convenience init(path: UIBezierPath, color: UIColor, borderColor:UIColor) {
+        self.init()
+        self.path = path.cgPath
+        self.fillColor = color
+        self.strokeColor = borderColor
+    }
+}
