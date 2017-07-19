@@ -322,7 +322,7 @@ class LevelSelect: SKScene {
             scene.scaleMode = .aspectFit
             
             /* Show debug */
-            skView.showsPhysics = true
+            skView.showsPhysics = false
             skView.showsDrawCount = true
             skView.showsFPS = true
             

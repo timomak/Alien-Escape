@@ -83,6 +83,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var background: SKSpriteNode!
     var portal1: SKSpriteNode!
     var portal2: SKSpriteNode!
+    var portalA: SKSpriteNode!
+    var portalB: SKSpriteNode!
     
     var alien: SKSpriteNode!
     var inGameMenu: MSButtonNode!
@@ -103,16 +105,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var currentLevel = 1
     
     var levelScore = [ 0: 0]
-//    var dotPositionX = [ 0.0: CGFloat()]
-//    var dotPositionY = [ 0.0: CGFloat()]
+    //    var dotPositionX = [ 0.0: CGFloat()]
+    //    var dotPositionY = [ 0.0: CGFloat()]
     
     var lastLevel = 1
     var winCount = 1
     
     var lifeCounter: SKLabelNode!
     
-//    var dotX = 0.0
-//    var dotY = 1.0
+    //    var dotX = 0.0
+    //    var dotY = 1.0
     
     var released = false
     
@@ -145,6 +147,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         // rayGun = childNode(withName: "rayGun") as! SKSpriteNode
         portal1 = childNode(withName: "portal_1") as! SKSpriteNode
         portal2 = childNode(withName: "portal_2") as! SKSpriteNode
+        
+        if UserDefaults.standard.integer(forKey: "currentLevel") == 8 {
+            portalA = childNode(withName: "portal_A") as! SKSpriteNode
+            portalB = childNode(withName: "portal_B") as! SKSpriteNode
+        }
         background = childNode(withName: "background") as! SKSpriteNode
         pauseMenu = childNode(withName: "pauseMenu") as! SKSpriteNode
         resumeButton = childNode(withName: "//resumeButton") as! MSButtonNode
@@ -164,7 +171,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             fieldNodeSize = childNode(withName: "fieldNodeSize") as! SKSpriteNode
             springField.region = SKRegion(size: fieldNodeSize.size)
         }
-
+        
         
         lifeCounter = childNode(withName: "//lifeCounter") as! SKLabelNode
         
@@ -197,7 +204,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             scene.scaleMode = .aspectFit
             
             /* Show debug */
-            skView.showsPhysics = true
+            skView.showsPhysics = false
             skView.showsDrawCount = true
             skView.showsFPS = true
             
@@ -301,10 +308,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         timer += fixedDelta
         trajectoryTimeOut += fixedDelta
         if projectile.position.x > -120 && projectile.position.x < 0 {
-         if trajectoryTimeOut > 0.06 && trajectoryTimeOut < 0.15 {
-            print("This shouldn't be 0: \(trajectoryTimeOut)")
-            trajectoryLine(Point: projectile.position)
-        }
+            if trajectoryTimeOut > 0.06 && trajectoryTimeOut < 0.15 {
+                print("This shouldn't be 0: \(trajectoryTimeOut)")
+                trajectoryLine(Point: projectile.position)
+            }
         }
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -405,10 +412,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         /* Check if either physics bodies was a seal */
         if contactA.categoryBitMask == 4 || contactB.categoryBitMask == 4{
             if contactA.categoryBitMask != 4{
-                teleportBall(node: nodeA)
+                teleportBallA(node: nodeA)
             }
             if contactB.categoryBitMask != 4{
-                teleportBall(node: nodeB)
+                teleportBallA(node: nodeB)
+            }
+        }
+        if contactA.categoryBitMask == 16 || contactB.categoryBitMask == 16{
+            if contactA.categoryBitMask != 16{
+                teleportBallB(node: nodeA)
+            }
+            if contactB.categoryBitMask != 16{
+                teleportBallB(node: nodeB)
             }
         }
         if gameState != .gameOver && gameState != .won && released == true{
@@ -432,7 +447,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                     gameState = .won
                     winCount += 1
                 }
-
+                
             }
             if contactB.categoryBitMask == 0{
                 animateExplosion(node: nodeB)
@@ -441,7 +456,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                     gameState = .won
                     winCount += 1
                 }
-
+                
             }
         }
         if contactA.categoryBitMask == 2 && contactB.categoryBitMask == 1 {
@@ -466,8 +481,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         
     }
-    
-    func teleportBall(node: SKNode) {
+    func teleportBallB(node: SKNode) {
+        
+        let moveBall = SKAction.move(to: portalB.position, duration:0)
+        node.run(moveBall)
+        if UserDefaults.standard.integer(forKey: "currentLevel") > 4 {
+            cameraNode.position.x = 1764.218
+            cameraNode.position.y = 123.14
+        }
+    }
+    func teleportBallA(node: SKNode) {
         
         let moveBall = SKAction.move(to: portal2.position, duration:0)
         node.run(moveBall)
@@ -545,11 +568,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         slingshot_1.position = CGPoint(x: -120, y: -50)
         addChild(slingshot_1)
         slingshot_1.isHidden = false
-
+        
         projectile = spear()
         projectile.position = Settings.Metrics.projectileRestPosition
         addChild(projectile)
-
+        
         
         let slingshot_2 = SKSpriteNode(imageNamed: "slingshot_2")
         slingshot_2.position = CGPoint(x: -120, y: -50)
@@ -584,7 +607,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let moveMenu4 = SKAction.move(to: CGPoint(x: cameraNode.position.x, y: 40 ), duration: 1)
         let menuSequence4 = SKAction.sequence([moveDelay,moveMenu4])
         resetButton.run(menuSequence4)
-
+        
         inGameMenu.isHidden = true
         
     }
@@ -666,7 +689,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             UserDefaults.standard.synchronize()
             print("At won ",UserDefaults.standard.integer(forKey: "checkpoint"))
         }
-
+        
         
         let name = String(currentLevel)
         if stars > UserDefaults.standard.integer(forKey: name){
@@ -676,38 +699,38 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
     }
     func trajectoryLine(Point: CGPoint) {
-//        if dotX < 0.5 {
-//        dotX += 0.1
-//        dotY += 0.1
-//        }
+        //        if dotX < 0.5 {
+        //        dotX += 0.1
+        //        dotY += 0.1
+        //        }
         let point = SKSpriteNode(imageNamed: "Circle_small")
         point.position.x = Point.x
         point.position.y = Point.y
         addChild(point)
         
-//        let dotLabelX = String(dotX)
-//        dotPositionX[dotX] = point.position.x
-//        UserDefaults.standard.set(dotPositionX[dotX]!, forKey: dotLabelX)
-//        
-//        let dotLabelY = String(dotY)
-//        dotPositionY[dotY] = point.position.y
-//        UserDefaults.standard.set(dotPositionY[dotY]!, forKey: dotLabelY)
-//        UserDefaults.standard.synchronize()
+        //        let dotLabelX = String(dotX)
+        //        dotPositionX[dotX] = point.position.x
+        //        UserDefaults.standard.set(dotPositionX[dotX]!, forKey: dotLabelX)
+        //
+        //        let dotLabelY = String(dotY)
+        //        dotPositionY[dotY] = point.position.y
+        //        UserDefaults.standard.set(dotPositionY[dotY]!, forKey: dotLabelY)
+        //        UserDefaults.standard.synchronize()
     }
-//    
-//    func drawTrajectory() {
-//        var pointPositionX = 0.1
-//        var pointPositionY = 1.1
-//        for _ in 0...5 {
-//        let Xposition = String(pointPositionX)
-//        let Yposition = String(pointPositionY)
-//            
-//        let point = SKSpriteNode(imageNamed: "Circle_small")
-//        point.position.x = CGFloat(UserDefaults.standard.float(forKey: Xposition))
-//        point.position.y = CGFloat(UserDefaults.standard.float(forKey: Yposition))
-//        addChild(point)
-//            pointPositionX += 0.1
-//            pointPositionY += 0.1
-//        }
-//    }
+    //
+    //    func drawTrajectory() {
+    //        var pointPositionX = 0.1
+    //        var pointPositionY = 1.1
+    //        for _ in 0...5 {
+    //        let Xposition = String(pointPositionX)
+    //        let Yposition = String(pointPositionY)
+    //
+    //        let point = SKSpriteNode(imageNamed: "Circle_small")
+    //        point.position.x = CGFloat(UserDefaults.standard.float(forKey: Xposition))
+    //        point.position.y = CGFloat(UserDefaults.standard.float(forKey: Yposition))
+    //        addChild(point)
+    //            pointPositionX += 0.1
+    //            pointPositionY += 0.1
+    //        }
+    //    }
 }
