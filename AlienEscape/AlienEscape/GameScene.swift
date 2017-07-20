@@ -191,7 +191,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         // drawTrajectory()
         
-        print("At did begin ",UserDefaults.standard.integer(forKey: "checkpoint"))
+        print("Checkpoint: ",UserDefaults.standard.integer(forKey: "checkpoint"))
         
         levelSelectButton.selectedHandler = {
             /* 1) Grab reference to our SpriteKit view */
@@ -315,7 +315,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         trajectoryTimeOut += fixedDelta
         if projectile.position.x > -120 && projectile.position.x < 0 {
             if trajectoryTimeOut > 0.06 && trajectoryTimeOut < 0.15 {
-                print("This shouldn't be 0: \(trajectoryTimeOut)")
                 trajectoryLine(Point: projectile.position)
             }
         }
@@ -399,7 +398,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 )
                 trajectoryTimeOut = 0
                 released = true
-                print("This should be 0: \(trajectoryTimeOut)")
             } else {
                 projectile.physicsBody = nil
                 projectile.position = Settings.Metrics.projectileRestPosition
@@ -659,7 +657,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 }
             }
         }
-        print(stars)
+        print("The number of stars in level.\(currentLevel) is: \(stars)")
         let fadeStar = SKAction.fadeAlpha(by: 1, duration: 0.6)
         let fadeDelay = SKAction.wait(forDuration: 1.5)
         let starSequence = SKAction.sequence([fadeDelay,fadeStar])
@@ -688,13 +686,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             lastLevel = 2
             UserDefaults.standard.set(lastLevel, forKey: "checkpoint")
             UserDefaults.standard.synchronize()
-            print("set to two", UserDefaults.standard.integer(forKey: "checkpoint"))
+            print("Checkpoint set to two: ", UserDefaults.standard.integer(forKey: "checkpoint"))
         }
         if UserDefaults.standard.integer(forKey: "checkpoint") > 1{
             if UserDefaults.standard.integer(forKey: "currentLevel") > UserDefaults.standard.integer(forKey: "checkpoint") {
                 UserDefaults.standard.set(currentLevel, forKey: "checkpoint")
                 UserDefaults.standard.synchronize()
-                print("At won ",UserDefaults.standard.integer(forKey: "checkpoint"))
+                print("At won checkpoint is: ",UserDefaults.standard.integer(forKey: "checkpoint"))
             }
         }
         

@@ -20,7 +20,6 @@ class MainMenu: SKScene {
         /* Setup your scene here */
         print("Your checkpoint: \(UserDefaults.standard.integer(forKey: "checkpoint"))")
         level = Int(UserDefaults.standard.integer(forKey: "checkpoint"))
-        print(level)
         
         /* Set UI connections */
         startButton = self.childNode(withName: "startButton") as! MSButtonNode
