@@ -18,7 +18,7 @@ class MainMenu: SKScene {
     
     override func didMove(to view: SKView) {
         /* Setup your scene here */
-        print(UserDefaults.standard.integer(forKey: "checkpoint"))
+        print("Your checkpoint: \(UserDefaults.standard.integer(forKey: "checkpoint"))")
         level = Int(UserDefaults.standard.integer(forKey: "checkpoint"))
         print(level)
         

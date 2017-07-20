@@ -691,9 +691,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             print("set to two", UserDefaults.standard.integer(forKey: "checkpoint"))
         }
         if UserDefaults.standard.integer(forKey: "checkpoint") > 1{
-            UserDefaults.standard.set(currentLevel, forKey: "checkpoint")
-            UserDefaults.standard.synchronize()
-            print("At won ",UserDefaults.standard.integer(forKey: "checkpoint"))
+            if UserDefaults.standard.integer(forKey: "currentLevel") > UserDefaults.standard.integer(forKey: "checkpoint") {
+                UserDefaults.standard.set(currentLevel, forKey: "checkpoint")
+                UserDefaults.standard.synchronize()
+                print("At won ",UserDefaults.standard.integer(forKey: "checkpoint"))
+            }
         }
         
         
