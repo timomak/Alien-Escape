@@ -8,11 +8,12 @@
 
 import SpriteKit
 
-class MainMenu: SKScene {
+class MainMenu: SKScene{
     
     /* UI Connections */
     var startButton: MSButtonNode!
     var levelSelectButton: MSButtonNode!
+    var videoButton: MSButtonNode!
     
     var level = 0
     
@@ -27,11 +28,16 @@ class MainMenu: SKScene {
         levelSelectButton.isHidden = true
         startButton.position.y = 160
         
+        videoButton = self.childNode(withName: "videoButton") as! MSButtonNode
+        
         if UserDefaults.standard.integer(forKey: "firstTime") == 1 {
             levelSelectButton.isHidden = false
             startButton.position.y = 200
         }
-        
+
+        videoButton.selectedHandler = {
+            Chartboost.showRewardedVideo(CBLocationMainMenu)
+        }
         startButton.selectedHandler = {
             self.lastGame()
             

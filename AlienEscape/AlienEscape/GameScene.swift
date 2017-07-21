@@ -181,6 +181,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         lifeCounter = childNode(withName: "//lifeCounter") as! SKLabelNode
         
+        
         let numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes")
         
         lifeCounter.text = String(numberOfLives)
@@ -283,8 +284,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         gameOverSign.isHidden = true
         
     }
-    
-    
+
     override func update(_ currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         

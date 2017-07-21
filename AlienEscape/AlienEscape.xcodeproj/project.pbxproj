@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C859FFF4D13001CC8AF0EE6C /* Pods_AlienEscape.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB3262D5B0017F724128F785 /* Pods_AlienEscape.framework */; };
+		F308385E1F22B8F1004BD63F /* Chartboost.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F308385D1F22B8F1004BD63F /* Chartboost.framework */; };
+		F30838601F22B909004BD63F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F308385F1F22B909004BD63F /* UIKit.framework */; };
+		F30838621F22B913004BD63F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F30838611F22B913004BD63F /* CoreGraphics.framework */; };
+		F30838641F22B91B004BD63F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F30838631F22B91B004BD63F /* Foundation.framework */; };
+		F30838661F22B924004BD63F /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F30838651F22B924004BD63F /* StoreKit.framework */; };
+		F30838681F22B92D004BD63F /* GameplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F30838671F22B92D004BD63F /* GameplayKit.framework */; };
 		F3155F391F1832F500B9C387 /* Level_3.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3155F381F1832F500B9C387 /* Level_3.sks */; };
 		F3165B631F06C8D200A7BD96 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3165B621F06C8D200A7BD96 /* AppDelegate.swift */; };
 		F3165B651F06C8D200A7BD96 /* MainMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3165B641F06C8D200A7BD96 /* MainMenu.sks */; };
@@ -83,6 +90,7 @@
 		F328300D1F14113F00CB0A9D /* lazer_22_Purple.png in Resources */ = {isa = PBXBuildFile; fileRef = F3282FF61F14113F00CB0A9D /* lazer_22_Purple.png */; };
 		F328300F1F14294A00CB0A9D /* LevelSelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = F328300E1F14294A00CB0A9D /* LevelSelect.swift */; };
 		F32830111F143B5C00CB0A9D /* LevelSelect.sks in Resources */ = {isa = PBXBuildFile; fileRef = F32830101F143B5C00CB0A9D /* LevelSelect.sks */; };
+		F34100361F22AA8D00C9068D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F34100351F22AA8D00C9068D /* GoogleService-Info.plist */; };
 		F3411CF51F1978FB0046DC5F /* Level_7.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3411CF41F1978FA0046DC5F /* Level_7.sks */; };
 		F387A8281F0EDF660052E0CB /* granade.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F387A8271F0EDF660052E0CB /* granade.mp3 */; };
 		F39ECAE71F0AC3D100EDE3D5 /* DarkAlienAnimation.sks in Resources */ = {isa = PBXBuildFile; fileRef = F39ECAE61F0AC3D100EDE3D5 /* DarkAlienAnimation.sks */; };
@@ -292,6 +300,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7F7A27DDAFADC1FDA1E32244 /* Pods-AlienEscape.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlienEscape.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AlienEscape/Pods-AlienEscape.debug.xcconfig"; sourceTree = "<group>"; };
+		8F44C2BDBB013075E6B3B0AF /* Pods-AlienEscape.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlienEscape.release.xcconfig"; path = "Pods/Target Support Files/Pods-AlienEscape/Pods-AlienEscape.release.xcconfig"; sourceTree = "<group>"; };
+		BB3262D5B0017F724128F785 /* Pods_AlienEscape.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AlienEscape.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F308385D1F22B8F1004BD63F /* Chartboost.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Chartboost.framework; sourceTree = "<group>"; };
+		F308385F1F22B909004BD63F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		F30838611F22B913004BD63F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		F30838631F22B91B004BD63F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		F30838651F22B924004BD63F /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		F30838671F22B92D004BD63F /* GameplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameplayKit.framework; path = System/Library/Frameworks/GameplayKit.framework; sourceTree = SDKROOT; };
+		F30838691F22B94D004BD63F /* AlienEscape-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AlienEscape-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		F3155F381F1832F500B9C387 /* Level_3.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Level_3.sks; path = alien_dark_gray/Level_3.sks; sourceTree = "<group>"; };
 		F3165B5F1F06C8D200A7BD96 /* AlienEscape.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlienEscape.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3165B621F06C8D200A7BD96 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -370,6 +388,7 @@
 		F3282FF61F14113F00CB0A9D /* lazer_22_Purple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lazer_22_Purple.png; sourceTree = "<group>"; };
 		F328300E1F14294A00CB0A9D /* LevelSelect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelSelect.swift; sourceTree = "<group>"; };
 		F32830101F143B5C00CB0A9D /* LevelSelect.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LevelSelect.sks; sourceTree = "<group>"; };
+		F34100351F22AA8D00C9068D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F3411CF41F1978FA0046DC5F /* Level_7.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Level_7.sks; path = alien_dark_gray/Level_7.sks; sourceTree = "<group>"; };
 		F387A8271F0EDF660052E0CB /* granade.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = granade.mp3; sourceTree = "<group>"; };
 		F39ECAE61F0AC3D100EDE3D5 /* DarkAlienAnimation.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DarkAlienAnimation.sks; sourceTree = "<group>"; };
@@ -583,17 +602,35 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F30838681F22B92D004BD63F /* GameplayKit.framework in Frameworks */,
+				F30838661F22B924004BD63F /* StoreKit.framework in Frameworks */,
+				F30838641F22B91B004BD63F /* Foundation.framework in Frameworks */,
+				F30838621F22B913004BD63F /* CoreGraphics.framework in Frameworks */,
+				F30838601F22B909004BD63F /* UIKit.framework in Frameworks */,
+				C859FFF4D13001CC8AF0EE6C /* Pods_AlienEscape.framework in Frameworks */,
+				F308385E1F22B8F1004BD63F /* Chartboost.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9CDB23D02BFEC6D15D414D53 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7F7A27DDAFADC1FDA1E32244 /* Pods-AlienEscape.debug.xcconfig */,
+				8F44C2BDBB013075E6B3B0AF /* Pods-AlienEscape.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		F3165B561F06C8D200A7BD96 = {
 			isa = PBXGroup;
 			children = (
 				F3165B611F06C8D200A7BD96 /* AlienEscape */,
 				F3165B601F06C8D200A7BD96 /* Products */,
+				F3F3A2101F22780F00D146AA /* Frameworks */,
+				9CDB23D02BFEC6D15D414D53 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -608,6 +645,7 @@
 		F3165B611F06C8D200A7BD96 /* AlienEscape */ = {
 			isa = PBXGroup;
 			children = (
+				F30838691F22B94D004BD63F /* AlienEscape-Bridging-Header.h */,
 				F3165B621F06C8D200A7BD96 /* AppDelegate.swift */,
 				F3165B661F06C8D200A7BD96 /* Actions.sks */,
 				F31CE2111F0EB34500A14038 /* Explosion.sks */,
@@ -616,6 +654,7 @@
 				F3165B6F1F06C8D200A7BD96 /* Assets.xcassets */,
 				F3165B711F06C8D200A7BD96 /* LaunchScreen.storyboard */,
 				F3165B741F06C8D200A7BD96 /* Info.plist */,
+				F34100351F22AA8D00C9068D /* GoogleService-Info.plist */,
 				F3165B7A1F06CAF800A7BD96 /* MSButtonNode.swift */,
 				F3165B681F06C8D200A7BD96 /* MainMenu.swift */,
 				F3165B7C1F06CB0B00A7BD96 /* GameScene.swift */,
@@ -924,6 +963,20 @@
 			path = Vector;
 			sourceTree = "<group>";
 		};
+		F3F3A2101F22780F00D146AA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F30838671F22B92D004BD63F /* GameplayKit.framework */,
+				F30838651F22B924004BD63F /* StoreKit.framework */,
+				F30838631F22B91B004BD63F /* Foundation.framework */,
+				F30838611F22B913004BD63F /* CoreGraphics.framework */,
+				F308385F1F22B909004BD63F /* UIKit.framework */,
+				BB3262D5B0017F724128F785 /* Pods_AlienEscape.framework */,
+				F308385D1F22B8F1004BD63F /* Chartboost.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		F3FAC3A41F1D7F12009F47AC /* alien_green */ = {
 			isa = PBXGroup;
 			children = (
@@ -985,9 +1038,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F3165B771F06C8D200A7BD96 /* Build configuration list for PBXNativeTarget "AlienEscape" */;
 			buildPhases = (
+				02B75CC0EBC13C7FF82A38DE /* [CP] Check Pods Manifest.lock */,
 				F3165B5B1F06C8D200A7BD96 /* Sources */,
 				F3165B5C1F06C8D200A7BD96 /* Frameworks */,
 				F3165B5D1F06C8D200A7BD96 /* Resources */,
+				FF0ABBC705CD67487D0DA4AE /* [CP] Embed Pods Frameworks */,
+				89EB42E48B0C2A9C113C44A9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1231,6 +1287,7 @@
 				F3C7C7681F1039A100B859F2 /* r_jump_13.png in Resources */,
 				F3C7C7481F1039A100B859F2 /* r_death_7.png in Resources */,
 				F3C7C7881F1039A100B859F2 /* r_run_shoot_14.png in Resources */,
+				F34100361F22AA8D00C9068D /* GoogleService-Info.plist in Resources */,
 				F39ECB281F0AC3F500EDE3D5 /* darkgray__0017_run_6.png in Resources */,
 				F39ECB301F0AC3F500EDE3D5 /* darkgray__0025_dead_4.png in Resources */,
 				F3282FCE1F13F88E00CB0A9D /* lazer_06.png in Resources */,
@@ -1318,6 +1375,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		02B75CC0EBC13C7FF82A38DE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		89EB42E48B0C2A9C113C44A9 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AlienEscape/Pods-AlienEscape-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FF0ABBC705CD67487D0DA4AE /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AlienEscape/Pods-AlienEscape-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		F3165B5B1F06C8D200A7BD96 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -1401,6 +1506,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1444,6 +1550,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -1452,14 +1559,21 @@
 		};
 		F3165B781F06C8D200A7BD96 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7F7A27DDAFADC1FDA1E32244 /* Pods-AlienEscape.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = SAZ2DLKCVY;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AlienEscape",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = AlienEscape/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "timofey-makhlay.AlienEscape";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AlienEscape-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1467,14 +1581,21 @@
 		};
 		F3165B791F06C8D200A7BD96 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8F44C2BDBB013075E6B3B0AF /* Pods-AlienEscape.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = SAZ2DLKCVY;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AlienEscape",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = AlienEscape/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "timofey-makhlay.AlienEscape";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AlienEscape-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
