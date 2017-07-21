@@ -90,18 +90,17 @@ class LevelSelect: SKScene {
         levelGerator[lastCompletedLevel]!?.isHidden = false
         
         func countTheNumberOfStars() {
+            var numberOfStarz = 0
             for x in 0...UserDefaults.standard.integer(forKey: "checkpoint") {
   
                 let levelNumber = String(x)
-                numberOfStars += UserDefaults.standard.integer(forKey: levelNumber)
+                numberOfStarz += UserDefaults.standard.integer(forKey: levelNumber)
             }
+            numberOfStars = numberOfStarz
         }
         print("Number of total stars: \(numberOfStars)")
         countTheNumberOfStars()
-        
-//        numberOfStars = UserDefaults.standard.integer(forKey: "1") + UserDefaults.standard.integer(forKey: "2") + UserDefaults.standard.integer(forKey: "3") + UserDefaults.standard.integer(forKey: "4") + UserDefaults.standard.integer(forKey: "5") + UserDefaults.standard.integer(forKey: "6") + UserDefaults.standard.integer(forKey: "7") + UserDefaults.standard.integer(forKey: "8")
-//        
-        
+
         let numberOfLifes = UserDefaults.standard.integer(forKey: "numberOfLifes")
         lifeCounter.text = String(numberOfLifes)
         starCounter.text = String(numberOfStars)
