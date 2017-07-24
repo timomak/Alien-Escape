@@ -122,6 +122,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     var bluePortalDrag: SKSpriteNode!
     var yellowPortalDrag: SKSpriteNode!
+    var currentMovingPortal = SKSpriteNode()
     
     func cameraMove() {
         guard let cameraTarget = cameraTarget else {
@@ -162,8 +163,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             portalB = childNode(withName: "portal_B") as! SKSpriteNode
         }
         if UserDefaults.standard.integer(forKey: "currentLevel") == 3 {
+            
             bluePortalDrag = childNode(withName: "//bluePortalDrag") as! SKSpriteNode
             yellowPortalDrag = childNode(withName: "//yellowPortalDrag") as! SKSpriteNode
+            
+            bluePortalDrag.isHidden = true
+            yellowPortalDrag.isHidden = true
+            
+//            let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(GameScene.handlePanFrom(_:)))
+//            self.view!.addGestureRecognizer(gestureRecognizer)
         }
         
         background = childNode(withName: "background") as! SKSpriteNode
@@ -201,9 +209,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         // drawTrajectory()
         
         print("Checkpoint: ",UserDefaults.standard.integer(forKey: "checkpoint"))
-        
-        bluePortalDrag.isHidden = true
-        yellowPortalDrag.isHidden = true
         
         levelSelectButton.selectedHandler = {
             /* 1) Grab reference to our SpriteKit view */
@@ -295,7 +300,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         gameOverSign.isHidden = true
         
     }
-
+    
     override func update(_ currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         
@@ -315,11 +320,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             cameraMove()
         }
         if physicsWorld.speed == 1 {
-        if background.position.y > -1000 && gameState == .playing{
-            background.position.y -= 5
-        } else if gameState == .playing{
-            gameState = .gameOver
-        }
+            if background.position.y > -1000 && gameState == .playing{
+                background.position.y -= 5
+            } else if gameState == .playing{
+                gameState = .gameOver
+            }
         } else {
             if background.position.y > -1000 && gameState == .playing{
                 background.position.y -= physicsWorld.speed * 5
@@ -336,10 +341,73 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             }
         }
     }
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if touches.first == bluePortalDrag{
+    
+//    func handlePanFrom(_ recognizer : UIPanGestureRecognizer) {
+//        
+//        if recognizer.state == .began {
+//            var touchLocation = recognizer.location(in: recognizer.view)
+//            touchLocation = self.convertPoint(fromView: touchLocation)
+//            
+//            self.selectPortalForTouch(touchLocation)
+//        } else if recognizer.state == .changed {
+//            var translation = recognizer.translation(in: recognizer.view!)
+//            translation = CGPoint(x: translation.x, y: -translation.y)
+//            
+//            self.panForTranslation(translation)
+//            
+//            recognizer.setTranslation(CGPoint.zero, in: recognizer.view)
+//        } else if recognizer.state == .ended {
+//            // If it ended
+//        }
+//    }
+    
+    func degToRad(_ degree: Double) -> CGFloat {
+        return CGFloat(degree / 180.0 * M_PI)
+    }
+    
+    func selectPortalForTouch(_ touchLocation : CGPoint) {
+        let touchedNode = self.atPoint(touchLocation)
+        
+        if touchedNode is SKSpriteNode {
             
+            
+            if touchedNode == bluePortalDrag{
+                portal1.position = touchLocation
+                currentMovingPortal = portal1
+            }
+            if touchedNode == yellowPortalDrag{
+                portal2.position = touchLocation
+                currentMovingPortal = portal2
+            }
         }
+    }
+    func boundLayerPos(_ aNewPosition : CGPoint) -> CGPoint {
+        let winSize = self.size
+        var retval = aNewPosition
+        retval.x = CGFloat(min(retval.x, 0))
+        retval.x = CGFloat(max(retval.x, -(background.size.width) + winSize.width))
+        retval.y = self.position.y
+        
+        return retval
+    }
+    
+    func panForTranslation(_ translation : CGPoint) {
+        if currentMovingPortal == portal1 {
+            let position = portal1.position
+            portal1.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+        }
+        if currentMovingPortal == portal2 {
+            let position = portal2.position
+            portal2.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+        }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+            print("touching portal 1")
+            let touch = touches.first!
+            let positionInScene = touch.location(in: self)
+            selectPortalForTouch(positionInScene)
+
         if gameState == .playing {
             func shouldStartDragging(touchLocation:CGPoint, threshold: CGFloat) -> Bool {
                 let distance = fingerDistanceFromProjectileRestPosition(
@@ -393,6 +461,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                     camera?.position.x += (location.x - previousLocation.x) * -1
                 }
             }
+            let touch = touches.first!
+            let positionInScene = touch.location(in: self)
+            let previousPosition = touch.previousLocation(in: self)
+            let translation = CGPoint(x: positionInScene.x - previousPosition.x, y: positionInScene.y - previousPosition.y)
+            
+            panForTranslation(translation)
         }
     }
     
@@ -419,8 +493,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 trajectoryTimeOut = 0
                 released = true
                 self.physicsWorld.speed = 0.2
-                bluePortalDrag.isHidden = false
-                yellowPortalDrag.isHidden = false
+                if UserDefaults.standard.integer(forKey: "currentLevel") == 3 {
+                    bluePortalDrag.isHidden = false
+                    yellowPortalDrag.isHidden = false
+                }
             } else {
                 projectile.physicsBody = nil
                 projectile.position = Settings.Metrics.projectileRestPosition
