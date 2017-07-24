@@ -18,6 +18,7 @@ class MainMenu: SKScene{
     var level = 0
     
     override func didMove(to view: SKView) {
+        Chartboost.setDelegate(self)
         /* Setup your scene here */
         print("Your checkpoint: \(UserDefaults.standard.integer(forKey: "checkpoint"))")
         level = Int(UserDefaults.standard.integer(forKey: "checkpoint"))
@@ -34,7 +35,7 @@ class MainMenu: SKScene{
             levelSelectButton.isHidden = false
             startButton.position.y = 200
         }
-
+        videoButton.isHidden = true
         videoButton.selectedHandler = {
             Chartboost.showRewardedVideo(CBLocationMainMenu)
         }
@@ -100,4 +101,40 @@ class MainMenu: SKScene{
             
         }
     }
+}
+extension MainMenu: ChartboostDelegate {
+    
+    func didPrefetchVideos() {
+    }
+    
+    func shouldDisplayRewardedVideo(location: String!) -> Bool {
+        return true
+    }
+    
+    func didDisplayRewardedVideo(location: String!) {
+    }
+    
+    func didCacheRewardedVideo(location: String!) {
+    }
+    
+    func didFailToLoadRewardedVideo(location: String!, withError error: CBLoadError) {
+        print("Failed to load rewarded video: \(error)")
+    }
+    
+    func didDismissRewardedVideo(location: String!) {
+    }
+    
+    func didCloseRewardedVideo(location: String!) {
+        print("HERE IS WHEN I GIVE YOU LIVES")
+    }
+    
+    func didClickRewardedVideo(location: String!) {
+    }
+    
+    func didCompleteRewardedVideo(location: String!, withReward reward: Int32) {
+    }
+    
+    func willDisplayVideo(location: String!) {
+    }
+    
 }

@@ -120,6 +120,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     var projectileBox: Projectile!
     
+    var bluePortalDrag: SKSpriteNode!
+    var yellowPortalDrag: SKSpriteNode!
+    
     func cameraMove() {
         guard let cameraTarget = cameraTarget else {
             return
@@ -158,6 +161,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             portalA = childNode(withName: "portal_A") as! SKSpriteNode
             portalB = childNode(withName: "portal_B") as! SKSpriteNode
         }
+        if UserDefaults.standard.integer(forKey: "currentLevel") == 3 {
+            bluePortalDrag = childNode(withName: "//bluePortalDrag") as! SKSpriteNode
+            yellowPortalDrag = childNode(withName: "//yellowPortalDrag") as! SKSpriteNode
+        }
+        
         background = childNode(withName: "background") as! SKSpriteNode
         pauseMenu = childNode(withName: "pauseMenu") as! SKSpriteNode
         resumeButton = childNode(withName: "//resumeButton") as! MSButtonNode
@@ -193,6 +201,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         // drawTrajectory()
         
         print("Checkpoint: ",UserDefaults.standard.integer(forKey: "checkpoint"))
+        
+        bluePortalDrag.isHidden = true
+        yellowPortalDrag.isHidden = true
         
         levelSelectButton.selectedHandler = {
             /* 1) Grab reference to our SpriteKit view */
@@ -253,7 +264,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             view.presentScene(scene)
         }
         
-        inGameMenu.selectedHandler = {
+        inGameMenu.selectedHandler = {[unowned self] in
             
             if self.gameState == .playing {
                 self.pauseMenu.position.x = self.cameraNode.position.x
@@ -303,13 +314,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         if UserDefaults.standard.integer(forKey: "currentLevel") > 6 {
             cameraMove()
         }
-        
+        if physicsWorld.speed == 1 {
         if background.position.y > -1000 && gameState == .playing{
             background.position.y -= 5
         } else if gameState == .playing{
             gameState = .gameOver
         }
-        
+        } else {
+            if background.position.y > -1000 && gameState == .playing{
+                background.position.y -= physicsWorld.speed * 5
+            } else if gameState == .playing{
+                gameState = .gameOver
+            }
+        }
         gameStart += fixedDelta
         timer += fixedDelta
         trajectoryTimeOut += fixedDelta
@@ -320,6 +337,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if touches.first == bluePortalDrag{
+            
+        }
         if gameState == .playing {
             func shouldStartDragging(touchLocation:CGPoint, threshold: CGFloat) -> Bool {
                 let distance = fingerDistanceFromProjectileRestPosition(
@@ -398,6 +418,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 )
                 trajectoryTimeOut = 0
                 released = true
+                self.physicsWorld.speed = 0.2
+                bluePortalDrag.isHidden = false
+                yellowPortalDrag.isHidden = false
             } else {
                 projectile.physicsBody = nil
                 projectile.position = Settings.Metrics.projectileRestPosition
