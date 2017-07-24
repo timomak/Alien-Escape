@@ -88,10 +88,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     var alien: SKSpriteNode!
     var inGameMenu: MSButtonNode!
+    
     // Sets Projectile as an Image
     var projectile: spear!
-    
-    // var rayGun: SKSpriteNode!
     
     //Touch dragging vars
     var projectileIsDragged = false
@@ -123,6 +122,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var bluePortalDrag: SKSpriteNode!
     var yellowPortalDrag: SKSpriteNode!
     var currentMovingPortal = SKSpriteNode()
+    var bluePortalHasBeenPlaced = false
+    var yellowPortalHasBeenPlaced = false
     
     func cameraMove() {
         guard let cameraTarget = cameraTarget else {
@@ -166,12 +167,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             
             bluePortalDrag = childNode(withName: "//bluePortalDrag") as! SKSpriteNode
             yellowPortalDrag = childNode(withName: "//yellowPortalDrag") as! SKSpriteNode
-            
+
             bluePortalDrag.isHidden = true
             yellowPortalDrag.isHidden = true
-            
-//            let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(GameScene.handlePanFrom(_:)))
-//            self.view!.addGestureRecognizer(gestureRecognizer)
         }
         
         background = childNode(withName: "background") as! SKSpriteNode
@@ -342,25 +340,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
     }
     
-//    func handlePanFrom(_ recognizer : UIPanGestureRecognizer) {
-//        
-//        if recognizer.state == .began {
-//            var touchLocation = recognizer.location(in: recognizer.view)
-//            touchLocation = self.convertPoint(fromView: touchLocation)
-//            
-//            self.selectPortalForTouch(touchLocation)
-//        } else if recognizer.state == .changed {
-//            var translation = recognizer.translation(in: recognizer.view!)
-//            translation = CGPoint(x: translation.x, y: -translation.y)
-//            
-//            self.panForTranslation(translation)
-//            
-//            recognizer.setTranslation(CGPoint.zero, in: recognizer.view)
-//        } else if recognizer.state == .ended {
-//            // If it ended
-//        }
-//    }
-    
     func degToRad(_ degree: Double) -> CGFloat {
         return CGFloat(degree / 180.0 * M_PI)
     }
@@ -374,13 +353,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             if touchedNode == bluePortalDrag{
                 portal1.position = touchLocation
                 currentMovingPortal = portal1
+                bluePortalDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
+                bluePortalHasBeenPlaced = true
             }
             if touchedNode == yellowPortalDrag{
                 portal2.position = touchLocation
                 currentMovingPortal = portal2
+                yellowPortalDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
+                yellowPortalHasBeenPlaced = true
             }
         }
     }
+    
     func boundLayerPos(_ aNewPosition : CGPoint) -> CGPoint {
         let winSize = self.size
         var retval = aNewPosition
@@ -403,10 +387,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if UserDefaults.standard.integer(forKey: "currentLevel") == 3 && gameState == .playing{
             print("touching portal 1")
             let touch = touches.first!
             let positionInScene = touch.location(in: self)
             selectPortalForTouch(positionInScene)
+        }
+            
 
         if gameState == .playing {
             func shouldStartDragging(touchLocation:CGPoint, threshold: CGFloat) -> Bool {
@@ -516,9 +503,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         if contactA.categoryBitMask == 4 || contactB.categoryBitMask == 4{
             if contactA.categoryBitMask != 4{
                 teleportBallA(node: nodeA)
+                if UserDefaults.standard.integer(forKey: "currentLevel") == 3 {
+                    if yellowPortalHasBeenPlaced == false {
+                        gameState = .gameOver
+                    }
+                }
             }
             if contactB.categoryBitMask != 4{
                 teleportBallA(node: nodeB)
+                if UserDefaults.standard.integer(forKey: "currentLevel") == 3 {
+                    if yellowPortalHasBeenPlaced == false {
+                        gameState = .gameOver
+                    }
+                }
             }
         }
         if contactA.categoryBitMask == 16 || contactB.categoryBitMask == 16{
