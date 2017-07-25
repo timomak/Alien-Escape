@@ -65,7 +65,7 @@ class MainMenu: SKScene{
         scene.scaleMode = .aspectFit
         
         /* Show debug */
-        skView.showsPhysics = false
+        skView.showsPhysics = true
         skView.showsDrawCount = true
         skView.showsFPS = true
         

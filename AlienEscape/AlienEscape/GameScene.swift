@@ -8,23 +8,6 @@
 
 // print(#file, #function, #line)
 
-// TODO: Sound effects and Music
-// TODO: Animations
-// TODO: MainMenu Animation
-// TODO: Laser gun with the right angle
-// TODO: Dotted line
-// TODO: Win animation
-// TODO: Secret levels based on number of collected stars
-// TODO: Change start button
-// TODO: Allow placement of portals
-// TODO: Buy systems for the lifes or ads or sharing on social Media
-// TODO: Change UI system Completely
-// TODO: Raplace Slingshot with alien "stuff"
-// TODO: Improve Game over (add animation GTA style [wasted])
-// TODO: Add interchangeble items
-// TODO: For Loop the level select
-
-
 import SpriteKit
 
 func clamp<T: Comparable>(value: T, lower: T, upper: T) -> T {
@@ -63,7 +46,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var fieldNodeSize: SKSpriteNode!
     
     var gameOverSign: MSButtonNode!
-    // MARK: Next Level Menu
     var starOne :SKSpriteNode!
     var starTwo :SKSpriteNode!
     var starThree :SKSpriteNode!
@@ -89,7 +71,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var alien: SKSpriteNode!
     var inGameMenu: MSButtonNode!
     
-    // Sets Projectile as an Image
     var projectile: spear!
     
     //Touch dragging vars
@@ -125,6 +106,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var bluePortalHasBeenPlaced = false
     var yellowPortalHasBeenPlaced = false
     
+    var vortexDrag: SKSpriteNode!
+    
+    var levelWithExtraPortals = [9]
+    var levelWithVortex = [4,5,7]
+    var levelWithDraggablePortals = [3,5]
+    var levelWithDraggableVortex = [5]
+    var levelWithMovingCameraFromAtoB = [6,7]
+    var levelWithMovableCameraInXAxis = [8,9]
+    var levelWithMovableCameraInYAxis = [9]
+    
     func cameraMove() {
         guard let cameraTarget = cameraTarget else {
             return
@@ -133,7 +124,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let x = clamp(value: targetX, lower: 240, upper: 600)
         cameraNode.position.x = x
         
-        if UserDefaults.standard.integer(forKey: "currentLevel") == 8 {
+        // MARK: Chapter 3
+        if levelWithMovableCameraInYAxis.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
             let targetY = cameraTarget.position.y
             let y = clamp(value: targetY, lower: 128, upper: 400)
             cameraNode.position.y = y
@@ -156,20 +148,38 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         inGameMenu = childNode(withName: "//inGameMenu") as! MSButtonNode
         cameraNode = childNode(withName: "cameraNode") as! SKCameraNode
         // rayGun = childNode(withName: "rayGun") as! SKSpriteNode
+        
         portal1 = childNode(withName: "portal_1") as! SKSpriteNode
         portal2 = childNode(withName: "portal_2") as! SKSpriteNode
         
-        if UserDefaults.standard.integer(forKey: "currentLevel") == 8 || UserDefaults.standard.integer(forKey: "currentLevel") == 3{
+        // MARK: Extra Portals
+        if levelWithExtraPortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
             portalA = childNode(withName: "portal_A") as! SKSpriteNode
             portalB = childNode(withName: "portal_B") as! SKSpriteNode
         }
-        if UserDefaults.standard.integer(forKey: "currentLevel") == 3 {
+        
+        // MARK: Draggable Portals
+        if levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
             
             bluePortalDrag = childNode(withName: "//bluePortalDrag") as! SKSpriteNode
             yellowPortalDrag = childNode(withName: "//yellowPortalDrag") as! SKSpriteNode
 
             bluePortalDrag.isHidden = true
             yellowPortalDrag.isHidden = true
+        }
+        
+        // MARK: Vortexes
+        if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+            
+            springField = childNode(withName: "springField") as! SKFieldNode
+            fieldNodeSize = childNode(withName: "fieldNodeSize") as! SKSpriteNode
+            springField.region = SKRegion(size: fieldNodeSize.size)
+        }
+        
+        // MARK: Draggable Vortex
+        if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+            vortexDrag = childNode(withName: "//vortexDrag") as! SKSpriteNode
+            vortexDrag.isHidden = true
         }
         
         background = childNode(withName: "background") as! SKSpriteNode
@@ -186,15 +196,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         gameOverSign = childNode(withName: "//gameOverSign") as! MSButtonNode
         levelSelectButton = childNode(withName: "levelSelectButton") as! MSButtonNode
         
-        if UserDefaults.standard.integer(forKey: "currentLevel") == 4 || UserDefaults.standard.integer(forKey: "currentLevel") == 6{
-            springField = childNode(withName: "springField") as! SKFieldNode
-            fieldNodeSize = childNode(withName: "fieldNodeSize") as! SKSpriteNode
-            springField.region = SKRegion(size: fieldNodeSize.size)
-        }
-        
-        
         lifeCounter = childNode(withName: "//lifeCounter") as! SKLabelNode
-        
         
         let numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes")
         
@@ -225,7 +227,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             scene.scaleMode = .aspectFit
             
             /* Show debug */
-            skView.showsPhysics = false
+            skView.showsPhysics = true
             skView.showsDrawCount = true
             skView.showsFPS = true
             
@@ -309,12 +311,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             cameraNode.run(cameraSequence)
             cameraTarget = nil
         }
-        
-        if UserDefaults.standard.integer(forKey: "currentLevel") > 4 {
+        // MARK: End of Chapter 1
+        if levelWithMovingCameraFromAtoB.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithMovableCameraInXAxis.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithMovableCameraInYAxis.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
             background.position.x = cameraNode.position.x
         }
-        
-        if UserDefaults.standard.integer(forKey: "currentLevel") > 6 {
+        // MARK: End of chapter 2
+        if levelWithMovableCameraInXAxis.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithMovableCameraInYAxis.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
             cameraMove()
         }
         if physicsWorld.speed == 1 {
@@ -346,10 +348,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     func selectPortalForTouch(_ touchLocation : CGPoint) {
         let touchedNode = self.atPoint(touchLocation)
-        
         if touchedNode is SKSpriteNode {
-            
-            
             if touchedNode == bluePortalDrag{
                 portal1.position = touchLocation
                 currentMovingPortal = portal1
@@ -365,6 +364,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
     }
     
+    func selectVortexForTouch(_ touchLocation : CGPoint) {
+        
+        let touchedNode = self.atPoint(touchLocation)
+        
+        if touchedNode is SKSpriteNode {
+            
+            if touchedNode == vortexDrag{
+                springField.position = touchLocation
+                fieldNodeSize.position = vortexDrag.position
+                currentMovingPortal = fieldNodeSize
+                vortexDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
+                // bluePortalHasBeenPlaced = true
+            }
+        }
+    }
+    
     func boundLayerPos(_ aNewPosition : CGPoint) -> CGPoint {
         let winSize = self.size
         var retval = aNewPosition
@@ -376,24 +391,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     func panForTranslation(_ translation : CGPoint) {
-        if currentMovingPortal == portal1 {
-            let position = portal1.position
-            portal1.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
-        }
-        if currentMovingPortal == portal2 {
-            let position = portal2.position
-            portal2.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+        if gameState == .playing {
+            if currentMovingPortal == portal1 {
+                let position = portal1.position
+                portal1.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+            }
+            else if currentMovingPortal == portal2 {
+                let position = portal2.position
+                portal2.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+            }
+            if  levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+                if currentMovingPortal == fieldNodeSize {
+                    fieldNodeSize.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+                    springField.position = fieldNodeSize.position
+                }
+            }
         }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if UserDefaults.standard.integer(forKey: "currentLevel") == 3 && gameState == .playing{
+        // MARK: Draggable objects setup
+        if  levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) && gameState == .playing {
             print("touching portal 1")
             let touch = touches.first!
             let positionInScene = touch.location(in: self)
             selectPortalForTouch(positionInScene)
+            if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+                selectVortexForTouch(positionInScene)
+            }
         }
-            
 
         if gameState == .playing {
             func shouldStartDragging(touchLocation:CGPoint, threshold: CGFloat) -> Bool {
@@ -432,7 +458,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             }
             projectile.position = touchCurrentPoint
         } else {
-            if gameState == .playing && UserDefaults.standard.integer(forKey: "currentLevel") > 6 {
+            // MARK: Code to move the camera on X-Axis
+            if gameState == .playing &&  levelWithMovableCameraInXAxis.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
                 guard let touch = touches.first else {
                     return
                 }
@@ -480,9 +507,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 trajectoryTimeOut = 0
                 released = true
                 self.physicsWorld.speed = 0.2
-                if UserDefaults.standard.integer(forKey: "currentLevel") == 3 {
+                // MARK: Dragging Portals made visible
+                if  levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
                     bluePortalDrag.isHidden = false
                     yellowPortalDrag.isHidden = false
+                }
+                if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+                    vortexDrag.isHidden = false
                 }
             } else {
                 projectile.physicsBody = nil
@@ -503,7 +534,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         if contactA.categoryBitMask == 4 || contactB.categoryBitMask == 4{
             if contactA.categoryBitMask != 4{
                 teleportBallA(node: nodeA)
-                if UserDefaults.standard.integer(forKey: "currentLevel") == 3 {
+                if levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
                     if yellowPortalHasBeenPlaced == false {
                         gameState = .gameOver
                     }
@@ -511,7 +542,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             }
             if contactB.categoryBitMask != 4{
                 teleportBallA(node: nodeB)
-                if UserDefaults.standard.integer(forKey: "currentLevel") == 3 {
+                if levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
                     if yellowPortalHasBeenPlaced == false {
                         gameState = .gameOver
                     }
@@ -585,7 +616,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         let moveBall = SKAction.move(to: portalB.position, duration:0)
         node.run(moveBall)
-        if UserDefaults.standard.integer(forKey: "currentLevel") > 4 {
+        if levelWithMovingCameraFromAtoB.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
             cameraNode.position.x = 1764.218
             cameraNode.position.y = 123.14
         }
@@ -594,7 +625,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         let moveBall = SKAction.move(to: portal2.position, duration:0)
         node.run(moveBall)
-        if UserDefaults.standard.integer(forKey: "currentLevel") > 4 {
+        if levelWithMovingCameraFromAtoB.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
             cameraNode.position.x = 1764.218
             cameraNode.position.y = 123.14
         }
