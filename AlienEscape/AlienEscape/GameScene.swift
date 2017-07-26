@@ -43,7 +43,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     var springField: SKFieldNode!
-    var fieldNodeSize: SKSpriteNode!
+    var springNodeImage: SKSpriteNode!
     
     var gameOverSign: MSButtonNode!
     var starOne :SKSpriteNode!
@@ -171,9 +171,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         // MARK: Vortexes
         if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
             
-            springField = childNode(withName: "springField") as! SKFieldNode
-            fieldNodeSize = childNode(withName: "fieldNodeSize") as! SKSpriteNode
-            springField.region = SKRegion(size: fieldNodeSize.size)
+            //springField = childNode(withName: "//springField") as! SKFieldNode
+            springNodeImage = childNode(withName: "springNodeImage") as! SKSpriteNode
+            //springField.region = SKRegion(size: fieldNodeSize.size)
         }
         
         // MARK: Draggable Vortex
@@ -227,7 +227,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             scene.scaleMode = .aspectFit
             
             /* Show debug */
-            skView.showsPhysics = true
+            skView.showsPhysics = false
             skView.showsDrawCount = true
             skView.showsFPS = true
             
@@ -361,24 +361,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 yellowPortalDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
                 yellowPortalHasBeenPlaced = true
             }
-        }
-    }
-    
-    func selectVortexForTouch(_ touchLocation : CGPoint) {
-        
-        let touchedNode = self.atPoint(touchLocation)
-        
-        if touchedNode is SKSpriteNode {
-            
             if touchedNode == vortexDrag{
-                springField.position = touchLocation
-                fieldNodeSize.position = vortexDrag.position
-                currentMovingPortal = fieldNodeSize
+                //                springField.position = touchLocation
+                //                fieldNodeSize.position.y = touchLocation.y + 1
+                //                fieldNodeSize.position.x = touchLocation.x + 1    //vortexDrag.position
+                springNodeImage.position = vortexDrag.position
+                currentMovingPortal = springNodeImage
                 vortexDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
-                // bluePortalHasBeenPlaced = true
+                //vortexHasBeenPlaced = true
             }
         }
     }
+    
+//    func selectVortexForTouch(_ touchLocation : CGPoint) {
+//        let touchedNode = self.atPoint(touchLocation)
+//        print("touchLocation = \(touchLocation)")
+//        if touchedNode is SKSpriteNode {
+//            if touchedNode == vortexDrag{
+////                springField.position = touchLocation
+////                fieldNodeSize.position.y = touchLocation.y + 1
+////                fieldNodeSize.position.x = touchLocation.x + 1    //vortexDrag.position
+//                fieldNodeSize.position = touchLocation
+//                currentMovingPortal = fieldNodeSize
+//                vortexDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
+//                //vortexHasBeenPlaced = true
+//            }
+//        }
+//    }
+    
     
     func boundLayerPos(_ aNewPosition : CGPoint) -> CGPoint {
         let winSize = self.size
@@ -401,9 +411,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 portal2.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
             }
             if  levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-                if currentMovingPortal == fieldNodeSize {
-                    fieldNodeSize.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
-                    springField.position = fieldNodeSize.position
+                print("Level with draggable portal")
+                if currentMovingPortal == springNodeImage {
+                    print("currentMovingPortal == fieldNodeSize")
+                    let position = springNodeImage.position
+                    springNodeImage.position = CGPoint(x: position.x + translation.x + 1, y: position.y + translation.y + 1)
+//                    springField.position.y = fieldNodeSize.position.y + 1
+//                    springField.position.x = fieldNodeSize.position.x + 1
+                    //print("springField.position = \(springField.position)")
                 }
             }
         }
@@ -416,19 +431,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             let touch = touches.first!
             let positionInScene = touch.location(in: self)
             selectPortalForTouch(positionInScene)
-            if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-                selectVortexForTouch(positionInScene)
-            }
+//            if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+//                selectVortexForTouch(positionInScene)
+//            }
         }
 
         if gameState == .playing {
-            func shouldStartDragging(touchLocation:CGPoint, threshold: CGFloat) -> Bool {
-                let distance = fingerDistanceFromProjectileRestPosition(
-                    projectileRestPosition: Settings.Metrics.projectileRestPosition,
-                    fingerPosition: touchLocation
-                )
-                return distance < Settings.Metrics.projectileRadius + threshold
-            }
             
             if let touch = touches.first {
                 let touchLocation = touch.location(in: self)
@@ -439,6 +447,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 }
             }
         }
+    }
+    
+    func shouldStartDragging(touchLocation:CGPoint, threshold: CGFloat) -> Bool {
+        let distance = fingerDistanceFromProjectileRestPosition(
+            projectileRestPosition: Settings.Metrics.projectileRestPosition,
+            fingerPosition: touchLocation
+        )
+        return distance < Settings.Metrics.projectileRadius + threshold
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
