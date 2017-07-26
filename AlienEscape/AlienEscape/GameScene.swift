@@ -118,6 +118,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     var projectileAngularDistance: CGFloat = 0
     var vortexIsPulling = false
+    var vortexHasBeenPlaced = false
     
     func cameraMove() {
         guard let cameraTarget = cameraTarget else {
@@ -174,15 +175,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         // MARK: Vortexes
         if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
             
-            //springField = childNode(withName: "//springField") as! SKFieldNode
+            springField = childNode(withName: "//springField") as! SKFieldNode
             springNodeImage = childNode(withName: "springNodeImage") as! SKSpriteNode
-            //springField.region = SKRegion(size: fieldNodeSize.size)
+            springField.region = SKRegion(size: springNodeImage.size)
         }
         
         // MARK: Draggable Vortex
         if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
             vortexDrag = childNode(withName: "//vortexDrag") as! SKSpriteNode
             vortexDrag.isHidden = true
+            springField.isEnabled = false
         }
         
         background = childNode(withName: "background") as! SKSpriteNode
@@ -342,26 +344,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 trajectoryLine(Point: projectile.position)
             }
         }
-        if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-            if vortexIsPulling == true {
-                projectileAngularDistance = atan2(projectile.position.y - springNodeImage.position.y, projectile.position.x - springNodeImage.position.x) + CGFloat(M_1_PI / 5)
-                let dt: CGFloat = 1.0/60.0 //Delta Time
-                let period: CGFloat = 3 //Number of seconds it takes to complete 1 orbit.
-                let orbitPosition = springNodeImage.position //Point to orbit.
-                let orbitRadius = CGPoint(x: 50, y: 50) //Radius of orbit.
-                
-                let normal = CGVector(dx:orbitPosition.x + CGFloat(cos(self.projectileAngularDistance))*orbitRadius.x ,dy:orbitPosition.y + CGFloat(sin(self.projectileAngularDistance))*orbitRadius.y);
-                self.projectileAngularDistance += (CGFloat(M_PI)*2.0)/period*dt;
-                if (fabs(self.projectileAngularDistance)>CGFloat(M_PI)*2)
-                {
-                    self.projectileAngularDistance = 0
-                }
-                if released == true {
-                    projectile.physicsBody!.velocity = CGVector(dx:(normal.dx-projectile.position.x)/dt, dy:(normal.dy-projectile.position.y)/dt);
-                }
-            }
-        }
-        
+//        if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+//            if vortexIsPulling == true {
+//                projectileAngularDistance = atan2(projectile.position.y - springNodeImage.position.y, projectile.position.x - springNodeImage.position.x) + CGFloat(M_1_PI / 5)
+//                let dt: CGFloat = 1.0/60.0 //Delta Time
+//                let period: CGFloat = 3 //Number of seconds it takes to complete 1 orbit.
+//                let orbitPosition = springNodeImage.position //Point to orbit.
+//                let orbitRadius = CGPoint(x: 50, y: 50) //Radius of orbit.
+//                
+//                let normal = CGVector(dx:orbitPosition.x + CGFloat(cos(self.projectileAngularDistance))*orbitRadius.x ,dy:orbitPosition.y + CGFloat(sin(self.projectileAngularDistance))*orbitRadius.y);
+//                self.projectileAngularDistance += (CGFloat(M_PI)*2.0)/period*dt;
+//                if (fabs(self.projectileAngularDistance)>CGFloat(M_PI)*2)
+//                {
+//                    self.projectileAngularDistance = 0
+//                }
+//                if released == true {
+//                    projectile.physicsBody!.velocity = CGVector(dx:(normal.dx-projectile.position.x)/dt, dy:(normal.dy-projectile.position.y)/dt);
+//                }
+//            }
+//        }
     }
     
     func degToRad(_ degree: Double) -> CGFloat {
@@ -419,7 +420,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                     print("currentMovingPortal == fieldNodeSize")
                     let position = springNodeImage.position
                     springNodeImage.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+                    springField.position = springNodeImage.position
                     vortexIsPulling = true
+                    springField.isEnabled = true
                 }
             }
         }
@@ -502,7 +505,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        vortexIsPulling = false
+        if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+            vortexIsPulling = false
+            if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+                springField.isEnabled = false
+            }
+        }
         if projectileIsDragged {
             cameraTarget = projectile
             projectileIsDragged = false
