@@ -361,14 +361,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 yellowPortalDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
                 yellowPortalHasBeenPlaced = true
             }
-            if touchedNode == vortexDrag{
-                //                springField.position = touchLocation
-                //                fieldNodeSize.position.y = touchLocation.y + 1
-                //                fieldNodeSize.position.x = touchLocation.x + 1    //vortexDrag.position
-                springNodeImage.position = vortexDrag.position
-                currentMovingPortal = springNodeImage
-                vortexDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
-                //vortexHasBeenPlaced = true
+            if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+                if touchedNode == vortexDrag{
+                    //                springField.position = touchLocation
+                    //                fieldNodeSize.position.y = touchLocation.y + 1
+                    //                fieldNodeSize.position.x = touchLocation.x + 1    //vortexDrag.position
+                    springNodeImage.position = vortexDrag.position
+                    currentMovingPortal = springNodeImage
+                    vortexDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
+                    //vortexHasBeenPlaced = true
+                }
             }
         }
     }
