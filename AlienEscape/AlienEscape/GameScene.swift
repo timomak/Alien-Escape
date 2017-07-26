@@ -116,6 +116,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var levelWithMovableCameraInXAxis = [8,9]
     var levelWithMovableCameraInYAxis = [9]
     
+    var projectileAngularDistance: CGFloat = 0
+    var vortexIsPulling = false
+    
     func cameraMove() {
         guard let cameraTarget = cameraTarget else {
             return
@@ -303,7 +306,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     override func update(_ currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
-        
         func cameraToCenter() {
             let cameraReset = SKAction.move(to: CGPoint(x: 239, y:camera!.position.y), duration: 1.5)
             let cameraDelay = SKAction.wait(forDuration: 0.5)
@@ -340,6 +342,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 trajectoryLine(Point: projectile.position)
             }
         }
+        if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+            if vortexIsPulling == true {
+                projectileAngularDistance = atan2(projectile.position.y - springNodeImage.position.y, projectile.position.x - springNodeImage.position.x) + CGFloat(M_1_PI / 5)
+                let dt: CGFloat = 1.0/60.0 //Delta Time
+                let period: CGFloat = 3 //Number of seconds it takes to complete 1 orbit.
+                let orbitPosition = springNodeImage.position //Point to orbit.
+                let orbitRadius = CGPoint(x: 50, y: 50) //Radius of orbit.
+                
+                let normal = CGVector(dx:orbitPosition.x + CGFloat(cos(self.projectileAngularDistance))*orbitRadius.x ,dy:orbitPosition.y + CGFloat(sin(self.projectileAngularDistance))*orbitRadius.y);
+                self.projectileAngularDistance += (CGFloat(M_PI)*2.0)/period*dt;
+                if (fabs(self.projectileAngularDistance)>CGFloat(M_PI)*2)
+                {
+                    self.projectileAngularDistance = 0
+                }
+                if released == true {
+                    projectile.physicsBody!.velocity = CGVector(dx:(normal.dx-projectile.position.x)/dt, dy:(normal.dy-projectile.position.y)/dt);
+                }
+            }
+        }
+        
     }
     
     func degToRad(_ degree: Double) -> CGFloat {
@@ -349,48 +371,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     func selectPortalForTouch(_ touchLocation : CGPoint) {
         let touchedNode = self.atPoint(touchLocation)
         if touchedNode is SKSpriteNode {
-            if touchedNode == bluePortalDrag{
+            if touchedNode == bluePortalDrag || touchedNode == portal1{
                 portal1.position = touchLocation
                 currentMovingPortal = portal1
                 bluePortalDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
                 bluePortalHasBeenPlaced = true
             }
-            if touchedNode == yellowPortalDrag{
+            if touchedNode == yellowPortalDrag || touchedNode == portal2{
                 portal2.position = touchLocation
                 currentMovingPortal = portal2
                 yellowPortalDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
                 yellowPortalHasBeenPlaced = true
             }
             if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-                if touchedNode == vortexDrag{
-                    //                springField.position = touchLocation
-                    //                fieldNodeSize.position.y = touchLocation.y + 1
-                    //                fieldNodeSize.position.x = touchLocation.x + 1    //vortexDrag.position
-                    springNodeImage.position = vortexDrag.position
+                if touchedNode == vortexDrag || touchedNode == springNodeImage {
+                    springNodeImage.position = touchLocation
                     currentMovingPortal = springNodeImage
                     vortexDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
-                    //vortexHasBeenPlaced = true
                 }
             }
         }
     }
-    
-//    func selectVortexForTouch(_ touchLocation : CGPoint) {
-//        let touchedNode = self.atPoint(touchLocation)
-//        print("touchLocation = \(touchLocation)")
-//        if touchedNode is SKSpriteNode {
-//            if touchedNode == vortexDrag{
-////                springField.position = touchLocation
-////                fieldNodeSize.position.y = touchLocation.y + 1
-////                fieldNodeSize.position.x = touchLocation.x + 1    //vortexDrag.position
-//                fieldNodeSize.position = touchLocation
-//                currentMovingPortal = fieldNodeSize
-//                vortexDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
-//                //vortexHasBeenPlaced = true
-//            }
-//        }
-//    }
-    
     
     func boundLayerPos(_ aNewPosition : CGPoint) -> CGPoint {
         let winSize = self.size
@@ -417,10 +418,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 if currentMovingPortal == springNodeImage {
                     print("currentMovingPortal == fieldNodeSize")
                     let position = springNodeImage.position
-                    springNodeImage.position = CGPoint(x: position.x + translation.x + 1, y: position.y + translation.y + 1)
-//                    springField.position.y = fieldNodeSize.position.y + 1
-//                    springField.position.x = fieldNodeSize.position.x + 1
-                    //print("springField.position = \(springField.position)")
+                    springNodeImage.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+                    vortexIsPulling = true
                 }
             }
         }
@@ -503,6 +502,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        vortexIsPulling = false
         if projectileIsDragged {
             cameraTarget = projectile
             projectileIsDragged = false
