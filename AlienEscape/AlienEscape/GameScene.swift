@@ -108,32 +108,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     var vortexDrag: SKSpriteNode!
     
-    var levelWithExtraPortals = [9]
-    var levelWithVortex = [4,5,7]
-    var levelWithDraggablePortals = [3,5]
+    var levelWithExtraPortals = [9,10]
+    var levelWithVortex = [4,5,7,10]
+    var levelWithDraggablePortals = [3]
     var levelWithDraggableVortex = [5]
     var levelWithMovingCameraFromAtoB = [6,7]
-    var levelWithMovableCameraInXAxis = [8,9]
-    var levelWithMovableCameraInYAxis = [9]
+    var levelWithMovableCameraInXAxis = [8,9,10]
+    var levelWithMovableCameraInYAxis = [8,9,10]
     
     var projectileAngularDistance: CGFloat = 0
-    var vortexIsPulling = false
+    var vortexHasBeenMoved = false
     var vortexHasBeenPlaced = false
+    var vortexIsPulling = false
+    
+    var topBorder: SKSpriteNode!
+    var rightBorder: SKSpriteNode!
     
     func cameraMove() {
         guard let cameraTarget = cameraTarget else {
             return
         }
         let targetX = cameraTarget.position.x
-        let x = clamp(value: targetX, lower: 240, upper: 600)
+        let x = clamp(value: targetX, lower: 240, upper: rightBorder.position.x - 50)
         cameraNode.position.x = x
         
         // MARK: Chapter 3
-        if levelWithMovableCameraInYAxis.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
             let targetY = cameraTarget.position.y
-            let y = clamp(value: targetY, lower: 128, upper: 400)
+            let y = clamp(value: targetY, lower: 128, upper: topBorder.position.y - 50)
             cameraNode.position.y = y
-        }
     }
     
     
@@ -178,6 +180,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             springField = childNode(withName: "//springField") as! SKFieldNode
             springNodeImage = childNode(withName: "springNodeImage") as! SKSpriteNode
             springField.region = SKRegion(size: springNodeImage.size)
+            springField.isEnabled = false
         }
         
         // MARK: Draggable Vortex
@@ -185,6 +188,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             vortexDrag = childNode(withName: "//vortexDrag") as! SKSpriteNode
             vortexDrag.isHidden = true
             springField.isEnabled = false
+        }
+        
+        // MARK: Larger Levels Borders
+        if levelWithMovableCameraInXAxis.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithMovableCameraInYAxis.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+            topBorder = childNode(withName: "topBorder") as! SKSpriteNode
+            rightBorder = childNode(withName: "rightBorder") as! SKSpriteNode
         }
         
         background = childNode(withName: "background") as! SKSpriteNode
@@ -277,8 +286,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         inGameMenu.selectedHandler = {[unowned self] in
             
             if self.gameState == .playing {
+                self.physicsWorld.speed = 0
                 self.pauseMenu.position.x = self.cameraNode.position.x
-                self.resetButton.position.x = self.cameraNode.position.x
+                self.resumeButton.position.x = self.cameraNode.position.x
                 self.levelSelectButton.position.x = self.cameraNode.position.x
                 self.resetButton.position.x = self.cameraNode.position.x
                 
@@ -293,6 +303,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             }
         }
         resumeButton.selectedHandler = {
+            self.physicsWorld.speed = 0.5
             self.pauseMenu.position.y = -430
             self.resumeButton.position.y = -340
             self.levelSelectButton.position.y = -440
@@ -344,25 +355,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 trajectoryLine(Point: projectile.position)
             }
         }
-//        if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-//            if vortexIsPulling == true {
-//                projectileAngularDistance = atan2(projectile.position.y - springNodeImage.position.y, projectile.position.x - springNodeImage.position.x) + CGFloat(M_1_PI / 5)
-//                let dt: CGFloat = 1.0/60.0 //Delta Time
-//                let period: CGFloat = 3 //Number of seconds it takes to complete 1 orbit.
-//                let orbitPosition = springNodeImage.position //Point to orbit.
-//                let orbitRadius = CGPoint(x: 50, y: 50) //Radius of orbit.
-//                
-//                let normal = CGVector(dx:orbitPosition.x + CGFloat(cos(self.projectileAngularDistance))*orbitRadius.x ,dy:orbitPosition.y + CGFloat(sin(self.projectileAngularDistance))*orbitRadius.y);
-//                self.projectileAngularDistance += (CGFloat(M_PI)*2.0)/period*dt;
-//                if (fabs(self.projectileAngularDistance)>CGFloat(M_PI)*2)
-//                {
-//                    self.projectileAngularDistance = 0
-//                }
-//                if released == true {
-//                    projectile.physicsBody!.velocity = CGVector(dx:(normal.dx-projectile.position.x)/dt, dy:(normal.dy-projectile.position.y)/dt);
-//                }
-//            }
-//        }
     }
     
     func degToRad(_ degree: Double) -> CGFloat {
@@ -372,23 +364,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     func selectPortalForTouch(_ touchLocation : CGPoint) {
         let touchedNode = self.atPoint(touchLocation)
         if touchedNode is SKSpriteNode {
-            if touchedNode == bluePortalDrag || touchedNode == portal1{
-                portal1.position = touchLocation
-                currentMovingPortal = portal1
-                bluePortalDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
-                bluePortalHasBeenPlaced = true
-            }
-            if touchedNode == yellowPortalDrag || touchedNode == portal2{
-                portal2.position = touchLocation
-                currentMovingPortal = portal2
-                yellowPortalDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
-                yellowPortalHasBeenPlaced = true
+            if levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+                if touchedNode == bluePortalDrag || touchedNode == portal1{
+                    portal1.position = touchLocation
+                    currentMovingPortal = portal1
+                    bluePortalDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
+                    bluePortalHasBeenPlaced = true
+                }
+                if touchedNode == yellowPortalDrag || touchedNode == portal2{
+                    portal2.position = touchLocation
+                    currentMovingPortal = portal2
+                    yellowPortalDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
+                    yellowPortalHasBeenPlaced = true
+                }
             }
             if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
                 if touchedNode == vortexDrag || touchedNode == springNodeImage {
-                    springNodeImage.position = touchLocation
-                    currentMovingPortal = springNodeImage
-                    vortexDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
+                    if vortexHasBeenPlaced == false {
+                        springNodeImage.position = touchLocation
+                        currentMovingPortal = springNodeImage
+                        vortexDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
+                    }
+                }
+            }
+            if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+                if touchedNode == springNodeImage {
+                        currentMovingPortal = springNodeImage
                 }
             }
         }
@@ -414,15 +415,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 let position = portal2.position
                 portal2.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
             }
-            if  levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-                print("Level with draggable portal")
+            if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
                 if currentMovingPortal == springNodeImage {
-                    print("currentMovingPortal == fieldNodeSize")
-                    let position = springNodeImage.position
-                    springNodeImage.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
-                    springField.position = springNodeImage.position
-                    vortexIsPulling = true
                     springField.isEnabled = true
+                    if vortexHasBeenPlaced == false {
+                        let position = springNodeImage.position
+                        springNodeImage.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+                        springField.position = springNodeImage.position
+                        vortexIsPulling = true
+                        vortexHasBeenMoved = true
+                    }
+                }
+            }
+            if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+                if currentMovingPortal == springNodeImage {
+                    springField.isEnabled = true
+                    vortexHasBeenMoved = true
                 }
             }
         }
@@ -430,18 +438,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         // MARK: Draggable objects setup
-        if  levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) && gameState == .playing {
-            print("touching portal 1")
-            let touch = touches.first!
-            let positionInScene = touch.location(in: self)
-            selectPortalForTouch(positionInScene)
-//            if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-//                selectVortexForTouch(positionInScene)
-//            }
-        }
-
         if gameState == .playing {
-            
+            if  levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+                let touch = touches.first!
+                let positionInScene = touch.location(in: self)
+                selectPortalForTouch(positionInScene)
+            }
+        }
+        if gameState == .playing {
             if let touch = touches.first {
                 let touchLocation = touch.location(in: self)
                 if !projectileIsDragged && shouldStartDragging(touchLocation: touchLocation, threshold: Settings.Metrics.projectileTouchThreshold)  {
@@ -505,10 +509,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-            vortexIsPulling = false
-            if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+        if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")){
+            if vortexHasBeenMoved == true {
                 springField.isEnabled = false
+                vortexHasBeenPlaced = true
             }
         }
         if projectileIsDragged {
@@ -532,7 +536,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 )
                 trajectoryTimeOut = 0
                 released = true
-                self.physicsWorld.speed = 0.2
+                if levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+                    self.physicsWorld.speed = 0.37
+                } else{
+                    self.physicsWorld.speed = 0.5
+                }
                 // MARK: Dragging Portals made visible
                 if  levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
                     bluePortalDrag.isHidden = false

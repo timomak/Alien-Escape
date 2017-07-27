@@ -30,15 +30,7 @@ var lifeCounter: SKLabelNode!
 var levelGerator = [1: level1, 2: level2, 3: level3,4: level4, 5: level5,6: level6,7: level7, 8: level8]
 
 class LevelSelect: SKScene {
-    
-    //    func createNewLevel(){
-    //        i += 1
-    //        let newLevel = level1.copy() as! MSButtonNode
-    //        newLevel.position.x = level1.position.x + 85
-    //        newLevel.position.y = 0
-    //        addChild(newLevel)
-    //    }
-    
+
     override func didMove(to view: SKView) {
         
         mainManu = childNode(withName: "mainMenuButton") as! MSButtonNode
@@ -46,12 +38,10 @@ class LevelSelect: SKScene {
         starCounter = childNode(withName: "//starCounter") as! SKLabelNode
         lifeCounter = childNode(withName: "//lifeCounter") as! SKLabelNode
         
-        
         print("Your checkpoint in level select: \(UserDefaults.standard.integer(forKey: "checkpoint"))")
         var lastCompletedLevel = 1
         for i in 1...(UserDefaults.standard.integer(forKey: "checkpoint") + 1) {
             let levelNumber = String(i)
-            
             levelGerator[i] = childNode(withName: "level\(i)") as! MSButtonNode
             
             if UserDefaults.standard.integer(forKey: levelNumber) == 0{
