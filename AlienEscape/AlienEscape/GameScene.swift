@@ -45,7 +45,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var springField: SKFieldNode!
     var springNodeImage: SKSpriteNode!
     
-    var gameOverSign: MSButtonNode!
     var starOne :SKSpriteNode!
     var starTwo :SKSpriteNode!
     var starThree :SKSpriteNode!
@@ -103,13 +102,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     var vortexDrag: SKSpriteNode!
     
-    var levelWithExtraPortals = [9,10,11]
-    var levelWithVortex = [4,5,7,10,11]
+    var levelWithExtraPortals = [9,10,11,12]
+    var levelWithVortex = [4,5,7,10,11,12]
     var levelWithDraggablePortals = [3]
     var levelWithDraggableVortex = [5]
     var levelWithMovingCameraFromAtoB = [6,7]
-    var levelWithMovableCameraInXAxis = [8,9,10,11]
-    var levelWithMovableCameraInYAxis = [8,9,10,11]
+    var levelWithMovableCameraInXAxis = [8,9,10,11,12]
+    var levelWithMovableCameraInYAxis = [8,9,10,11,12]
     
     var projectileAngularDistance: CGFloat = 0
     var vortexHasBeenMoved = false
@@ -201,7 +200,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         winMenu = childNode(withName: "winMenu") as! SKSpriteNode
         nextLevelButton = childNode(withName: "//nextLevelButton") as! MSButtonNode
-        gameOverSign = childNode(withName: "//gameOverSign") as! MSButtonNode
         levelSelectButton = childNode(withName: "levelSelectButton") as! MSButtonNode
         
         lifeCounter = childNode(withName: "//lifeCounter") as! SKLabelNode
@@ -251,15 +249,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             view.presentScene(scene)
         }
         
-        gameOverSign.selectedHandler = {
-            guard let scene = GameScene.level(self.currentLevel) else {
-                print("Level 1 is missing?")
-                return
-            }
-            scene.currentLevel = self.currentLevel
-            scene.scaleMode = .aspectFit
-            view.presentScene(scene)
-        }
         nextLevelButton.selectedHandler = {
             self.lastLevel = UserDefaults.standard.integer(forKey: "checkpoint") + 1
             UserDefaults.standard.set(self.currentLevel + 1, forKey: "currentLevel")
@@ -288,7 +277,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 self.levelSelectButton.position.y = (self.cameraNode.position.y - 123.14) + 140
                 self.resetButton.position.y = (self.cameraNode.position.y - 123.14) + 40
                 self.inGameMenu.isHidden = true
-                self.gameOverSign.isHidden = true
                 self.gameState = .paused
             }
         }
@@ -302,7 +290,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             self.inGameMenu.isHidden = false
         }
         setupSlingshot()
-        gameOverSign.isHidden = true
     }
     
     override func update(_ currentTime: CFTimeInterval) {
