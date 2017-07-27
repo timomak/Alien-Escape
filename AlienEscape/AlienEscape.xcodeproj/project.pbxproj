@@ -15,6 +15,9 @@
 		F30838661F22B924004BD63F /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F30838651F22B924004BD63F /* StoreKit.framework */; };
 		F30838681F22B92D004BD63F /* GameplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F30838671F22B92D004BD63F /* GameplayKit.framework */; };
 		F308B55D1F2A60990050EC81 /* Level_10.sks in Resources */ = {isa = PBXBuildFile; fileRef = F308B55C1F2A60990050EC81 /* Level_10.sks */; };
+		F308B55F1F2AA3930050EC81 /* Level_11.sks in Resources */ = {isa = PBXBuildFile; fileRef = F308B55E1F2AA3930050EC81 /* Level_11.sks */; };
+		F308B5611F2AA85E0050EC81 /* Level_12.sks in Resources */ = {isa = PBXBuildFile; fileRef = F308B5601F2AA85E0050EC81 /* Level_12.sks */; };
+		F308B5631F2AA94D0050EC81 /* Level_TEST.sks in Resources */ = {isa = PBXBuildFile; fileRef = F308B5621F2AA94D0050EC81 /* Level_TEST.sks */; };
 		F3155F391F1832F500B9C387 /* Level_3.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3155F381F1832F500B9C387 /* Level_3.sks */; };
 		F3165B631F06C8D200A7BD96 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3165B621F06C8D200A7BD96 /* AppDelegate.swift */; };
 		F3165B651F06C8D200A7BD96 /* MainMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3165B641F06C8D200A7BD96 /* MainMenu.sks */; };
@@ -313,6 +316,9 @@
 		F30838671F22B92D004BD63F /* GameplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameplayKit.framework; path = System/Library/Frameworks/GameplayKit.framework; sourceTree = SDKROOT; };
 		F30838691F22B94D004BD63F /* AlienEscape-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AlienEscape-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		F308B55C1F2A60990050EC81 /* Level_10.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level_10.sks; sourceTree = "<group>"; };
+		F308B55E1F2AA3930050EC81 /* Level_11.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level_11.sks; sourceTree = "<group>"; };
+		F308B5601F2AA85E0050EC81 /* Level_12.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level_12.sks; sourceTree = "<group>"; };
+		F308B5621F2AA94D0050EC81 /* Level_TEST.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level_TEST.sks; sourceTree = "<group>"; };
 		F3155F381F1832F500B9C387 /* Level_3.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Level_3.sks; path = alien_dark_gray/Level_3.sks; sourceTree = "<group>"; };
 		F3165B5F1F06C8D200A7BD96 /* AlienEscape.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlienEscape.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3165B621F06C8D200A7BD96 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -767,6 +773,9 @@
 				F3411CF41F1978FA0046DC5F /* Level_8.sks */,
 				F3BEB69B1F1D544D0016F385 /* Level_9.sks */,
 				F308B55C1F2A60990050EC81 /* Level_10.sks */,
+				F308B55E1F2AA3930050EC81 /* Level_11.sks */,
+				F308B5601F2AA85E0050EC81 /* Level_12.sks */,
+				F308B5621F2AA94D0050EC81 /* Level_TEST.sks */,
 			);
 			name = Scenes;
 			sourceTree = "<group>";
@@ -1166,6 +1175,7 @@
 				F3C7C77F1F1039A100B859F2 /* r_run_6.png in Resources */,
 				F3FAC3A31F1D7941009F47AC /* Level_7.sks in Resources */,
 				F3C7C7401F1039A100B859F2 /* r_death_14.png in Resources */,
+				F308B5631F2AA94D0050EC81 /* Level_TEST.sks in Resources */,
 				F3C7C74E1F1039A100B859F2 /* r_hit_2.png in Resources */,
 				F3C7C79D1F1039A100B859F2 /* r_stand_shoot.png in Resources */,
 				F3FAC3FC1F1D7F12009F47AC /* green__0041_fire_7.png in Resources */,
@@ -1236,6 +1246,7 @@
 				F3C7C7811F1039A100B859F2 /* r_run_8.png in Resources */,
 				F3FAC3E01F1D7F12009F47AC /* green__0013_run_2.png in Resources */,
 				F3C7C7471F1039A100B859F2 /* r_death_6.png in Resources */,
+				F308B55F1F2AA3930050EC81 /* Level_11.sks in Resources */,
 				F3FAC3D41F1D7F12009F47AC /* green__0001_idle_2.png in Resources */,
 				F3C7C78D1F1039A100B859F2 /* r_run_shoot_4.png in Resources */,
 				F3FAC3F31F1D7F12009F47AC /* green__0032_attack_2.png in Resources */,
@@ -1264,6 +1275,7 @@
 				F3FAC3FE1F1D7F12009F47AC /* green__0043_fire_9.png in Resources */,
 				F31CE2021F0EAAFF00A14038 /* destruction_air_04.png in Resources */,
 				F32830061F14113F00CB0A9D /* lazer_15_Purple.png in Resources */,
+				F308B5611F2AA85E0050EC81 /* Level_12.sks in Resources */,
 				F3C7C7431F1039A100B859F2 /* r_death_2.png in Resources */,
 				F39ECB241F0AC3F500EDE3D5 /* darkgray__0013_run_2.png in Resources */,
 				F39ECB371F0AC3F500EDE3D5 /* darkgray__0032_attack_2.png in Resources */,

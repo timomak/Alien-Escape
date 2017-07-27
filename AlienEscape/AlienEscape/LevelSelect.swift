@@ -16,6 +16,11 @@ var level5: MSButtonNode!
 var level6: MSButtonNode!
 var level7: MSButtonNode!
 var level8: MSButtonNode!
+var level9: MSButtonNode!
+var level10: MSButtonNode!
+var level11: MSButtonNode!
+var level12: MSButtonNode!
+
 
 var mainManu: MSButtonNode!
 var star_1: SKSpriteNode!
@@ -27,7 +32,7 @@ var numberOfStars = 0
 
 var lifeCounter: SKLabelNode!
 
-var levelGerator = [1: level1, 2: level2, 3: level3,4: level4, 5: level5,6: level6,7: level7, 8: level8]
+var levelGerator = [1: level1, 2: level2, 3: level3,4: level4, 5: level5,6: level6,7: level7, 8: level8, 9: level9, 10: level10, 11: level11, 12: level12]
 
 class LevelSelect: SKScene {
 
@@ -42,7 +47,7 @@ class LevelSelect: SKScene {
         var lastCompletedLevel = 1
         for i in 1...(UserDefaults.standard.integer(forKey: "checkpoint") + 1) {
             let levelNumber = String(i)
-            levelGerator[i] = childNode(withName: "level\(i)") as! MSButtonNode
+            levelGerator[i] = childNode(withName: "level\(i)") as? MSButtonNode
             
             if UserDefaults.standard.integer(forKey: levelNumber) == 0{
                 levelGerator[i]!?.childNode(withName: "star_1")?.isHidden = true
@@ -88,7 +93,6 @@ class LevelSelect: SKScene {
             }
             numberOfStars = numberOfStarz
         }
-        print("Number of total stars: \(numberOfStars)")
         countTheNumberOfStars()
 
         let numberOfLifes = UserDefaults.standard.integer(forKey: "numberOfLifes")

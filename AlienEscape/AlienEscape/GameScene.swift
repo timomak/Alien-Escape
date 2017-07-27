@@ -85,17 +85,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var currentLevel = 1
     
     var levelScore = [ 0: 0]
-    //    var dotPositionX = [ 0.0: CGFloat()]
-    //    var dotPositionY = [ 0.0: CGFloat()]
     
     var lastLevel = 1
     var winCount = 1
     
     var lifeCounter: SKLabelNode!
-    
-    //    var dotX = 0.0
-    //    var dotY = 1.0
-    
+
     var released = false
     
     var projectileBox: Projectile!
@@ -108,13 +103,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     var vortexDrag: SKSpriteNode!
     
-    var levelWithExtraPortals = [9,10]
-    var levelWithVortex = [4,5,7,10]
+    var levelWithExtraPortals = [9,10,11]
+    var levelWithVortex = [4,5,7,10,11]
     var levelWithDraggablePortals = [3]
     var levelWithDraggableVortex = [5]
     var levelWithMovingCameraFromAtoB = [6,7]
-    var levelWithMovableCameraInXAxis = [8,9,10]
-    var levelWithMovableCameraInYAxis = [8,9,10]
+    var levelWithMovableCameraInXAxis = [8,9,10,11]
+    var levelWithMovableCameraInYAxis = [8,9,10,11]
     
     var projectileAngularDistance: CGFloat = 0
     var vortexHasBeenMoved = false
@@ -129,16 +124,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             return
         }
         let targetX = cameraTarget.position.x
-        let x = clamp(value: targetX, lower: 240, upper: rightBorder.position.x - 50)
+        let x = clamp(value: targetX, lower: 240, upper: rightBorder.position.x - 550)
         cameraNode.position.x = x
         
         // MARK: Chapter 3
             let targetY = cameraTarget.position.y
-            let y = clamp(value: targetY, lower: 128, upper: topBorder.position.y - 50)
+            let y = clamp(value: targetY, lower: 128, upper: topBorder.position.y - 320)
             cameraNode.position.y = y
     }
-    
-    
+
     // MARK: Loading Levels
     class func level(_ currentLevel: Int) -> GameScene? {
         guard let scene = GameScene(fileNamed: "Level_\(currentLevel)") else {
@@ -220,8 +214,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         self.camera = cameraNode
         
-        // drawTrajectory()
-        
         print("Checkpoint: ",UserDefaults.standard.integer(forKey: "checkpoint"))
         
         levelSelectButton.selectedHandler = {
@@ -284,7 +276,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         
         inGameMenu.selectedHandler = {[unowned self] in
-            
             if self.gameState == .playing {
                 self.physicsWorld.speed = 0
                 self.pauseMenu.position.x = self.cameraNode.position.x
@@ -292,11 +283,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 self.levelSelectButton.position.x = self.cameraNode.position.x
                 self.resetButton.position.x = self.cameraNode.position.x
                 
-                
-                self.pauseMenu.position.y = 150
-                self.resumeButton.position.y = 240
-                self.levelSelectButton.position.y = 140
-                self.resetButton.position.y = 40
+                self.pauseMenu.position.y = (self.cameraNode.position.y - 123.14) + 150
+                self.resumeButton.position.y = (self.cameraNode.position.y - 123.14) + 240
+                self.levelSelectButton.position.y = (self.cameraNode.position.y - 123.14) + 140
+                self.resetButton.position.y = (self.cameraNode.position.y - 123.14) + 40
                 self.inGameMenu.isHidden = true
                 self.gameOverSign.isHidden = true
                 self.gameState = .paused
@@ -311,10 +301,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             self.gameState = .playing
             self.inGameMenu.isHidden = false
         }
-        
         setupSlingshot()
         gameOverSign.isHidden = true
-        
     }
     
     override func update(_ currentTime: CFTimeInterval) {
@@ -388,8 +376,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 }
             }
             if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-                if touchedNode == springNodeImage {
+                if touchedNode == springNodeImage || touchedNode == background {
                         currentMovingPortal = springNodeImage
+                    print("The node that is being touched is: \(touchedNode)")
+                    print("Current moving portal: \(currentMovingPortal)")
                 }
             }
         }
@@ -430,6 +420,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
                 if currentMovingPortal == springNodeImage {
                     springField.isEnabled = true
+                    print("Spring Field is Enabled == \(springField.isEnabled)")
                     vortexHasBeenMoved = true
                 }
             }
@@ -483,28 +474,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             projectile.position = touchCurrentPoint
         } else {
             // MARK: Code to move the camera on X-Axis
-            if gameState == .playing &&  levelWithMovableCameraInXAxis.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-                guard let touch = touches.first else {
-                    return
-                }
-                let location = touch.location(in: self)
-                let previousLocation = touch.previousLocation(in: self)
-                
+            if levelWithMovableCameraInXAxis.contains(UserDefaults.standard.integer(forKey: "currentLevel")) && gameState == .playing && released == false {
+                let touch = touches.first
+                let location = touch?.location(in: self)
+                let previousLocation = touch?.previousLocation(in: self)
                 let targetX = cameraNode.position.x
-                let x = clamp(value: targetX, lower: 239, upper: 600)
+                let x = clamp(value: targetX, lower: 240, upper: rightBorder.position.x - 550)
                 cameraNode.position.x = x
-                if cameraNode.position.x != x {
-                    cameraNode.position.x = x
-                } else {
-                    camera?.position.x += (location.x - previousLocation.x) * -1
-                }
+                let targetY = cameraNode.position.y
+                let y = clamp(value: targetY, lower: 128, upper: topBorder.position.y - 320)
+                cameraNode.position.y = y
+                camera?.position.x += ((location?.x)! - (previousLocation?.x)!) * -1
+                camera?.position.y += ((location?.y)! - (previousLocation?.y)!) * -1
             }
-            let touch = touches.first!
-            let positionInScene = touch.location(in: self)
-            let previousPosition = touch.previousLocation(in: self)
-            let translation = CGPoint(x: positionInScene.x - previousPosition.x, y: positionInScene.y - previousPosition.y)
-            
-            panForTranslation(translation)
+            if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")){
+                let touch = touches.first!
+                let positionInScene = touch.location(in: self)
+                let previousPosition = touch.previousLocation(in: self)
+                let translation = CGPoint(x: positionInScene.x - previousPosition.x, y: positionInScene.y - previousPosition.y)
+                
+                panForTranslation(translation)
+            }
         }
     }
     
@@ -538,9 +528,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 released = true
                 if levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
                     self.physicsWorld.speed = 0.37
-                } else{
+                } else {
                     self.physicsWorld.speed = 0.5
                 }
+                
                 // MARK: Dragging Portals made visible
                 if  levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
                     bluePortalDrag.isHidden = false
@@ -716,8 +707,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     struct Settings {
         struct Metrics {
-            static let projectileRadius = CGFloat(68)
-            static let projectileRestPosition = CGPoint(x: -120, y: 0)
+            static let projectileRadius = CGFloat(56)
+            static let projectileRestPosition = CGPoint(x: -120, y: 30)
             static let projectileTouchThreshold = CGFloat(10)
             static let projectileSnapLimit = CGFloat(10)
             static let forceMultiplier = CGFloat(1.0)
@@ -730,7 +721,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     func setupSlingshot() {
         let slingshot_1 = SKSpriteNode(imageNamed: "slingshot_1")
-        slingshot_1.position = CGPoint(x: -120, y: -50)
+        slingshot_1.position = CGPoint(x: -120, y: -20)
         addChild(slingshot_1)
         slingshot_1.isHidden = false
         
@@ -740,13 +731,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         
         let slingshot_2 = SKSpriteNode(imageNamed: "slingshot_2")
-        slingshot_2.position = CGPoint(x: -120, y: -50)
+        slingshot_2.position = CGPoint(x: -120, y: -20)
         addChild(slingshot_2)
         slingshot_2.isHidden = false
     }
     
     func GameOver() {
         cameraTarget = nil
+        cameraNode.position.y = 123.14
         print("game Over is called")
         let numberOfLifes = UserDefaults.standard.integer(forKey: "numberOfLifes") - 1
         UserDefaults.standard.set(numberOfLifes, forKey: "numberOfLifes")
@@ -778,6 +770,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     func win() {
         cameraTarget = nil
+        cameraNode.position.y = 123.14
         starOne.alpha = 0
         starTwo.alpha = 0
         starThree.alpha = 0
@@ -857,7 +850,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             }
         }
         
-        
         let name = String(currentLevel)
         if stars > UserDefaults.standard.integer(forKey: name){
             levelScore[currentLevel] = stars
@@ -866,38 +858,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
     }
     func trajectoryLine(Point: CGPoint) {
-        //        if dotX < 0.5 {
-        //        dotX += 0.1
-        //        dotY += 0.1
-        //        }
         let point = SKSpriteNode(imageNamed: "Circle_small")
         point.position.x = Point.x
         point.position.y = Point.y
         addChild(point)
-        
-        //        let dotLabelX = String(dotX)
-        //        dotPositionX[dotX] = point.position.x
-        //        UserDefaults.standard.set(dotPositionX[dotX]!, forKey: dotLabelX)
-        //
-        //        let dotLabelY = String(dotY)
-        //        dotPositionY[dotY] = point.position.y
-        //        UserDefaults.standard.set(dotPositionY[dotY]!, forKey: dotLabelY)
-        //        UserDefaults.standard.synchronize()
     }
-    //
-    //    func drawTrajectory() {
-    //        var pointPositionX = 0.1
-    //        var pointPositionY = 1.1
-    //        for _ in 0...5 {
-    //        let Xposition = String(pointPositionX)
-    //        let Yposition = String(pointPositionY)
-    //
-    //        let point = SKSpriteNode(imageNamed: "Circle_small")
-    //        point.position.x = CGFloat(UserDefaults.standard.float(forKey: Xposition))
-    //        point.position.y = CGFloat(UserDefaults.standard.float(forKey: Yposition))
-    //        addChild(point)
-    //            pointPositionX += 0.1
-    //            pointPositionY += 0.1
-    //        }
-    //    }
 }
