@@ -7,6 +7,8 @@
 //
 
 import SpriteKit
+var cameraNode2: SKCameraNode!
+var background: SKSpriteNode!
 
 var level1: MSButtonNode!
 var level2: MSButtonNode!
@@ -38,7 +40,10 @@ class LevelSelect: SKScene {
 
     override func didMove(to view: SKView) {
         
-        mainManu = childNode(withName: "mainMenuButton") as! MSButtonNode
+        cameraNode2 = childNode(withName: "cameraNode2") as! SKCameraNode
+        background = childNode(withName: "background") as! SKSpriteNode
+        mainManu = childNode(withName: "//mainMenuButton") as! MSButtonNode
+        scene?.camera = cameraNode2
         
         starCounter = childNode(withName: "//starCounter") as! SKLabelNode
         lifeCounter = childNode(withName: "//lifeCounter") as! SKLabelNode
@@ -47,7 +52,7 @@ class LevelSelect: SKScene {
         var lastCompletedLevel = 1
         for i in 1...(UserDefaults.standard.integer(forKey: "checkpoint") + 1) {
             let levelNumber = String(i)
-            levelGerator[i] = childNode(withName: "level\(i)") as? MSButtonNode
+            levelGerator[i] = childNode(withName: "//level\(i)") as? MSButtonNode
             
             if UserDefaults.standard.integer(forKey: levelNumber) == 0{
                 levelGerator[i]!?.childNode(withName: "star_1")?.isHidden = true
@@ -124,5 +129,15 @@ class LevelSelect: SKScene {
             skView.presentScene(scene)
             
         }
+    }
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        let location = touch?.location(in: self)
+        let previousLocation = touch?.previousLocation(in: self)
+
+        let targetY = cameraNode2.position.y
+        let y = clamp(value: targetY, lower: -620, upper: -10)
+        cameraNode2.position.y = y
+        camera?.position.y += ((location?.y)! - (previousLocation?.y)!) * -1
     }
 }
