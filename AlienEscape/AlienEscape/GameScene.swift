@@ -124,6 +124,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var powerLabel: SKLabelNode!
     var angleLable: SKLabelNode!
     
+    var pointProjectileTrajectory: SKSpriteNode!
+    var projectilePredictionPoint2: SKSpriteNode!
+    
     func cameraMove() {
         guard let cameraTarget = cameraTarget else {
             return
@@ -220,6 +223,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.physicsWorld.contactDelegate = self
         
         self.camera = cameraNode
+        
+        pointProjectileTrajectory = SKSpriteNode(imageNamed: "Circle_small")
+        addChild(pointProjectileTrajectory)
+        projectilePredictionPoint2 = SKSpriteNode(imageNamed: "Circle_small")
+        addChild(projectilePredictionPoint2)
         
         levelSelectButton.selectedHandler = {
             /* 1) Grab reference to our SpriteKit view */
@@ -331,18 +339,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         gameStart += fixedDelta
         timer += fixedDelta
-        trajectoryTimeOut += fixedDelta
-        if projectile.position.x > -120 && projectile.position.x < 0 {
-            if trajectoryTimeOut > 0.06 && trajectoryTimeOut < 0.15 {
-                trajectoryLine(Point: projectile.position)
-            }
-        }
     }
     
     func radToDeg(_ radian: Double) -> CGFloat {
         return CGFloat(radian * 180.0 / M_PI)
     }
-    
     
     func selectPortalForTouch(_ touchLocation : CGPoint) {
         let touchedNode = self.atPoint(touchLocation)
@@ -379,7 +380,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             }
         }
     }
-    
     func boundLayerPos(_ aNewPosition : CGPoint) -> CGPoint {
         let winSize = self.size
         var retval = aNewPosition
@@ -389,7 +389,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         return retval
     }
-    
     func panForTranslation(_ translation : CGPoint) {
         if gameState == .playing {
             if currentMovingPortal == portal1 {
@@ -454,127 +453,146 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if projectileIsDragged {
-            if let touch = touches.first {
-                let touchLocation = touch.location(in: self)
-                let distance = fingerDistanceFromProjectileRestPosition(projectileRestPosition: touchLocation, fingerPosition: touchStartingPoint)
-                // TODO: Highpotenuese calculation for power
-                var power = (distance/75) * 100
-                if power > 100 {
-                    power = 100
-                }
-                let vectorX = touchStartingPoint.x - touchCurrentPoint.x
-                let vectorY = touchStartingPoint.y - touchCurrentPoint.y
-                
-                let angleRad = atan(vectorY / vectorX)
-                let angleDeg = radToDeg(Double(angleRad))
-                var angle = angleDeg
-                
-                if touchCurrentPoint.x > touchStartingPoint.x {
-                    print("the X is greater")
-                    angle = angle + 180
-                    if touchCurrentPoint.y < touchStartingPoint.y {
-                        print("the Y is Less")
-                    } else if touchCurrentPoint.y > touchStartingPoint.y {
-                        
-                        print("the Y is greater")
+        if gameState == .playing {
+            if projectileIsDragged {
+                if let touch = touches.first {
+                    let touchLocation = touch.location(in: self)
+                    let distance = fingerDistanceFromProjectileRestPosition(projectileRestPosition: touchLocation, fingerPosition: touchStartingPoint)
+                    // TODO: Highpotenuese calculation for power
+                    var power = (distance/75) * 100
+                    if power > 100 {
+                        power = 100
                     }
-                } else if touchCurrentPoint.x < touchStartingPoint.x {
-                    print("the X is Less")
-                    if touchCurrentPoint.y > touchStartingPoint.y {
-                        print("the Y is greater")
-                        angle = angle + 360
+                    let vectorX = touchStartingPoint.x - touchCurrentPoint.x
+                    let vectorY = touchStartingPoint.y - touchCurrentPoint.y
+                    
+                    let angleRad = atan(vectorY / vectorX)
+                    let angleDeg = radToDeg(Double(angleRad))
+                    var angle = angleDeg
+                    var reverseAngle = angleDeg
+                    if touchCurrentPoint.x > touchStartingPoint.x {
+                        angle = angle + 180
+                        if touchCurrentPoint.y < touchStartingPoint.y {
+                        } else if touchCurrentPoint.y > touchStartingPoint.y {
+                        }
+                    } else if touchCurrentPoint.x < touchStartingPoint.x {
+                        if touchCurrentPoint.y > touchStartingPoint.y {
+                            angle = angle + 360
+                        }
+                    }
+                    
+                    if angle > -1 {
+                        let intAngle: Int = Int(angle)
+                        powerLabel.text = "\(String(Int(power)))%"
+                        angleLable.text = "\(String(describing: intAngle))°"
+                    }
+                    
+                    pointProjectileTrajectory.position.x = touchStartingPoint.x - (touchCurrentPoint.x - touchStartingPoint.x)
+                    pointProjectileTrajectory.position.y = touchStartingPoint.y - (touchCurrentPoint.y - touchStartingPoint.y)
+                    
+                    reverseAngle = 90 - reverseAngle
+                    print("reverse angle: \(reverseAngle)")
+                    //(power - 55) * -1 + 45
+                    
+//                    projectilePredictionPoint2.position.y = touchStartingPoint.y + 5 * sin(reverseAngle)
+//                    projectilePredictionPoint2.position.x = touchStartingPoint.x + 5 * cos(reverseAngle)
+                    
+                    
+                    let initialVelocity = sqrt(pow((vectorX * Settings.Metrics.forceMultiplier / 0.5), 2) + pow((vectorY * Settings.Metrics.forceMultiplier / 0.5), 2))
+                    
+                    func projectilePredictionPath (initialPosition: CGPoint, time: CGFloat, angle: CGFloat /*initial Velocity and Gravity*/) {
+                        let YpointPosition = initialPosition.y + initialVelocity * time * sin(angle) - 4.9 * pow(time,2)
+                        let XpointPosition = initialPosition.x
+                    }
+
+                    
+                    
+                    
+                    if distance < Settings.Metrics.rLimit  {
+                        touchCurrentPoint = touchLocation
+                    } else {
+                        touchCurrentPoint = projectilePositionForFingerPosition(
+                            fingerPosition: touchLocation,
+                            projectileRestPosition: touchStartingPoint,
+                            rLimit: Settings.Metrics.rLimit
+                        )
                     }
                 }
-                
-                if angle > -1 {
-                    let intAngle: Int = Int(angle)
-                    powerLabel.text = "\(String(Int(power)))%"
-                    angleLable.text = "\(String(describing: intAngle))°"
+                projectile.position = touchCurrentPoint
+            } else {
+                // MARK: Code to move the camera on X-Axis
+                if levelWithMovableCameraInXAxis.contains(UserDefaults.standard.integer(forKey: "currentLevel")) && gameState == .playing && released == false {
+                    let touch = touches.first
+                    let location = touch?.location(in: self)
+                    let previousLocation = touch?.previousLocation(in: self)
+                    let targetX = cameraNode.position.x
+                    let x = clamp(value: targetX, lower: 240, upper: rightBorder.position.x - 550)
+                    cameraNode.position.x = x
+                    let targetY = cameraNode.position.y
+                    let y = clamp(value: targetY, lower: 128, upper: topBorder.position.y - 320)
+                    cameraNode.position.y = y
+                    camera?.position.x += ((location?.x)! - (previousLocation?.x)!) * -1
+                    camera?.position.y += ((location?.y)! - (previousLocation?.y)!) * -1
                 }
-                
-                if distance < Settings.Metrics.rLimit  {
-                    touchCurrentPoint = touchLocation
-                } else {
-                    touchCurrentPoint = projectilePositionForFingerPosition(
-                        fingerPosition: touchLocation,
-                        projectileRestPosition: touchStartingPoint,
-                        rLimit: Settings.Metrics.rLimit
-                    )
+                if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")){
+                    let touch = touches.first!
+                    let positionInScene = touch.location(in: self)
+                    let previousPosition = touch.previousLocation(in: self)
+                    let translation = CGPoint(x: positionInScene.x - previousPosition.x, y: positionInScene.y - previousPosition.y)
+                    
+                    panForTranslation(translation)
                 }
-            }
-            projectile.position = touchCurrentPoint
-        } else {
-            // MARK: Code to move the camera on X-Axis
-            if levelWithMovableCameraInXAxis.contains(UserDefaults.standard.integer(forKey: "currentLevel")) && gameState == .playing && released == false {
-                let touch = touches.first
-                let location = touch?.location(in: self)
-                let previousLocation = touch?.previousLocation(in: self)
-                let targetX = cameraNode.position.x
-                let x = clamp(value: targetX, lower: 240, upper: rightBorder.position.x - 550)
-                cameraNode.position.x = x
-                let targetY = cameraNode.position.y
-                let y = clamp(value: targetY, lower: 128, upper: topBorder.position.y - 320)
-                cameraNode.position.y = y
-                camera?.position.x += ((location?.x)! - (previousLocation?.x)!) * -1
-                camera?.position.y += ((location?.y)! - (previousLocation?.y)!) * -1
-            }
-            if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")){
-                let touch = touches.first!
-                let positionInScene = touch.location(in: self)
-                let previousPosition = touch.previousLocation(in: self)
-                let translation = CGPoint(x: positionInScene.x - previousPosition.x, y: positionInScene.y - previousPosition.y)
-                
-                panForTranslation(translation)
             }
         }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")){
-            if vortexHasBeenMoved == true {
-                springField.isEnabled = false
-                vortexHasBeenPlaced = true
+        if gameState == .playing {
+            if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")){
+                if vortexHasBeenMoved == true {
+                    springField.isEnabled = false
+                    vortexHasBeenPlaced = true
+                }
             }
-        }
-        if projectileIsDragged {
-            cameraTarget = projectile
-            projectileIsDragged = false
-            let distance = fingerDistanceFromProjectileRestPosition(projectileRestPosition: touchCurrentPoint, fingerPosition: touchStartingPoint)
-            if distance > Settings.Metrics.projectileSnapLimit {
-                let vectorX = touchStartingPoint.x - touchCurrentPoint.x
-                let vectorY = touchStartingPoint.y - touchCurrentPoint.y
-                projectile.physicsBody = SKPhysicsBody(circleOfRadius: 15)
-                projectile.physicsBody?.categoryBitMask = 1
-                projectile.physicsBody?.contactTestBitMask = 6
-                projectile.physicsBody?.collisionBitMask = 9
-                physicsBody?.friction = 0.6
-                physicsBody?.mass = 0.5
-                projectile.physicsBody?.applyImpulse(
-                    CGVector(
-                        dx: vectorX * Settings.Metrics.forceMultiplier,
-                        dy: vectorY * Settings.Metrics.forceMultiplier
+            if projectileIsDragged {
+                cameraTarget = projectile
+                projectileIsDragged = false
+                let distance = fingerDistanceFromProjectileRestPosition(projectileRestPosition: touchCurrentPoint, fingerPosition: touchStartingPoint)
+                if distance > Settings.Metrics.projectileSnapLimit {
+                    let vectorX = touchStartingPoint.x - touchCurrentPoint.x
+                    let vectorY = touchStartingPoint.y - touchCurrentPoint.y
+                    projectile.physicsBody = SKPhysicsBody(circleOfRadius: 15)
+                    projectile.physicsBody?.categoryBitMask = 1
+                    projectile.physicsBody?.contactTestBitMask = 6
+                    projectile.physicsBody?.collisionBitMask = 9
+                    physicsBody?.friction = 0.6
+                    physicsBody?.mass = 0.5
+                    projectile.physicsBody?.applyImpulse(
+                        CGVector(
+                            dx: vectorX * Settings.Metrics.forceMultiplier,
+                            dy: vectorY * Settings.Metrics.forceMultiplier
+                        )
                     )
-                )
-                trajectoryTimeOut = 0
-                released = true
-                if levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-                    self.physicsWorld.speed = 0.37
+                    trajectoryTimeOut = 0
+                    released = true
+                    if levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+                        self.physicsWorld.speed = 0.37
+                    } else {
+                        self.physicsWorld.speed = 0.5
+                    }
+                    
+                    // MARK: Dragging Portals made visible
+                    if  levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+                        bluePortalDrag.isHidden = false
+                        yellowPortalDrag.isHidden = false
+                    }
+                    if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+                        vortexDrag.isHidden = false
+                    }
                 } else {
-                    self.physicsWorld.speed = 0.5
+                    projectile.physicsBody = nil
+                    projectile.position = Settings.Metrics.projectileRestPosition
                 }
-                
-                // MARK: Dragging Portals made visible
-                if  levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-                    bluePortalDrag.isHidden = false
-                    yellowPortalDrag.isHidden = false
-                }
-                if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-                    vortexDrag.isHidden = false
-                }
-            } else {
-                projectile.physicsBody = nil
-                projectile.position = Settings.Metrics.projectileRestPosition
             }
         }
     }
@@ -739,12 +757,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     struct Settings {
         struct Metrics {
-            static let projectileRadius = CGFloat(56)
-            static let projectileRestPosition = CGPoint(x: -120, y: 30)
-            static let projectileTouchThreshold = CGFloat(10)
+            static let projectileRadius = CGFloat(16)
+            static let projectileRestPosition = CGPoint(x: -100, y: 40)
+            static let projectileTouchThreshold = CGFloat(30)
             static let projectileSnapLimit = CGFloat(10)
-            static let forceMultiplier = CGFloat(1.0)
-            static let rLimit = CGFloat(50)
+            static let forceMultiplier = CGFloat(0.7)
+            static let rLimit = CGFloat(80)
         }
         struct Game {
             static let gravity = CGVector(dx: 0,dy: -9.8)
@@ -753,7 +771,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     func setupSlingshot() {
         let slingshot_1 = SKSpriteNode(imageNamed: "slingshot_1")
-        slingshot_1.position = CGPoint(x: -120, y: -20)
+        slingshot_1.position = CGPoint(x: -100, y: -10)
         addChild(slingshot_1)
         slingshot_1.isHidden = false
         
@@ -761,9 +779,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         projectile.position = Settings.Metrics.projectileRestPosition
         addChild(projectile)
         
-        
         let slingshot_2 = SKSpriteNode(imageNamed: "slingshot_2")
-        slingshot_2.position = CGPoint(x: -120, y: -20)
+        slingshot_2.position = CGPoint(x: -100, y: -10)
         addChild(slingshot_2)
         slingshot_2.isHidden = false
     }
@@ -888,11 +905,5 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             UserDefaults.standard.set(levelScore[currentLevel]!, forKey: name)
             UserDefaults.standard.synchronize()
         }
-    }
-    func trajectoryLine(Point: CGPoint) {
-        let point = SKSpriteNode(imageNamed: "Circle_small")
-        point.position.x = Point.x
-        point.position.y = Point.y
-        addChild(point)
     }
 }
