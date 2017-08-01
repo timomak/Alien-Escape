@@ -118,6 +118,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var topBorder: SKSpriteNode!
     var rightBorder: SKSpriteNode!
     
+    var projectileFirstPosition = CGPoint()
+    var powerLabel: SKLabelNode!
+    
     func cameraMove() {
         guard let cameraTarget = cameraTarget else {
             return
@@ -142,6 +145,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     override func didMove(to view: SKView) {
+        powerLabel = childNode(withName: "powerLabel") as! SKLabelNode
         currentLevel = UserDefaults.standard.integer(forKey: "currentLevel")
         alien = childNode(withName: "//alien") as! SKSpriteNode
         inGameMenu = childNode(withName: "//inGameMenu") as! MSButtonNode
@@ -332,9 +336,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
     }
     
-    func degToRad(_ degree: Double) -> CGFloat {
-        return CGFloat(degree / 180.0 * M_PI)
+    func radToDeg(_ radian: Double) -> CGFloat {
+        return CGFloat(radian * 180.0 / M_PI)
     }
+    
     
     func selectPortalForTouch(_ touchLocation : CGPoint) {
         let touchedNode = self.atPoint(touchLocation)
@@ -430,6 +435,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                     touchStartingPoint = touchLocation
                     touchCurrentPoint = touchLocation
                     projectileIsDragged = true
+                    projectileFirstPosition = projectile.position
+                    print("projectile first position: \(projectileFirstPosition)")
                 }
             }
         }
@@ -448,6 +455,42 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             if let touch = touches.first {
                 let touchLocation = touch.location(in: self)
                 let distance = fingerDistanceFromProjectileRestPosition(projectileRestPosition: touchLocation, fingerPosition: touchStartingPoint)
+                // TODO: Highpotenuese calculation for power
+                var power = (distance/75) * 100
+                if power > 100 {
+                    power = 100
+                }
+                let vectorX = touchStartingPoint.x - touchCurrentPoint.x
+                let vectorY = touchStartingPoint.y - touchCurrentPoint.y
+                
+                
+                let xPos = (projectileFirstPosition.x - projectile.position.x)
+                let angleRad = atan(vectorY / vectorX)
+                let angleDeg = radToDeg(Double(angleRad))
+                var angle = angleDeg
+                
+                if touchCurrentPoint.x > touchStartingPoint.x {
+                    print("the X is greater")
+                    angle = angle + 180
+                    if touchCurrentPoint.y < touchStartingPoint.y {
+                        print("the Y is Less")
+                    } else if touchCurrentPoint.y > touchStartingPoint.y {
+                        
+                        print("the Y is greater")
+                    }
+                } else if touchCurrentPoint.x < touchStartingPoint.x {
+                    print("the X is Less")
+                    if touchCurrentPoint.y > touchStartingPoint.y {
+                        print("the Y is greater")
+                        angle = angle + 360
+                    }
+                }
+                
+                if angle > -1 {
+                    let intAngle: Int = Int(angle)
+                    powerLabel.text = "\(String(describing: intAngle))"
+                }
+                
                 if distance < Settings.Metrics.rLimit  {
                     touchCurrentPoint = touchLocation
                 } else {
