@@ -119,7 +119,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var rightBorder: SKSpriteNode!
     
     var projectileFirstPosition = CGPoint()
+    
+    var labelIndicators: SKSpriteNode!
     var powerLabel: SKLabelNode!
+    var angleLable: SKLabelNode!
     
     func cameraMove() {
         guard let cameraTarget = cameraTarget else {
@@ -145,15 +148,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     override func didMove(to view: SKView) {
-        powerLabel = childNode(withName: "powerLabel") as! SKLabelNode
         currentLevel = UserDefaults.standard.integer(forKey: "currentLevel")
         alien = childNode(withName: "//alien") as! SKSpriteNode
         inGameMenu = childNode(withName: "//inGameMenu") as! MSButtonNode
         cameraNode = childNode(withName: "cameraNode") as! SKCameraNode
-        // rayGun = childNode(withName: "rayGun") as! SKSpriteNode
         
         portal1 = childNode(withName: "portal_1") as! SKSpriteNode
         portal2 = childNode(withName: "portal_2") as! SKSpriteNode
+        
+        labelIndicators = childNode(withName: "labelIndicators") as! SKSpriteNode
+        powerLabel = childNode(withName: "//powerLabel") as! SKLabelNode
+        angleLable = childNode(withName: "//angleLabel") as! SKLabelNode
         
         // MARK: Extra Portals
         if levelWithExtraPortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
@@ -215,8 +220,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.physicsWorld.contactDelegate = self
         
         self.camera = cameraNode
-        
-        print("Checkpoint: ",UserDefaults.standard.integer(forKey: "checkpoint"))
         
         levelSelectButton.selectedHandler = {
             /* 1) Grab reference to our SpriteKit view */
@@ -463,8 +466,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 let vectorX = touchStartingPoint.x - touchCurrentPoint.x
                 let vectorY = touchStartingPoint.y - touchCurrentPoint.y
                 
-                
-                let xPos = (projectileFirstPosition.x - projectile.position.x)
                 let angleRad = atan(vectorY / vectorX)
                 let angleDeg = radToDeg(Double(angleRad))
                 var angle = angleDeg
@@ -488,7 +489,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 
                 if angle > -1 {
                     let intAngle: Int = Int(angle)
-                    powerLabel.text = "\(String(describing: intAngle))"
+                    powerLabel.text = "\(String(Int(power)))%"
+                    angleLable.text = "\(String(describing: intAngle))°"
                 }
                 
                 if distance < Settings.Metrics.rLimit  {

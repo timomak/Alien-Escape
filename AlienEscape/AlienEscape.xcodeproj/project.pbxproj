@@ -253,7 +253,7 @@
 		F3C7C79E1F1039A100B859F2 /* Red_Bot_Export_ready.fla in Resources */ = {isa = PBXBuildFile; fileRef = F3C7C7361F1039A100B859F2 /* Red_Bot_Export_ready.fla */; };
 		F3C7C79F1F1039A100B859F2 /* Red_Bot_hero.ai in Resources */ = {isa = PBXBuildFile; fileRef = F3C7C7371F1039A100B859F2 /* Red_Bot_hero.ai */; };
 		F3C7C7A01F1039A100B859F2 /* Red_Bot_hero.eps in Resources */ = {isa = PBXBuildFile; fileRef = F3C7C7381F1039A100B859F2 /* Red_Bot_hero.eps */; };
-		F3C7C7A21F1039D800B859F2 /* hero.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3C7C7A11F1039D800B859F2 /* hero.sks */; };
+		F3E2E8271F30079A00728EE5 /* Angle&Power.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3E2E8261F30079A00728EE5 /* Angle&Power.sks */; };
 		F3E51A1A1F27B37800E6238F /* Level_5.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3E51A191F27B37800E6238F /* Level_5.sks */; };
 		F3FAC3A31F1D7941009F47AC /* Level_7.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3FAC3A21F1D7941009F47AC /* Level_7.sks */; };
 		F3FAC3D31F1D7F12009F47AC /* green__0000_idle_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F3FAC3A51F1D7F12009F47AC /* green__0000_idle_1.png */; };
@@ -555,7 +555,7 @@
 		F3C7C7361F1039A100B859F2 /* Red_Bot_Export_ready.fla */ = {isa = PBXFileReference; lastKnownFileType = file; path = Red_Bot_Export_ready.fla; sourceTree = "<group>"; };
 		F3C7C7371F1039A100B859F2 /* Red_Bot_hero.ai */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Red_Bot_hero.ai; sourceTree = "<group>"; };
 		F3C7C7381F1039A100B859F2 /* Red_Bot_hero.eps */ = {isa = PBXFileReference; lastKnownFileType = file; path = Red_Bot_hero.eps; sourceTree = "<group>"; };
-		F3C7C7A11F1039D800B859F2 /* hero.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = hero.sks; sourceTree = "<group>"; };
+		F3E2E8261F30079A00728EE5 /* Angle&Power.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = "Angle&Power.sks"; sourceTree = "<group>"; };
 		F3E51A191F27B37800E6238F /* Level_5.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Level_5.sks; path = alien_dark_gray/Level_5.sks; sourceTree = "<group>"; };
 		F3FAC3A21F1D7941009F47AC /* Level_7.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level_7.sks; sourceTree = "<group>"; };
 		F3FAC3A51F1D7F12009F47AC /* green__0000_idle_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = green__0000_idle_1.png; sourceTree = "<group>"; };
@@ -843,7 +843,7 @@
 				F31CE1EE1F0EAAFF00A14038 /* destruction_air */,
 				F39ECAE81F0AC3F500EDE3D5 /* Dark Alien Assets */,
 				F3165B801F06D46600A7BD96 /* spear.swift */,
-				F3C7C7A11F1039D800B859F2 /* hero.sks */,
+				F3E2E8261F30079A00728EE5 /* Angle&Power.sks */,
 				F39ECAE61F0AC3D100EDE3D5 /* DarkAlienAnimation.sks */,
 			);
 			name = Objects;
@@ -1109,6 +1109,7 @@
 			files = (
 				F31CE2121F0EB34500A14038 /* Explosion.sks in Resources */,
 				F3282FF71F14113F00CB0A9D /* lazer_00_Purple.png in Resources */,
+				F3E2E8271F30079A00728EE5 /* Angle&Power.sks in Resources */,
 				F3411CF51F1978FB0046DC5F /* Level_8.sks in Resources */,
 				F39ECB1B1F0AC3F500EDE3D5 /* darkgray__0004_turn_2.png in Resources */,
 				F3FAC3DF1F1D7F12009F47AC /* green__0012_run_1.png in Resources */,
@@ -1324,7 +1325,6 @@
 				F3C7C74C1F1039A100B859F2 /* r_flip_shoot.png in Resources */,
 				F3C7C77A1F1039A100B859F2 /* r_run_16.png in Resources */,
 				F32830091F14113F00CB0A9D /* lazer_18_Purple.png in Resources */,
-				F3C7C7A21F1039D800B859F2 /* hero.sks in Resources */,
 				F3C7C7691F1039A100B859F2 /* r_jump_14.png in Resources */,
 				F39ECB421F0AC3F500EDE3D5 /* darkgray__0043_fire_9.png in Resources */,
 				F3FAC3FB1F1D7F12009F47AC /* green__0040_fire_6.png in Resources */,
