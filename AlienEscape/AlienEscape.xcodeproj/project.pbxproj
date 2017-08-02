@@ -1133,8 +1133,8 @@
 			isa = PBXGroup;
 			children = (
 				F3165B641F06C8D200A7BD96 /* MainMenu.sks */,
-				F3A8EFE21F326ADB00A299E0 /* Shop.sks */,
 				F32830101F143B5C00CB0A9D /* LevelSelect.sks */,
+				F3A8EFE21F326ADB00A299E0 /* Shop.sks */,
 				F3A20A411F17F0A80066BB3B /* Level_1.sks */,
 				F3C790581F182BAF00CAE308 /* Level_2.sks */,
 				F3155F381F1832F500B9C387 /* Level_3.sks */,
