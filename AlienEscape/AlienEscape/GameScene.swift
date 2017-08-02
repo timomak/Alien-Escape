@@ -120,10 +120,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     var projectileFirstPosition = CGPoint()
     
-    var labelIndicators: SKSpriteNode!
+    var labelReferenceNode: SKReferenceNode!
+    var labelIndicators: Indicators!
     var powerLabel: SKLabelNode!
-    var angleLable: SKLabelNode!
-   
+    var angleLabel: SKLabelNode!
+
     var projectilePredictionPoint1: SKSpriteNode!
     var projectilePredictionPoint2: SKSpriteNode!
     var projectilePredictionPoint3: SKSpriteNode!
@@ -156,15 +157,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     override func didMove(to view: SKView) {
         currentLevel = UserDefaults.standard.integer(forKey: "currentLevel")
         alien = childNode(withName: "//alien") as! SKSpriteNode
+        
+        alien.run(SKAction(named: "Default_Alien")!)
+
         inGameMenu = childNode(withName: "//inGameMenu") as! MSButtonNode
         cameraNode = childNode(withName: "cameraNode") as! SKCameraNode
         
         portal1 = childNode(withName: "portal_1") as! SKSpriteNode
         portal2 = childNode(withName: "portal_2") as! SKSpriteNode
         
-        labelIndicators = childNode(withName: "labelIndicators") as! SKSpriteNode
-        powerLabel = childNode(withName: "//powerLabel") as! SKLabelNode
-        angleLable = childNode(withName: "//angleLabel") as! SKLabelNode
+        // MARK: SK Reference link
+        labelReferenceNode = SKReferenceNode(fileNamed: "Indicator")
+        // labelReferenceNode.position = CGPoint(x: 40, y: 20)
+        labelReferenceNode.physicsBody = nil
+        self.addChild(labelReferenceNode!)
+        labelIndicators = labelReferenceNode.childNode(withName: "labelIndicators") as! Indicators
+        angleLabel = labelIndicators.angleIndicator!
+        powerLabel = labelIndicators.powerIndicator!
+    
+        labelIndicators.position = CGPoint(x: 40, y: 20)
         
         // MARK: Extra Portals
         if levelWithExtraPortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
@@ -499,7 +510,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                     if angle > -1 {
                         let intAngle: Int = Int(angle)
                         powerLabel.text = "\(String(Int(power)))%"
-                        angleLable.text = "\(String(describing: intAngle))°"
+                        angleLabel.text = "\(String(describing: intAngle))°"
                     }
                     
                     let initialVelocity = sqrt(pow((vectorX * Settings.Metrics.forceMultiplier) / 0.5, 2) + pow((vectorY * Settings.Metrics.forceMultiplier) / 0.5, 2))
