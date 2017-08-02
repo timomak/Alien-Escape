@@ -13,15 +13,21 @@ private var starCounter: SKLabelNode!
 private var numberOfStars = 0
 private var lifeCounter: SKLabelNode!
 private var mainManu: MSButtonNode!
+private var leftArrow: MSButtonNode!
+private var rightArrow: MSButtonNode!
 
 class Shop: SKScene {
     
     override func didMove(to view: SKView) {
+        
         cameraNode3 = childNode(withName: "cameraNode3") as! SKCameraNode
         mainManu = childNode(withName: "//mainMenuButton") as! MSButtonNode
         starCounter = childNode(withName: "//starCounter") as! SKLabelNode
         lifeCounter = childNode(withName: "//lifeCounter") as! SKLabelNode
+        leftArrow = childNode(withName: "//leftArrow") as! MSButtonNode
+        rightArrow = childNode(withName: "//rightArrow") as! MSButtonNode
         scene?.camera = cameraNode3
+        
         
         func countTheNumberOfStars() {
             var numberOfStarz = 0
@@ -35,6 +41,7 @@ class Shop: SKScene {
         countTheNumberOfStars()
         
         let numberOfLifes = UserDefaults.standard.integer(forKey: "numberOfLifes")
+        
         lifeCounter.text = String(numberOfLifes)
         starCounter.text = String(numberOfStars)
         
@@ -64,7 +71,21 @@ class Shop: SKScene {
             
         }
         
+        leftArrow.selectedHandler = {
+            if cameraNode3.position.x != 285 {
+                cameraNode3.position.x -= 600
+            } else {
+                cameraNode3.position.x = 2085
+            }
+        }
         
+        rightArrow.selectedHandler = {
+            if cameraNode3.position.x != 2085 {
+                cameraNode3.position.x += 600
+            } else {
+                cameraNode3.position.x = 285
+            }
+        }
     }
     
     

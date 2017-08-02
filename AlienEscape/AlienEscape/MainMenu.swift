@@ -28,11 +28,13 @@ class MainMenu: SKScene{
         shopButton = self.childNode(withName: "shopButton") as! MSButtonNode
         
         levelSelectButton.isHidden = true
+        shopButton.isHidden = true
         startButton.position.y = 160
         
         if UserDefaults.standard.integer(forKey: "firstTime") == 1 {
             levelSelectButton.isHidden = false
-            startButton.position.y = 200
+            shopButton.isHidden = false
+            startButton.position.y = 260
         }
 
         startButton.selectedHandler = {
