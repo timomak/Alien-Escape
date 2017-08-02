@@ -126,6 +126,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     var pointProjectileTrajectory: SKSpriteNode!
     var projectilePredictionPoint2: SKSpriteNode!
+    var projectilePredictionPoint1: SKSpriteNode!
+    var projectilePredictionPoint3: SKSpriteNode!
     
     func cameraMove() {
         guard let cameraTarget = cameraTarget else {
@@ -226,8 +228,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         pointProjectileTrajectory = SKSpriteNode(imageNamed: "Circle_small")
         addChild(pointProjectileTrajectory)
+        projectilePredictionPoint1 = SKSpriteNode(imageNamed: "Circle_small")
+        addChild(projectilePredictionPoint1)
         projectilePredictionPoint2 = SKSpriteNode(imageNamed: "Circle_small")
         addChild(projectilePredictionPoint2)
+        projectilePredictionPoint3 = SKSpriteNode(imageNamed: "Circle_small")
+        addChild(projectilePredictionPoint3)
         
         levelSelectButton.selectedHandler = {
             /* 1) Grab reference to our SpriteKit view */
@@ -487,26 +493,59 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                         angleLable.text = "\(String(describing: intAngle))°"
                     }
                     
-                    pointProjectileTrajectory.position.x = touchStartingPoint.x - (touchCurrentPoint.x - touchStartingPoint.x)
-                    pointProjectileTrajectory.position.y = touchStartingPoint.y - (touchCurrentPoint.y - touchStartingPoint.y)
+                    let initialVelocity = sqrt(pow((vectorX * Settings.Metrics.forceMultiplier) / 0.5, 2) + pow((vectorY * Settings.Metrics.forceMultiplier) / 0.5, 2))
+                    let angleRadians = angle * CGFloat(M_PI) / 180
+//                    projectilep.position.x = touchStartingPoint.x - (touchCurrentPoint.x - touchStartingPoint.x) * (power / 100)
+//                    projectilePredictionPoint1.position.y = touchStartingPoint.y - (touchCurrentPoint.y - touchStartingPoint.y) * (power / 100)
+//                    
+//                    projectilePredictionPoint1.position.x = touchStartingPoint.x - (touchCurrentPoint.x - touchStartingPoint.x) * (power / 100)
+//                    projectilePredictionPoint1.position.y = touchStartingPoint.y - (touchCurrentPoint.y - touchStartingPoint.y) * (power / 100)
+//                    
+//                    projectilePredictionPoint2.position.x = touchStartingPoint.x - (touchCurrentPoint.x - touchStartingPoint.x) * (power / 150)
+//                    projectilePredictionPoint2.position.y = touchStartingPoint.y - (touchCurrentPoint.y - touchStartingPoint.y) * (power / 150)
+//                    
+//                    projectilePredictionPoint3.position.x = touchStartingPoint.x - (touchCurrentPoint.x - touchStartingPoint.x) * (power / 300)
+//                    projectilePredictionPoint3.position.y = touchStartingPoint.y - (touchCurrentPoint.y - touchStartingPoint.y) * (power / 300)
                     
-                    reverseAngle = 90 - reverseAngle
-                    print("reverse angle: \(reverseAngle)")
+                    // reverseAngle = 90 - reverseAngle
+                    //print("reverse angle: \(reverseAngle)")
                     //(power - 55) * -1 + 45
                     
 //                    projectilePredictionPoint2.position.y = touchStartingPoint.y + 5 * sin(reverseAngle)
 //                    projectilePredictionPoint2.position.x = touchStartingPoint.x + 5 * cos(reverseAngle)
                     
                     
-                    let initialVelocity = sqrt(pow((vectorX * Settings.Metrics.forceMultiplier / 0.5), 2) + pow((vectorY * Settings.Metrics.forceMultiplier / 0.5), 2))
-                    
-                    func projectilePredictionPath (initialPosition: CGPoint, time: CGFloat, angle: CGFloat /*initial Velocity and Gravity*/) {
-                        let YpointPosition = initialPosition.y + initialVelocity * time * sin(angle) - 4.9 * pow(time,2)
-                        let XpointPosition = initialPosition.x
+                    func projectilePredictionPath (initialPosition: CGPoint, time: CGFloat, angle1: CGFloat /*initial Velocity and Gravity*/) -> CGPoint {
+                        let YpointPosition = initialPosition.y + initialVelocity * time * sin(angle1) - 4.9 * pow(time,2)
+                        let XpointPosition = initialPosition.x + initialVelocity * time * cos(angle1)
+                        
+//                        projectilePredictionPoint2.position.y = YpointPosition
+//                        projectilePredictionPoint2.position.x = XpointPosition
+                        let predictionPoint = CGPoint(x: XpointPosition, y: YpointPosition)
+                        return predictionPoint
+                        
                     }
-
+//
+//                    
+//                    print("Angle in Degrees: \(angleDeg)")
+//                    print("sin of 45: \(sin(45.0))")
+//                    print("sin of 60: \(sin(60.0))")
+//                    print("sin of 90: \(sin(90.0))")
+//                    
+//                    
+//    
+//                    projectilePredictionPoint1.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 0.3, angle1: angleRadians)
+//                    projectilePredictionPoint2.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 0.6, angle1: angleRadians)
+//                    projectilePredictionPoint3.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 0.9, angle1: angleRadians)
+//                    pointProjectileTrajectory.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 1.2, angle1: angleRadians)
                     
+                    for i in 0...50 {
+                        let newProjPoint = projectilePredictionPoint1.copy() as! SKNode
+                        newProjPoint.position = projectilePredictionPath(initialPosition: projectile.position, time: CGFloat(i), angle1: angleRadians)
+                        self.addChild(newProjPoint)
+                    }
                     
+//
                     
                     if distance < Settings.Metrics.rLimit  {
                         touchCurrentPoint = touchLocation
