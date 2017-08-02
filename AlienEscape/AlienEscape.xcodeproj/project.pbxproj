@@ -331,6 +331,8 @@
 		F3A8EFDA1F3237BC00A299E0 /* predatormask__0045_fire_11.png in Resources */ = {isa = PBXBuildFile; fileRef = F3A8EFAC1F3237BC00A299E0 /* predatormask__0045_fire_11.png */; };
 		F3A8EFDF1F32390500A299E0 /* Indicator.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3A8EFDE1F32390500A299E0 /* Indicator.sks */; };
 		F3A8EFE11F323A9E00A299E0 /* Indicators.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A8EFE01F323A9E00A299E0 /* Indicators.swift */; };
+		F3A8EFE31F326ADB00A299E0 /* Shop.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3A8EFE21F326ADB00A299E0 /* Shop.sks */; };
+		F3A8EFE51F326AF200A299E0 /* Shop.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A8EFE41F326AF200A299E0 /* Shop.swift */; };
 		F3BEB69C1F1D544D0016F385 /* Level_9.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3BEB69B1F1D544D0016F385 /* Level_9.sks */; };
 		F3C790571F1818C000CAE308 /* Level_4.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3C790561F1818C000CAE308 /* Level_4.sks */; };
 		F3C790591F182BAF00CAE308 /* Level_2.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3C790581F182BAF00CAE308 /* Level_2.sks */; };
@@ -817,6 +819,8 @@
 		F3A8EFAC1F3237BC00A299E0 /* predatormask__0045_fire_11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = predatormask__0045_fire_11.png; sourceTree = "<group>"; };
 		F3A8EFDE1F32390500A299E0 /* Indicator.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Indicator.sks; sourceTree = "<group>"; };
 		F3A8EFE01F323A9E00A299E0 /* Indicators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Indicators.swift; sourceTree = "<group>"; };
+		F3A8EFE21F326ADB00A299E0 /* Shop.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Shop.sks; sourceTree = "<group>"; };
+		F3A8EFE41F326AF200A299E0 /* Shop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shop.swift; sourceTree = "<group>"; };
 		F3BEB69B1F1D544D0016F385 /* Level_9.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level_9.sks; sourceTree = "<group>"; };
 		F3C790561F1818C000CAE308 /* Level_4.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Level_4.sks; path = alien_dark_gray/Level_4.sks; sourceTree = "<group>"; };
 		F3C790581F182BAF00CAE308 /* Level_2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Level_2.sks; path = alien_dark_gray/Level_2.sks; sourceTree = "<group>"; };
@@ -1032,6 +1036,7 @@
 				F34100351F22AA8D00C9068D /* GoogleService-Info.plist */,
 				F3165B7A1F06CAF800A7BD96 /* MSButtonNode.swift */,
 				F3165B681F06C8D200A7BD96 /* MainMenu.swift */,
+				F3A8EFE41F326AF200A299E0 /* Shop.swift */,
 				F3165B7C1F06CB0B00A7BD96 /* GameScene.swift */,
 				F328300E1F14294A00CB0A9D /* LevelSelect.swift */,
 				F38BDE9F1F0E9F2B004A9F6A /* Scenes */,
@@ -1128,6 +1133,7 @@
 			isa = PBXGroup;
 			children = (
 				F3165B641F06C8D200A7BD96 /* MainMenu.sks */,
+				F3A8EFE21F326ADB00A299E0 /* Shop.sks */,
 				F32830101F143B5C00CB0A9D /* LevelSelect.sks */,
 				F3A20A411F17F0A80066BB3B /* Level_1.sks */,
 				F3C790581F182BAF00CAE308 /* Level_2.sks */,
@@ -1847,6 +1853,7 @@
 				F3282FC81F13F88E00CB0A9D /* lazer_00.png in Resources */,
 				F3C7C7721F1039A100B859F2 /* r_jump_9.png in Resources */,
 				F3FAC3E31F1D7F12009F47AC /* green__0016_run_5.png in Resources */,
+				F3A8EFE31F326ADB00A299E0 /* Shop.sks in Resources */,
 				F3A8EE601F32378100A299E0 /* armor__0040_fire_6.png in Resources */,
 				F3A8EEAF1F32378B00A299E0 /* blue__0026_dead_5.png in Resources */,
 				F3A8EFB31F3237BC00A299E0 /* predatormask__0006_walk_1.png in Resources */,
@@ -2237,6 +2244,7 @@
 				F3A8EFE11F323A9E00A299E0 /* Indicators.swift in Sources */,
 				F328300F1F14294A00CB0A9D /* LevelSelect.swift in Sources */,
 				F3165B6B1F06C8D200A7BD96 /* GameViewController.swift in Sources */,
+				F3A8EFE51F326AF200A299E0 /* Shop.swift in Sources */,
 				F3165B631F06C8D200A7BD96 /* AppDelegate.swift in Sources */,
 				F3165B7B1F06CAF800A7BD96 /* MSButtonNode.swift in Sources */,
 			);

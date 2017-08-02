@@ -24,15 +24,15 @@ var level11: MSButtonNode!
 var level12: MSButtonNode!
 
 
-var mainManu: MSButtonNode!
+private var mainManu: MSButtonNode!
 var star_1: SKSpriteNode!
 var star_2: SKSpriteNode!
 var star_3: SKSpriteNode!
 
-var starCounter: SKLabelNode!
-var numberOfStars = 0
+private var starCounter: SKLabelNode!
+private var numberOfStars = 0
 
-var lifeCounter: SKLabelNode!
+private var lifeCounter: SKLabelNode!
 
 var levelGerator = [1: level1, 2: level2, 3: level3,4: level4, 5: level5,6: level6,7: level7, 8: level8, 9: level9, 10: level10, 11: level11, 12: level12]
 
