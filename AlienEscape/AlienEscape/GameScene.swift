@@ -90,7 +90,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     var winCount = 1
     
     var lifeCounter: SKLabelNode!
-
+    
     var released = false
     
     var projectileBox: Projectile!
@@ -125,7 +125,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     var labelIndicators: Indicators!
     var powerLabel: SKLabelNode!
     var angleLabel: SKLabelNode!
-
+    
     private var adPopUp: SKReferenceNode!
     private var adScreen: AdPage!
     private var mainMenuButton: MSButtonNode!
@@ -136,6 +136,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     var projectilePredictionPoint3: SKSpriteNode!
     var projectilePredictionPoint4: SKSpriteNode!
     var projectilePredictionPoint5: SKSpriteNode!
+    
+    var spaceshipGlass: SKSpriteNode!
     
     var numberOfLives = 0
     
@@ -148,11 +150,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         cameraNode.position.x = x
         
         // MARK: Chapter 3
-            let targetY = cameraTarget.position.y
-            let y = clamp(value: targetY, lower: 128, upper: topBorder.position.y - 320)
-            cameraNode.position.y = y
+        let targetY = cameraTarget.position.y
+        let y = clamp(value: targetY, lower: 128, upper: topBorder.position.y - 320)
+        cameraNode.position.y = y
     }
-
+    
     // MARK: Loading Levels
     class func level(_ currentLevel: Int) -> GameScene? {
         guard let scene = GameScene(fileNamed: "Level_\(currentLevel)") else {
@@ -163,7 +165,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     }
     
     func rewardBasedVideoAd(_ rewardBasedVideoAd: GADRewardBasedVideoAd, didRewardUserWith reward: GADAdReward) {
-    
+        
         print("number of lifes is: \(numberOfLives)")
         numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes") + 30
         UserDefaults.standard.set(numberOfLives, forKey: "numberOfLifes")
@@ -190,7 +192,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         }
         
         alien.run(SKAction(named: UserDefaults.standard.object(forKey: "currentAlien") as! String)!)
-
+        
         inGameMenu = childNode(withName: "//inGameMenu") as! MSButtonNode
         cameraNode = childNode(withName: "cameraNode") as! SKCameraNode
         
@@ -229,7 +231,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             
             bluePortalDrag = childNode(withName: "//bluePortalDrag") as! SKSpriteNode
             yellowPortalDrag = childNode(withName: "//yellowPortalDrag") as! SKSpriteNode
-
+            
             bluePortalDrag.isHidden = true
             yellowPortalDrag.isHidden = true
         }
@@ -241,6 +243,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             springNodeImage = childNode(withName: "springNodeImage") as! SKSpriteNode
             springField.region = SKRegion(size: springNodeImage.size)
             springField.isEnabled = false
+            
+            if UserDefaults.standard.integer(forKey: "currentLevel") == 5 || UserDefaults.standard.integer(forKey: "currentLevel") == 4 {
+                self.spaceshipGlass = childNode(withName: "spaceshipGlass") as! SKSpriteNode
+            }
         }
         
         // MARK: Draggable Vortex
@@ -334,7 +340,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                 GADRewardBasedVideoAd.sharedInstance().present(fromRootViewController: (self.view?.window?.rootViewController)!)
             }
         }
-
+        
         levelSelectButton.selectedHandler = {
             /* 1) Grab reference to our SpriteKit view */
             guard let skView = self.view as SKView! else {
@@ -469,17 +475,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                 }
             }
             if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-                if touchedNode == vortexDrag || touchedNode == springNodeImage {
+                if touchedNode == vortexDrag || touchedNode == springNodeImage || touchedNode == spaceshipGlass {
                     if vortexHasBeenPlaced == false {
+                        springField.isEnabled = false
                         springNodeImage.position = touchLocation
                         currentMovingPortal = springNodeImage
                         vortexDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
                     }
+                } else {
+                    currentMovingPortal = springNodeImage
+                    springField.isEnabled = true
+                    springNodeImage.run(SKAction(named: "rotateVortex")!)
+                    print("The node that is being touched is in draggable: \(touchedNode)")
+                    print("Current moving portal: \(currentMovingPortal)")
                 }
-            }
-            if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+            } else if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
                 if touchedNode == springNodeImage || touchedNode == background {
-                        currentMovingPortal = springNodeImage
+                    currentMovingPortal = springNodeImage
+                    springNodeImage.run(SKAction(named: "rotateVortex")!)
                     print("The node that is being touched is: \(touchedNode)")
                     print("Current moving portal: \(currentMovingPortal)")
                 }
@@ -506,23 +519,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                 portal2.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
             }
             if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-                if currentMovingPortal == springNodeImage {
-                    springField.isEnabled = true
-                    if vortexHasBeenPlaced == false {
+                if vortexHasBeenPlaced == false {
+                    if currentMovingPortal == springNodeImage {
                         let position = springNodeImage.position
                         springNodeImage.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
                         springField.position = springNodeImage.position
                         vortexIsPulling = true
                         vortexHasBeenMoved = true
+                        springField.isEnabled = false
                     }
+                } else {
+                    springField.isEnabled = true
+                    print("Spring Field is Enabled in draggable == \(springField.isEnabled)")
+                    vortexHasBeenMoved = true
                 }
-            }
-            if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+            } else if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
                 if currentMovingPortal == springNodeImage {
                     springField.isEnabled = true
-                    springNodeImage.run(SKAction(named: "rotateVortex")!)
                     print("Spring Field is Enabled == \(springField.isEnabled)")
-                    vortexHasBeenMoved = true
                 }
             }
         }
@@ -596,7 +610,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                     
                     let initialVelocity = sqrt(pow((vectorX * Settings.Metrics.forceMultiplier) / 0.5, 2) + pow((vectorY * Settings.Metrics.forceMultiplier) / 0.5, 2))
                     let angleRadians = angle * CGFloat(M_PI) / 180
-       
+                    
                     func projectilePredictionPath (initialPosition: CGPoint, time: CGFloat, angle1: CGFloat /*initial Velocity and Gravity*/) -> CGPoint {
                         let YpointPosition = initialPosition.y + initialVelocity * time * sin(angle1) - 4.9 * pow(time,2)
                         let XpointPosition = initialPosition.x + initialVelocity * time * cos(angle1)
@@ -615,11 +629,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                     projectilePredictionPoint4.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 1.2, angle1: angleRadians)
                     projectilePredictionPoint5.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 1.5, angle1: angleRadians)
                     
-//                    for i in 0...50 {
-//                        let newProjPoint = projectilePredictionPoint1.copy() as! SKNode
-//                        newProjPoint.position = projectilePredictionPath(initialPosition: projectile.position, time: CGFloat(i), angle1: angleRadians)
-//                        self.addChild(newProjPoint)
-//                    }
+                    //                    for i in 0...50 {
+                    //                        let newProjPoint = projectilePredictionPoint1.copy() as! SKNode
+                    //                        newProjPoint.position = projectilePredictionPath(initialPosition: projectile.position, time: CGFloat(i), angle1: angleRadians)
+                    //                        self.addChild(newProjPoint)
+                    //                    }
                     
                     if distance < Settings.Metrics.rLimit  {
                         touchCurrentPoint = touchLocation
@@ -661,11 +675,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if gameState == .playing {
-            if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")){
+            if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")){
                 if vortexHasBeenMoved == true {
                     springField.isEnabled = false
+                    springNodeImage.removeAllActions()
                     vortexHasBeenPlaced = true
                 }
+            } else if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+                springField.isEnabled = false
+                springNodeImage.removeAllActions()
+                vortexHasBeenPlaced = true
             }
             if projectileIsDragged {
                 cameraTarget = projectile
