@@ -83,7 +83,7 @@ class MainMenu: SKScene{
             let currentAlien = "Default_Alien"
             UserDefaults.standard.set(currentAlien, forKey: "currentAlien")
             UserDefaults.standard.synchronize()
-            UserDefaults.standard.set(100, forKey: "numberOfLifes")
+            UserDefaults.standard.set(30, forKey: "numberOfLifes")
             UserDefaults.standard.synchronize()
             UserDefaults.standard.set(1, forKey: "currentLevel")
             UserDefaults.standard.synchronize()

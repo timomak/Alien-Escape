@@ -19,3 +19,14 @@ class Indicators: SKSpriteNode {
         powerIndicator = childNode(withName: "//powerLabel") as! SKLabelNode
     }
 }
+
+class AdPage: MSButtonNode {
+    var watchAd: MSButtonNode!
+    var mainMenuButton2: MSButtonNode!
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        watchAd = childNode(withName: "//watchAd") as! MSButtonNode
+        mainMenuButton2 = childNode(withName: "//mainMenuButton") as! MSButtonNode
+    }
+}

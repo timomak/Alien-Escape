@@ -9,6 +9,7 @@
 // print(#file, #function, #line)
 
 import SpriteKit
+import GoogleMobileAds
 
 func clamp<T: Comparable>(value: T, lower: T, upper: T) -> T {
     return min(max(value, lower), upper)
@@ -24,7 +25,7 @@ enum GameState {
     case paused, playing, gameOver, won
 }
 
-class GameScene: SKScene, SKPhysicsContactDelegate{
+class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegate{
     
     var gameState: GameState = .playing {
         didSet {
@@ -125,11 +126,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var powerLabel: SKLabelNode!
     var angleLabel: SKLabelNode!
 
+    private var adPopUp: SKReferenceNode!
+    private var adScreen: AdPage!
+    private var mainMenuButton: MSButtonNode!
+    private var watchAd: MSButtonNode!
+    
     var projectilePredictionPoint1: SKSpriteNode!
     var projectilePredictionPoint2: SKSpriteNode!
     var projectilePredictionPoint3: SKSpriteNode!
     var projectilePredictionPoint4: SKSpriteNode!
     var projectilePredictionPoint5: SKSpriteNode!
+    
+    var numberOfLives = 0
     
     func cameraMove() {
         guard let cameraTarget = cameraTarget else {
@@ -154,6 +162,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         return scene
     }
     
+    func rewardBasedVideoAd(_ rewardBasedVideoAd: GADRewardBasedVideoAd, didRewardUserWith reward: GADAdReward) {
+    
+        print("number of lifes is: \(numberOfLives)")
+        numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes") + 30
+        UserDefaults.standard.set(numberOfLives, forKey: "numberOfLifes")
+        UserDefaults.standard.synchronize()
+        print("number of lifes is: \(UserDefaults.standard.integer(forKey: "numberOfLifes"))")
+    }
+    func rewardBasedVideoAdDidClose(_ rewardBasedVideoAd: GADRewardBasedVideoAd) {
+        adScreen.run(SKAction.moveTo(y: 1600, duration: 1))
+        lifeCounter.text = String(numberOfLives)
+        gameState = .playing
+        let request = GADRequest()
+        request.testDevices = [ kGADSimulatorID,                       // All simulators
+            "2077ef9a63d2b398840261c8221a0c9b" ];
+        GADRewardBasedVideoAd.sharedInstance().load(request,
+                                                    withAdUnitID: "ca-app-pub-3940256099942544/1712485313")
+        print("number of lifes after ad is: \(UserDefaults.standard.integer(forKey: "numberOfLifes"))")
+    }
     override func didMove(to view: SKView) {
         currentLevel = UserDefaults.standard.integer(forKey: "currentLevel")
         alien = childNode(withName: "//alien") as! SKSpriteNode
@@ -178,8 +205,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         labelIndicators = labelReferenceNode.childNode(withName: "labelIndicators") as! Indicators
         angleLabel = labelIndicators.angleIndicator!
         powerLabel = labelIndicators.powerIndicator!
-    
         labelIndicators.position = CGPoint(x: 40, y: 20)
+        
+        // MARK: Ad popup
+        GADRewardBasedVideoAd.sharedInstance().delegate = (self as GADRewardBasedVideoAdDelegate)
+        adPopUp = SKReferenceNode(fileNamed: "adPage")
+        adPopUp.physicsBody = nil
+        self.addChild(adPopUp!)
+        adScreen = adPopUp.childNode(withName: "adScreen") as! AdPage
+        mainMenuButton = adScreen.mainMenuButton2!
+        watchAd = adScreen.watchAd!
+        
+        adScreen.position = CGPoint(x: cameraNode.position.x, y: 1600)
         
         // MARK: Extra Portals
         if levelWithExtraPortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
@@ -234,8 +271,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         lifeCounter = childNode(withName: "//lifeCounter") as! SKLabelNode
         
-        let numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes")
+        numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes")
         
+        if UserDefaults.standard.integer(forKey: "numberOfLifes") <= 0 {
+            adScreen.zPosition = 10
+            cameraNode.childNode(withName: "life_counter")?.zPosition = 11
+            lifeCounter.zPosition = 11
+            adScreen.run(SKAction.moveTo(y: cameraNode.position.y + 37, duration: 1))
+            gameState = .paused
+        }
         lifeCounter.text = String(numberOfLives)
         
         self.physicsWorld.contactDelegate = self
@@ -259,6 +303,38 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         projectilePredictionPoint4.isHidden = true
         projectilePredictionPoint5.isHidden = true
         
+        mainMenuButton.selectedHandler = {
+            /* 1) Grab reference to our SpriteKit view */
+            guard let skView = self.view as SKView! else {
+                print("Could not get Skview")
+                return
+            }
+            
+            /* 2) Load Game scene */
+            guard let scene = SKScene(fileNamed: "MainMenu") else {
+                print("Could not load GameScene with level 1")
+                return
+            }
+            
+            /* 3) Ensure correct aspect mode */
+            scene.scaleMode = .aspectFit
+            
+            /* Show debug */
+            skView.showsPhysics = false
+            skView.showsDrawCount = true
+            skView.showsFPS = true
+            
+            /* 4) Start game scene */
+            skView.presentScene(scene)
+            
+        }
+        
+        watchAd.selectedHandler = {
+            if GADRewardBasedVideoAd.sharedInstance().isReady == true {
+                GADRewardBasedVideoAd.sharedInstance().present(fromRootViewController: (self.view?.window?.rootViewController)!)
+            }
+        }
+
         levelSelectButton.selectedHandler = {
             /* 1) Grab reference to our SpriteKit view */
             guard let skView = self.view as SKView! else {
@@ -444,6 +520,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
                 if currentMovingPortal == springNodeImage {
                     springField.isEnabled = true
+                    springNodeImage.run(SKAction(named: "rotateVortex")!)
                     print("Spring Field is Enabled == \(springField.isEnabled)")
                     vortexHasBeenMoved = true
                 }

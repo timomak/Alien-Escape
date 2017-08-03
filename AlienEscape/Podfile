@@ -7,4 +7,5 @@ target 'AlienEscape' do
 
   # Pods for AlienEscape
 	pod 'Firebase/Core'
+	pod 'Google-Mobile-Ads-SDK'
 end

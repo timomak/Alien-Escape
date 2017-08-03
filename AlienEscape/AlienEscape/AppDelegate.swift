@@ -8,16 +8,26 @@
 
 import UIKit
 import Firebase
+import GoogleMobileAds
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     var window: UIWindow?
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FirebaseApp.configure()
+        
+        GADMobileAds.configure(withApplicationID: "ca-app-pub-3940256099942544~1458002511")
+        let request = GADRequest()
+        request.testDevices = [ kGADSimulatorID,                       // All simulators
+            "2077ef9a63d2b398840261c8221a0c9b" ];
+        GADRewardBasedVideoAd.sharedInstance().load(request,
+                                                    withAdUnitID: "ca-app-pub-3940256099942544/1712485313")
+        // Sample device ID
+        // Sample AdMob app ID: ca-app-pub-3940256099942544~1458002511
         return true
     }
 
