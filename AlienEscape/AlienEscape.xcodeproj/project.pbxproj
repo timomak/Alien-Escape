@@ -820,7 +820,7 @@
 		F3A8EFDE1F32390500A299E0 /* Indicator.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Indicator.sks; sourceTree = "<group>"; };
 		F3A8EFE01F323A9E00A299E0 /* Indicators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Indicators.swift; sourceTree = "<group>"; };
 		F3A8EFE21F326ADB00A299E0 /* Shop.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Shop.sks; sourceTree = "<group>"; };
-		F3A8EFE41F326AF200A299E0 /* Shop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shop.swift; sourceTree = "<group>"; };
+		F3A8EFE41F326AF200A299E0 /* Shop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shop.swift; sourceTree = "<group>"; tabWidth = 3; };
 		F3BEB69B1F1D544D0016F385 /* Level_9.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level_9.sks; sourceTree = "<group>"; };
 		F3C790561F1818C000CAE308 /* Level_4.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Level_4.sks; path = alien_dark_gray/Level_4.sks; sourceTree = "<group>"; };
 		F3C790581F182BAF00CAE308 /* Level_2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Level_2.sks; path = alien_dark_gray/Level_2.sks; sourceTree = "<group>"; };
