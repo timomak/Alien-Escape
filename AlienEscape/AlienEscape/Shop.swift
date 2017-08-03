@@ -186,7 +186,6 @@ class Shop: SKScene {
     }
     
     func greenAlienSkinCheck() {
-        
         checkMark1.texture = SKTexture(imageNamed: "checkCircle_locked")
         checkMark2.texture = SKTexture(imageNamed: "checkCircle_locked")
         checkMark3.texture = SKTexture(imageNamed: "checkCircle_locked")
@@ -217,7 +216,6 @@ class Shop: SKScene {
     }
     
     func robotAlienSkinCheck() {
-        
         checkMark1.texture = SKTexture(imageNamed: "checkCircle_locked")
         checkMark2.texture = SKTexture(imageNamed: "checkCircle_locked")
         checkMark3.texture = SKTexture(imageNamed: "checkCircle_locked")
@@ -248,7 +246,6 @@ class Shop: SKScene {
     }
     
     func armoredAlienSkinCheck() {
-        
         checkMark1.texture = SKTexture(imageNamed: "checkCircle_locked")
         checkMark2.texture = SKTexture(imageNamed: "checkCircle_locked")
         checkMark3.texture = SKTexture(imageNamed: "checkCircle_locked")
@@ -279,7 +276,6 @@ class Shop: SKScene {
     }
     
     func darkAlienSkinCheck() {
-        
         checkMark1.texture = SKTexture(imageNamed: "checkCircle_locked")
         checkMark2.texture = SKTexture(imageNamed: "checkCircle_locked")
         checkMark3.texture = SKTexture(imageNamed: "checkCircle_locked")
@@ -308,5 +304,4 @@ class Shop: SKScene {
         UserDefaults.standard.set(currentAlien, forKey: "currentAlien")
         UserDefaults.standard.synchronize()
     }
-    
 }
