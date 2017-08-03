@@ -80,6 +80,9 @@ class MainMenu: SKScene{
                 print("Level 1 is missing?")
                 return
             }
+            let currentAlien = "Default_Alien"
+            UserDefaults.standard.set(currentAlien, forKey: "currentAlien")
+            UserDefaults.standard.synchronize()
             UserDefaults.standard.set(100, forKey: "numberOfLifes")
             UserDefaults.standard.synchronize()
             UserDefaults.standard.set(1, forKey: "currentLevel")

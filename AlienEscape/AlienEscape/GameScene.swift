@@ -158,7 +158,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         currentLevel = UserDefaults.standard.integer(forKey: "currentLevel")
         alien = childNode(withName: "//alien") as! SKSpriteNode
         
-        alien.run(SKAction(named: "Default_Alien")!)
+        if UserDefaults.standard.object(forKey: "currentAlien") as! String ==  "Robot_Alien" {
+            alien.size = CGSize(width: 255, height: 430)
+        }
+        
+        alien.run(SKAction(named: UserDefaults.standard.object(forKey: "currentAlien") as! String)!)
 
         inGameMenu = childNode(withName: "//inGameMenu") as! MSButtonNode
         cameraNode = childNode(withName: "cameraNode") as! SKCameraNode

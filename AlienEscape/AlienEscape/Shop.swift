@@ -23,6 +23,7 @@ private var checkMark1: SKSpriteNode!
 private var checkMark2: SKSpriteNode!
 private var checkMark3: SKSpriteNode!
 private var checkMark4: SKSpriteNode!
+private var currentAlien = String()
 
 enum SelectedSkin {
     case robotAlien, armoredAlien, darkAlien, greenAlien
@@ -68,6 +69,20 @@ class Shop: SKScene {
         if numberOfStars >= 30  {
             checkMark1.texture = SKTexture(imageNamed: "checkCircle_empty")
         }
+        
+        if UserDefaults.standard.object(forKey: "currentAlien") as! String == "Default_Alien" {
+            checkMark4.texture = SKTexture(imageNamed: "checkCircle_checked")
+        }
+        else if UserDefaults.standard.object(forKey: "currentAlien") as! String  == "Robot_Alien" {
+            checkMark1.texture = SKTexture(imageNamed: "checkCircle_checked")
+        }
+        else if UserDefaults.standard.object(forKey: "currentAlien") as! String  == "Armored_Alien" {
+            checkMark2.texture = SKTexture(imageNamed: "checkCircle_checked")
+        }
+        else if UserDefaults.standard.object(forKey: "currentAlien") as! String  == "Dark_Alien" {
+            checkMark3.texture = SKTexture(imageNamed: "checkCircle_checked")
+        }
+        
     }
     
     override func didMove(to view: SKView) {
@@ -194,6 +209,11 @@ class Shop: SKScene {
         }
         
         checkMark4.texture = SKTexture(imageNamed: "checkCircle_checked")
+        
+        currentAlien = "Default_Alien"
+        
+        UserDefaults.standard.set(currentAlien, forKey: "currentAlien")
+        UserDefaults.standard.synchronize()
     }
     
     func robotAlienSkinCheck() {
@@ -220,6 +240,11 @@ class Shop: SKScene {
         }
         
         checkMark1.texture = SKTexture(imageNamed: "checkCircle_checked")
+        
+        currentAlien = "Robot_Alien"
+        
+        UserDefaults.standard.set(currentAlien, forKey: "currentAlien")
+        UserDefaults.standard.synchronize()
     }
     
     func armoredAlienSkinCheck() {
@@ -246,6 +271,11 @@ class Shop: SKScene {
         }
         
         checkMark2.texture = SKTexture(imageNamed: "checkCircle_checked")
+        
+        currentAlien = "Armored_Alien"
+        
+        UserDefaults.standard.set(currentAlien, forKey: "currentAlien")
+        UserDefaults.standard.synchronize()
     }
     
     func darkAlienSkinCheck() {
@@ -272,6 +302,11 @@ class Shop: SKScene {
         }
         
         checkMark3.texture = SKTexture(imageNamed: "checkCircle_checked")
+        
+        currentAlien = "Dark_Alien"
+        
+        UserDefaults.standard.set(currentAlien, forKey: "currentAlien")
+        UserDefaults.standard.synchronize()
     }
     
 }
