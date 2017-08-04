@@ -17,6 +17,7 @@ class MainMenu: SKScene{
     var shopButton: MSButtonNode!
     private var robot: SKSpriteNode!
     private var alien: SKSpriteNode!
+    var title: SKSpriteNode!
 
     var justOpened = true
     
@@ -34,7 +35,8 @@ class MainMenu: SKScene{
         shopButton = self.childNode(withName: "shopButton") as! MSButtonNode
         alien = self.childNode(withName: "alien") as! SKSpriteNode
         robot = self.childNode(withName: "robot") as! SKSpriteNode
-
+        title = self.childNode(withName: "title") as! SKSpriteNode
+        
         levelSelectButton.isHidden = true
         shopButton.isHidden = true
         startButton.position.y = 160
@@ -50,7 +52,7 @@ class MainMenu: SKScene{
         if UserDefaults.standard.integer(forKey: "firstTime") == 1 {
             levelSelectButton.isHidden = false
             shopButton.isHidden = false
-            startButton.position.y = 260
+            startButton.position.y = 205
             justOpened = UserDefaults.standard.bool(forKey: "justOpened")
         }
         
@@ -62,6 +64,7 @@ class MainMenu: SKScene{
             levelSelectButton.run(SKAction(named: "Buttons")!)
             startButton.run(SKAction(named: "Buttons")!)
             shopButton.run(SKAction(named: "Buttons")!)
+            title.run(SKAction(named: "Buttons")!)
             justOpened = false
             UserDefaults.standard.set(justOpened, forKey: "justOpened")
             UserDefaults.standard.synchronize()
@@ -69,6 +72,7 @@ class MainMenu: SKScene{
             levelSelectButton.alpha = 1
             startButton.alpha = 1
             shopButton.alpha = 1
+            title.alpha = 1
         }
 
         startButton.selectedHandler = {

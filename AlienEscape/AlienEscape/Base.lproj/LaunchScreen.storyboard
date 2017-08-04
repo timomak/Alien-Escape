@@ -17,24 +17,24 @@
                         <viewControllerLayoutGuide type="top" id="F65-uQ-R8h"/>
                         <viewControllerLayoutGuide type="bottom" id="IrL-TR-cRc"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="C1N-bd-DfF">
+                    <view key="view" contentMode="scaleAspectFill" id="C1N-bd-DfF">
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" image="MainMenuBackground" translatesAutoresizingMaskIntoConstraints="NO" id="RJL-nx-Vrt">
-                                <rect key="frame" x="0.0" y="0.0" width="669" height="376"/>
-                                <autoresizingMask key="autoresizingMask"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="K3d-Yg-QLT">
+                                <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="51.724137931034484" y="373.60000000000002"/>
+            <point key="canvasLocation" x="46.326836581709152" y="365.60000000000002"/>
         </scene>
     </scenes>
     <resources>
-        <image name="MainMenuBackground" width="568" height="320"/>
+        <image name="LaunchScreen" width="2840" height="1600"/>
     </resources>
 </document>
