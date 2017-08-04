@@ -55,6 +55,8 @@ class MSButtonNode: SKSpriteNode {
     // MARK: - Touch handling
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         state = .MSButtonNodeStateSelected
+//        let sound = SKAction.playSoundFileNamed("ButtonPressSound", waitForCompletion: false)
+//        self.run(sound)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {

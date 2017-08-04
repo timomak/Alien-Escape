@@ -8,6 +8,7 @@
 
 import SpriteKit
 
+
 class MainMenu: SKScene{
     
     /* UI Connections */
@@ -16,6 +17,7 @@ class MainMenu: SKScene{
     var shopButton: MSButtonNode!
     private var robot: SKSpriteNode!
     private var alien: SKSpriteNode!
+
     var justOpened = true
     
     var level = 0
@@ -36,7 +38,6 @@ class MainMenu: SKScene{
         levelSelectButton.isHidden = true
         shopButton.isHidden = true
         startButton.position.y = 160
-        
         
         if UserDefaults.standard.integer(forKey: "firstTime") == 0 {
             justOpened = true

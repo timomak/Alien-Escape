@@ -347,6 +347,12 @@
 		F3A8EFE31F326ADB00A299E0 /* Shop.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3A8EFE21F326ADB00A299E0 /* Shop.sks */; };
 		F3A8EFE51F326AF200A299E0 /* Shop.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A8EFE41F326AF200A299E0 /* Shop.swift */; };
 		F3BEB69C1F1D544D0016F385 /* Level_9.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3BEB69B1F1D544D0016F385 /* Level_9.sks */; };
+		F3C594191F34E04D009982E5 /* mainMenuGunFire.wav in Resources */ = {isa = PBXBuildFile; fileRef = F3C594181F34E04D009982E5 /* mainMenuGunFire.wav */; };
+		F3C5941D1F34E075009982E5 /* ButtonPressSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = F3C5941C1F34E075009982E5 /* ButtonPressSound.wav */; };
+		F3C5941F1F34E085009982E5 /* BallReleasedSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = F3C5941E1F34E085009982E5 /* BallReleasedSound.wav */; };
+		F3C594211F34E09E009982E5 /* LevelSelectSound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F3C594201F34E09E009982E5 /* LevelSelectSound.mp3 */; };
+		F3C594231F34EC2E009982E5 /* Portal_Sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F3C594221F34EC2E009982E5 /* Portal_Sound.mp3 */; };
+		F3C594251F34EC3A009982E5 /* MainMenuSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = F3C594241F34EC3A009982E5 /* MainMenuSound.wav */; };
 		F3C790571F1818C000CAE308 /* Level_4.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3C790561F1818C000CAE308 /* Level_4.sks */; };
 		F3C790591F182BAF00CAE308 /* Level_2.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3C790581F182BAF00CAE308 /* Level_2.sks */; };
 		F3C7C7391F1039A100B859F2 /* r_crouch.png in Resources */ = {isa = PBXBuildFile; fileRef = F3C7C6D01F1039A100B859F2 /* r_crouch.png */; };
@@ -850,6 +856,12 @@
 		F3A8EFE21F326ADB00A299E0 /* Shop.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Shop.sks; sourceTree = "<group>"; };
 		F3A8EFE41F326AF200A299E0 /* Shop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shop.swift; sourceTree = "<group>"; tabWidth = 3; };
 		F3BEB69B1F1D544D0016F385 /* Level_9.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level_9.sks; sourceTree = "<group>"; };
+		F3C594181F34E04D009982E5 /* mainMenuGunFire.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = mainMenuGunFire.wav; path = ../destruction_air/mainMenuGunFire.wav; sourceTree = "<group>"; };
+		F3C5941C1F34E075009982E5 /* ButtonPressSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ButtonPressSound.wav; sourceTree = "<group>"; };
+		F3C5941E1F34E085009982E5 /* BallReleasedSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = BallReleasedSound.wav; sourceTree = "<group>"; };
+		F3C594201F34E09E009982E5 /* LevelSelectSound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = LevelSelectSound.mp3; sourceTree = "<group>"; };
+		F3C594221F34EC2E009982E5 /* Portal_Sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Portal_Sound.mp3; sourceTree = "<group>"; };
+		F3C594241F34EC3A009982E5 /* MainMenuSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = MainMenuSound.wav; sourceTree = "<group>"; };
 		F3C790561F1818C000CAE308 /* Level_4.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Level_4.sks; path = alien_dark_gray/Level_4.sks; sourceTree = "<group>"; };
 		F3C790581F182BAF00CAE308 /* Level_2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Level_2.sks; path = alien_dark_gray/Level_2.sks; sourceTree = "<group>"; };
 		F3C7C6D01F1039A100B859F2 /* r_crouch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = r_crouch.png; sourceTree = "<group>"; };
@@ -1289,6 +1301,12 @@
 		F3A8EE081F32370200A299E0 /* Effects */ = {
 			isa = PBXGroup;
 			children = (
+				F3C594241F34EC3A009982E5 /* MainMenuSound.wav */,
+				F3C594221F34EC2E009982E5 /* Portal_Sound.mp3 */,
+				F3C594201F34E09E009982E5 /* LevelSelectSound.mp3 */,
+				F3C5941E1F34E085009982E5 /* BallReleasedSound.wav */,
+				F3C5941C1F34E075009982E5 /* ButtonPressSound.wav */,
+				F3C594181F34E04D009982E5 /* mainMenuGunFire.wav */,
 				F31CE1EE1F0EAAFF00A14038 /* destruction_air */,
 				F387A8271F0EDF660052E0CB /* granade.mp3 */,
 				F3282FB01F13F88E00CB0A9D /* lazer_Red */,
@@ -1853,6 +1871,7 @@
 				F3A8EFCB1F3237BC00A299E0 /* predatormask__0030_jump_4.png in Resources */,
 				F37C40391F33907F0099FCE4 /* Alien_MainMenu_5.png in Resources */,
 				F3C7C7551F1039A100B859F2 /* r_idle_14.png in Resources */,
+				F3C594231F34EC2E009982E5 /* Portal_Sound.mp3 in Resources */,
 				F3A8EFBD1F3237BC00A299E0 /* predatormask__0016_run_5.png in Resources */,
 				F3C7C7611F1039A100B859F2 /* r_idle_7.png in Resources */,
 				F3A8EE431F32378100A299E0 /* armor__0011_walk_6.png in Resources */,
@@ -1862,6 +1881,7 @@
 				F32830001F14113F00CB0A9D /* lazer_09_Purple.png in Resources */,
 				F3A8EE961F32378B00A299E0 /* blue__0001_idle_2.png in Resources */,
 				F3A8EFC91F3237BC00A299E0 /* predatormask__0028_jump_2.png in Resources */,
+				F3C5941D1F34E075009982E5 /* ButtonPressSound.wav in Resources */,
 				F3A8EFD41F3237BC00A299E0 /* predatormask__0039_fire_5.png in Resources */,
 				F3A8EE4C1F32378100A299E0 /* armor__0020_hurt_3.png in Resources */,
 				F3A8EF111F32379700A299E0 /* gray__0031_attack_1.png in Resources */,
@@ -2002,6 +2022,7 @@
 				F3A8EEB61F32378B00A299E0 /* blue__0033_attack_3.png in Resources */,
 				F3FAC4001F1D7F12009F47AC /* green__0045_fire_11.png in Resources */,
 				F3A8EF011F32379700A299E0 /* gray__0015_run_4.png in Resources */,
+				F3C594211F34E09E009982E5 /* LevelSelectSound.mp3 in Resources */,
 				F3C7C73C1F1039A100B859F2 /* r_death_10.png in Resources */,
 				F3C7C7811F1039A100B859F2 /* r_run_8.png in Resources */,
 				F3FAC3E01F1D7F12009F47AC /* green__0013_run_2.png in Resources */,
@@ -2049,6 +2070,7 @@
 				F3C7C7771F1039A100B859F2 /* r_run_13.png in Resources */,
 				F3282FD41F13F88E00CB0A9D /* lazer_12.png in Resources */,
 				F387A8281F0EDF660052E0CB /* granade.mp3 in Resources */,
+				F3C594251F34EC3A009982E5 /* MainMenuSound.wav in Resources */,
 				F3FAC3FE1F1D7F12009F47AC /* green__0043_fire_9.png in Resources */,
 				F31CE2021F0EAAFF00A14038 /* destruction_air_04.png in Resources */,
 				F32830061F14113F00CB0A9D /* lazer_15_Purple.png in Resources */,
@@ -2067,6 +2089,7 @@
 				F3A8EFD51F3237BC00A299E0 /* predatormask__0040_fire_6.png in Resources */,
 				F3C7C7641F1039A100B859F2 /* r_jump_1.png in Resources */,
 				F3C7C7541F1039A100B859F2 /* r_idle_13.png in Resources */,
+				F3C594191F34E04D009982E5 /* mainMenuGunFire.wav in Resources */,
 				F3282FD51F13F88E00CB0A9D /* lazer_13.png in Resources */,
 				F3282FDE1F13F88E00CB0A9D /* lazer_22.png in Resources */,
 				F3C7C7701F1039A100B859F2 /* r_jump_7.png in Resources */,
@@ -2239,6 +2262,7 @@
 				F3A8EF071F32379700A299E0 /* gray__0021_hurt_4.png in Resources */,
 				F3FAC3EC1F1D7F12009F47AC /* green__0025_dead_4.png in Resources */,
 				F3165B671F06C8D200A7BD96 /* Actions.sks in Resources */,
+				F3C5941F1F34E085009982E5 /* BallReleasedSound.wav in Resources */,
 				F32830031F14113F00CB0A9D /* lazer_12_Purple.png in Resources */,
 				F39ECB411F0AC3F500EDE3D5 /* darkgray__0042_fire_8.png in Resources */,
 				F3A8EF1B1F32379700A299E0 /* gray__0041_fire_7.png in Resources */,

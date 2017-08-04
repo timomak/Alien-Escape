@@ -7,6 +7,8 @@
 //
 
 import SpriteKit
+import AVFoundation
+
 var cameraNode2: SKCameraNode!
 var background: SKSpriteNode!
 
@@ -34,6 +36,8 @@ private var numberOfStars = 0
 
 private var lifeCounter: SKLabelNode!
 
+private var sound: SKAudioNode!
+
 var levelGerator = [1: level1, 2: level2, 3: level3,4: level4, 5: level5,6: level6,7: level7, 8: level8, 9: level9, 10: level10, 11: level11, 12: level12]
 
 class LevelSelect: SKScene {
@@ -44,6 +48,11 @@ class LevelSelect: SKScene {
         background = childNode(withName: "background") as! SKSpriteNode
         mainManu = childNode(withName: "//mainMenuButton") as! MSButtonNode
         scene?.camera = cameraNode2
+        
+        if let musicURL = Bundle.main.url(forResource: "LevelSelectSound", withExtension: "mp3") {
+            sound = SKAudioNode(url: musicURL)
+            addChild(sound)
+        }
         
         starCounter = childNode(withName: "//starCounter") as! SKLabelNode
         lifeCounter = childNode(withName: "//lifeCounter") as! SKLabelNode
@@ -80,6 +89,7 @@ class LevelSelect: SKScene {
                     print("Level \(i) is missing?")
                     return
                 }
+                
                 UserDefaults.standard.set(i, forKey: "currentLevel")
                 UserDefaults.standard.synchronize()
                 

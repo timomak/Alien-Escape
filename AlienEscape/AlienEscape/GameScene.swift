@@ -10,6 +10,7 @@
 
 import SpriteKit
 import GoogleMobileAds
+import AudioToolbox
 
 func clamp<T: Comparable>(value: T, lower: T, upper: T) -> T {
     return min(max(value, lower), upper)
@@ -707,6 +708,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                     )
                     trajectoryTimeOut = 0
                     released = true
+                    let sound = SKAction.playSoundFileNamed("BallReleasedSound", waitForCompletion: false)
+                    self.run(sound)
                     if levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
                         self.physicsWorld.speed = 0.37
                     } else {
@@ -820,7 +823,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         
     }
     func teleportBallB(node: SKNode) {
-        
+        let sound = SKAction.playSoundFileNamed("Portal_Sound", waitForCompletion: false)
+        self.run(sound)
         let moveBall = SKAction.move(to: portalB.position, duration:0)
         node.run(moveBall)
         if levelWithMovingCameraFromAtoB.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
@@ -829,7 +833,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         }
     }
     func teleportBallA(node: SKNode) {
-        
+        let sound = SKAction.playSoundFileNamed("Portal_Sound", waitForCompletion: false)
+        self.run(sound)
         let moveBall = SKAction.move(to: portal2.position, duration:0)
         node.run(moveBall)
         if levelWithMovingCameraFromAtoB.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
@@ -841,6 +846,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     func animateExplosion(node: SKNode) {
         node.run(SKAction(named: "Boom")!)
         // MARK: Sound Effect
+        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         let sound = SKAction.playSoundFileNamed("granade", waitForCompletion: false)
         self.run(sound)
         
