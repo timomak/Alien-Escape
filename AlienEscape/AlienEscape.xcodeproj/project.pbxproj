@@ -454,6 +454,7 @@
 		F3C7C79F1F1039A100B859F2 /* Red_Bot_hero.ai in Resources */ = {isa = PBXBuildFile; fileRef = F3C7C7371F1039A100B859F2 /* Red_Bot_hero.ai */; };
 		F3C7C7A01F1039A100B859F2 /* Red_Bot_hero.eps in Resources */ = {isa = PBXBuildFile; fileRef = F3C7C7381F1039A100B859F2 /* Red_Bot_hero.eps */; };
 		F3D5BAE51F33A8C400B1A2D4 /* adPage.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3D5BAE41F33A8C400B1A2D4 /* adPage.sks */; };
+		F3D5BAE91F33ECF100B1A2D4 /* mainMenuActions.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3D5BAE81F33ECF100B1A2D4 /* mainMenuActions.sks */; };
 		F3E51A1A1F27B37800E6238F /* Level_5.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3E51A191F27B37800E6238F /* Level_5.sks */; };
 		F3FAC3A31F1D7941009F47AC /* Level_7.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3FAC3A21F1D7941009F47AC /* Level_7.sks */; };
 		F3FAC3D31F1D7F12009F47AC /* green__0000_idle_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F3FAC3A51F1D7F12009F47AC /* green__0000_idle_1.png */; };
@@ -956,6 +957,7 @@
 		F3C7C7371F1039A100B859F2 /* Red_Bot_hero.ai */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Red_Bot_hero.ai; sourceTree = "<group>"; };
 		F3C7C7381F1039A100B859F2 /* Red_Bot_hero.eps */ = {isa = PBXFileReference; lastKnownFileType = file; path = Red_Bot_hero.eps; sourceTree = "<group>"; };
 		F3D5BAE41F33A8C400B1A2D4 /* adPage.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = adPage.sks; sourceTree = "<group>"; };
+		F3D5BAE81F33ECF100B1A2D4 /* mainMenuActions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = mainMenuActions.sks; sourceTree = "<group>"; };
 		F3E51A191F27B37800E6238F /* Level_5.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Level_5.sks; path = alien_dark_gray/Level_5.sks; sourceTree = "<group>"; };
 		F3FAC3A21F1D7941009F47AC /* Level_7.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level_7.sks; sourceTree = "<group>"; };
 		F3FAC3A51F1D7F12009F47AC /* green__0000_idle_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = green__0000_idle_1.png; sourceTree = "<group>"; };
@@ -1056,6 +1058,7 @@
 			children = (
 				F3165B621F06C8D200A7BD96 /* AppDelegate.swift */,
 				F3165B661F06C8D200A7BD96 /* Actions.sks */,
+				F3D5BAE81F33ECF100B1A2D4 /* mainMenuActions.sks */,
 				F3165B6A1F06C8D200A7BD96 /* GameViewController.swift */,
 				F3165B6C1F06C8D200A7BD96 /* Main.storyboard */,
 				F3165B6F1F06C8D200A7BD96 /* Assets.xcassets */,
@@ -1826,6 +1829,7 @@
 				F3FAC3E61F1D7F12009F47AC /* green__0019_hurt_2.png in Resources */,
 				F3A8EE421F32378100A299E0 /* armor__0010_walk_5.png in Resources */,
 				F3FAC3DA1F1D7F12009F47AC /* green__0007_walk_2.png in Resources */,
+				F3D5BAE91F33ECF100B1A2D4 /* mainMenuActions.sks in Resources */,
 				F3A8EEA41F32378B00A299E0 /* blue__0015_run_4.png in Resources */,
 				F39ECB3D1F0AC3F500EDE3D5 /* darkgray__0038_fire_4.png in Resources */,
 				F37C403C1F33907F0099FCE4 /* Alien_MainMenu_8.png in Resources */,

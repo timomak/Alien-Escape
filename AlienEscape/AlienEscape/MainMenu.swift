@@ -14,8 +14,12 @@ class MainMenu: SKScene{
     var startButton: MSButtonNode!
     var levelSelectButton: MSButtonNode!
     var shopButton: MSButtonNode!
+    private var robot: SKSpriteNode!
+    private var alien: SKSpriteNode!
+    var justOpened = true
     
     var level = 0
+    
     
     override func didMove(to view: SKView) {
         /* Setup your scene here */
@@ -26,15 +30,44 @@ class MainMenu: SKScene{
         startButton = self.childNode(withName: "startButton") as! MSButtonNode
         levelSelectButton = self.childNode(withName: "levelSelectButton") as! MSButtonNode
         shopButton = self.childNode(withName: "shopButton") as! MSButtonNode
-        
+        alien = self.childNode(withName: "alien") as! SKSpriteNode
+        robot = self.childNode(withName: "robot") as! SKSpriteNode
+
         levelSelectButton.isHidden = true
         shopButton.isHidden = true
         startButton.position.y = 160
+        
+        
+        if UserDefaults.standard.integer(forKey: "firstTime") == 0 {
+            justOpened = true
+            UserDefaults.standard.set(justOpened, forKey: "justOpened")
+            UserDefaults.standard.synchronize()
+        }
+
+
         
         if UserDefaults.standard.integer(forKey: "firstTime") == 1 {
             levelSelectButton.isHidden = false
             shopButton.isHidden = false
             startButton.position.y = 260
+            justOpened = UserDefaults.standard.bool(forKey: "justOpened")
+        }
+        
+        print("JustOpened: \(justOpened)")
+        
+        if justOpened == true {
+            alien.run(SKAction(named: "Alien")!)
+            robot.run(SKAction(named: "Robot")!)
+            levelSelectButton.run(SKAction(named: "Buttons")!)
+            startButton.run(SKAction(named: "Buttons")!)
+            shopButton.run(SKAction(named: "Buttons")!)
+            justOpened = false
+            UserDefaults.standard.set(justOpened, forKey: "justOpened")
+            UserDefaults.standard.synchronize()
+        } else {
+            levelSelectButton.alpha = 1
+            startButton.alpha = 1
+            shopButton.alpha = 1
         }
 
         startButton.selectedHandler = {
@@ -48,6 +81,7 @@ class MainMenu: SKScene{
             self.loadShop()
         }
     }
+    
     
     func gameSelect() {
         /* 1) Grab reference to our SpriteKit view */
