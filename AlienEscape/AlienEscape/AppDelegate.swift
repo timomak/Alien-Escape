@@ -20,12 +20,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         FirebaseApp.configure()
         
-        GADMobileAds.configure(withApplicationID: "ca-app-pub-3940256099942544~1458002511")
+        GADMobileAds.configure(withApplicationID: "ca-app-pub-6454574712655895~3494753427")
         let request = GADRequest()
-        request.testDevices = [ kGADSimulatorID,                       // All simulators
-            "2077ef9a63d2b398840261c8221a0c9b" ];
         GADRewardBasedVideoAd.sharedInstance().load(request,
-                                                    withAdUnitID: "ca-app-pub-3940256099942544/1712485313")
+                                                    withAdUnitID: "ca-app-pub-6454574712655895/9250778455")
         // Sample device ID
         // Sample AdMob app ID: ca-app-pub-3940256099942544~1458002511
         return true

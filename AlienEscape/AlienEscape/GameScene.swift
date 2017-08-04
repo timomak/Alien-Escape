@@ -168,20 +168,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     func rewardBasedVideoAd(_ rewardBasedVideoAd: GADRewardBasedVideoAd, didRewardUserWith reward: GADAdReward) {
         
         print("number of lifes is: \(numberOfLives)")
-        numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes") + 30
-        UserDefaults.standard.set(numberOfLives, forKey: "numberOfLifes")
-        UserDefaults.standard.synchronize()
         print("number of lifes is: \(UserDefaults.standard.integer(forKey: "numberOfLifes"))")
     }
     func rewardBasedVideoAdDidClose(_ rewardBasedVideoAd: GADRewardBasedVideoAd) {
+        numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes") + 30
+        UserDefaults.standard.set(numberOfLives, forKey: "numberOfLifes")
+        UserDefaults.standard.synchronize()
         adScreen.run(SKAction.moveTo(y: 1600, duration: 1))
         lifeCounter.text = String(numberOfLives)
         gameState = .playing
         let request = GADRequest()
-        request.testDevices = [ kGADSimulatorID,                       // All simulators
-            "2077ef9a63d2b398840261c8221a0c9b" ];
         GADRewardBasedVideoAd.sharedInstance().load(request,
-                                                    withAdUnitID: "ca-app-pub-3940256099942544/1712485313")
+                                                    withAdUnitID: "ca-app-pub-6454574712655895/9250778455")
         print("number of lifes after ad is: \(UserDefaults.standard.integer(forKey: "numberOfLifes"))")
     }
     override func didMove(to view: SKView) {
@@ -476,12 +474,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                 }
             }
             if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-                if touchedNode == vortexDrag || touchedNode == springNodeImage || touchedNode == spaceshipGlass {
+                if UserDefaults.standard.integer(forKey: "currentLevel") == 5 && touchedNode == spaceshipGlass{
                     if vortexHasBeenPlaced == false {
                         springField.isEnabled = false
                         springNodeImage.position = touchLocation
                         currentMovingPortal = springNodeImage
                         vortexDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
+                        springNodeImage.run(SKAction(named: "rotateVortex")!)
+                    }
+                }
+                else if touchedNode == vortexDrag || touchedNode == springNodeImage || touchedNode == spaceshipGlass {
+                    if vortexHasBeenPlaced == false {
+                        springField.isEnabled = false
+                        springNodeImage.position = touchLocation
+                        currentMovingPortal = springNodeImage
+                        vortexDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
+                        springNodeImage.run(SKAction(named: "rotateVortex")!)
                     }
                 } else {
                     currentMovingPortal = springNodeImage
@@ -491,7 +499,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                     print("Current moving portal: \(currentMovingPortal)")
                 }
             } else if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-                if touchedNode == springNodeImage || touchedNode == background {
+                if UserDefaults.standard.integer(forKey: "currentLevel") == 4 && touchedNode == spaceshipGlass {
+                    currentMovingPortal = springNodeImage
+                    springNodeImage.run(SKAction(named: "rotateVortex")!)
+                    print("The node that is being touched is: \(touchedNode)")
+                    print("Current moving portal: \(currentMovingPortal)")
+                }
+                else if touchedNode == springNodeImage || touchedNode == background {
                     currentMovingPortal = springNodeImage
                     springNodeImage.run(SKAction(named: "rotateVortex")!)
                     print("The node that is being touched is: \(touchedNode)")
@@ -679,8 +693,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")){
                 if vortexHasBeenMoved == true {
                     springField.isEnabled = false
-                    springNodeImage.removeAllActions()
+                    if vortexHasBeenPlaced == true {
+                        springNodeImage.removeAllActions()
+                    } else {
                     vortexHasBeenPlaced = true
+                    }
+                    
                 }
             } else if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
                 springField.isEnabled = false
