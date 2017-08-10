@@ -326,8 +326,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             
             /* Show debug */
             skView.showsPhysics = false
-            skView.showsDrawCount = true
-            skView.showsFPS = true
+            skView.showsDrawCount = false
+            skView.showsFPS = false
             
             /* 4) Start game scene */
             skView.presentScene(scene)
@@ -358,8 +358,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             
             /* Show debug */
             skView.showsPhysics = false
-            skView.showsDrawCount = true
-            skView.showsFPS = true
+            skView.showsDrawCount = false
+            skView.showsFPS = false
             
             /* 4) Start game scene */
             skView.presentScene(scene)
