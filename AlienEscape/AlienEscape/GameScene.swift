@@ -170,6 +170,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         print("number of lifes is: \(numberOfLives)")
         print("number of lifes is: \(UserDefaults.standard.integer(forKey: "numberOfLifes"))")
     }
+    func rewardBasedVideoAd(_ rewardBasedVideoAd: GADRewardBasedVideoAd, didFailToLoadWithError error: Error) {
+        numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes") + 30
+        UserDefaults.standard.set(numberOfLives, forKey: "numberOfLifes")
+        UserDefaults.standard.synchronize()
+        adScreen.run(SKAction.moveTo(y: 1600, duration: 1))
+        lifeCounter.text = String(numberOfLives)
+        gameState = .playing
+        let request = GADRequest()
+    }
+    
     func rewardBasedVideoAdDidClose(_ rewardBasedVideoAd: GADRewardBasedVideoAd) {
         numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes") + 30
         UserDefaults.standard.set(numberOfLives, forKey: "numberOfLifes")
