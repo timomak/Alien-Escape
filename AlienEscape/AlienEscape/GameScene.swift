@@ -43,9 +43,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             }
         }
     }
-    
-    var springField: SKFieldNode!
-    var springNodeImage: SKSpriteNode!
+    //    var springField: SKFieldNode!
+    //    var springNodeImage: SKSpriteNode!
     
     var starOne :SKSpriteNode!
     var starTwo :SKSpriteNode!
@@ -102,20 +101,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     var bluePortalHasBeenPlaced = false
     var yellowPortalHasBeenPlaced = false
     
-    var vortexDrag: SKSpriteNode!
+    //    var vortexDrag: SKSpriteNode!
     
-    var levelWithExtraPortals = [9,10,11,12]
-    var levelWithVortex = [4,5,7,10,11,12]
+    var levelWithExtraPortals = [5]
+    //    var levelWithVortex = [4,5,7,10,11,12]
     var levelWithDraggablePortals = [3]
-    var levelWithDraggableVortex = [5]
-    var levelWithMovingCameraFromAtoB = [6,7]
-    var levelWithMovableCameraInXAxis = [8,9,10,11,12]
-    var levelWithMovableCameraInYAxis = [8,9,10,11,12]
+    //    var levelWithDraggableVortex = [5]
+    var levelWithMovingCameraFromAtoB = [4]
+    var levelWithMovableCameraInXAxis = [5]
+    var levelWithMovableCameraInYAxis = [5]
     
-    var projectileAngularDistance: CGFloat = 0
-    var vortexHasBeenMoved = false
-    var vortexHasBeenPlaced = false
-    var vortexIsPulling = false
+    //    var vortexHasBeenMoved = false
+    //    var vortexHasBeenPlaced = false
+    //    var vortexIsPulling = false
     
     var topBorder: SKSpriteNode!
     var rightBorder: SKSpriteNode!
@@ -200,7 +198,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         
         // MARK: SK Reference link
         labelReferenceNode = SKReferenceNode(fileNamed: "Indicator")
-        // labelReferenceNode.position = CGPoint(x: 40, y: 20)
         labelReferenceNode.physicsBody = nil
         self.addChild(labelReferenceNode!)
         labelIndicators = labelReferenceNode.childNode(withName: "labelIndicators") as! Indicators
@@ -235,25 +232,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             yellowPortalDrag.isHidden = true
         }
         
-        // MARK: Vortexes
-        if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-            
-            springField = childNode(withName: "//springField") as! SKFieldNode
-            springNodeImage = childNode(withName: "springNodeImage") as! SKSpriteNode
-            springField.region = SKRegion(size: springNodeImage.size)
-            springField.isEnabled = false
-            
-            if UserDefaults.standard.integer(forKey: "currentLevel") == 5 || UserDefaults.standard.integer(forKey: "currentLevel") == 4 {
-                self.spaceshipGlass = childNode(withName: "spaceshipGlass") as! SKSpriteNode
-            }
-        }
-        
-        // MARK: Draggable Vortex
-        if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-            vortexDrag = childNode(withName: "//vortexDrag") as! SKSpriteNode
-            vortexDrag.isHidden = true
-            springField.isEnabled = false
-        }
+        //        // MARK: Vortexes
+        //        if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+        //
+        //            springField = childNode(withName: "//springField") as! SKFieldNode
+        //            springNodeImage = childNode(withName: "springNodeImage") as! SKSpriteNode
+        //            springField.region = SKRegion(size: springNodeImage.size)
+        //            springField.isEnabled = false
+        //
+        //            if UserDefaults.standard.integer(forKey: "currentLevel") == 5 || UserDefaults.standard.integer(forKey: "currentLevel") == 4 {
+        //                self.spaceshipGlass = childNode(withName: "spaceshipGlass") as! SKSpriteNode
+        //            }
+        //        }
+        //
+        //        // MARK: Draggable Vortex
+        //        if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+        //            vortexDrag = childNode(withName: "//vortexDrag") as! SKSpriteNode
+        //            vortexDrag.isHidden = true
+        //            springField.isEnabled = false
+        //        }
         
         // MARK: Larger Levels Borders
         if levelWithMovableCameraInXAxis.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithMovableCameraInYAxis.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
@@ -473,45 +470,46 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                     yellowPortalHasBeenPlaced = true
                 }
             }
-            if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-                if UserDefaults.standard.integer(forKey: "currentLevel") == 5 && touchedNode == spaceshipGlass{
-                    if vortexHasBeenPlaced == false {
-                        springField.isEnabled = false
-                        springNodeImage.position = touchLocation
-                        currentMovingPortal = springNodeImage
-                        vortexDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
-                        springNodeImage.run(SKAction(named: "rotateVortex")!)
-                    }
-                }
-                else if touchedNode == vortexDrag || touchedNode == springNodeImage || touchedNode == spaceshipGlass {
-                    if vortexHasBeenPlaced == false {
-                        springField.isEnabled = false
-                        springNodeImage.position = touchLocation
-                        currentMovingPortal = springNodeImage
-                        vortexDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
-                        springNodeImage.run(SKAction(named: "rotateVortex")!)
-                    }
-                } else {
-                    currentMovingPortal = springNodeImage
-                    springField.isEnabled = true
-                    springNodeImage.run(SKAction(named: "rotateVortex")!)
-                    print("The node that is being touched is in draggable: \(touchedNode)")
-                    print("Current moving portal: \(currentMovingPortal)")
-                }
-            } else if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-                if UserDefaults.standard.integer(forKey: "currentLevel") == 4 && touchedNode == spaceshipGlass {
-                    currentMovingPortal = springNodeImage
-                    springNodeImage.run(SKAction(named: "rotateVortex")!)
-                    print("The node that is being touched is: \(touchedNode)")
-                    print("Current moving portal: \(currentMovingPortal)")
-                }
-                else if touchedNode == springNodeImage || touchedNode == background {
-                    currentMovingPortal = springNodeImage
-                    springNodeImage.run(SKAction(named: "rotateVortex")!)
-                    print("The node that is being touched is: \(touchedNode)")
-                    print("Current moving portal: \(currentMovingPortal)")
-                }
-            }
+            //            if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+            //                if UserDefaults.standard.integer(forKey: "currentLevel") == 5 && touchedNode == spaceshipGlass{
+            //                    if vortexHasBeenPlaced == false {
+            //                        springField.isEnabled = false
+            //                        springNodeImage.position = touchLocation
+            //                        currentMovingPortal = springNodeImage
+            //                        vortexDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
+            //                        springNodeImage.run(SKAction(named: "rotateVortex")!)
+            //                    }
+            //                }
+            //                else if touchedNode == vortexDrag || touchedNode == springNodeImage || touchedNode == spaceshipGlass {
+            //                    if vortexHasBeenPlaced == false {
+            //                        springField.isEnabled = false
+            //                        springNodeImage.position = touchLocation
+            //                        currentMovingPortal = springNodeImage
+            //                        vortexDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
+            //                        springNodeImage.run(SKAction(named: "rotateVortex")!)
+            //                    }
+            ////                }
+            //                else {
+            //                    currentMovingPortal = springNodeImage
+            //                    springField.isEnabled = true
+            //                    springNodeImage.run(SKAction(named: "rotateVortex")!)
+            //                    print("The node that is being touched is in draggable: \(touchedNode)")
+            //                    print("Current moving portal: \(currentMovingPortal)")
+            //                }
+            //            } else if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+            //                if UserDefaults.standard.integer(forKey: "currentLevel") == 4 && touchedNode == spaceshipGlass {
+            //                    currentMovingPortal = springNodeImage
+            //                    springNodeImage.run(SKAction(named: "rotateVortex")!)
+            //                    print("The node that is being touched is: \(touchedNode)")
+            //                    print("Current moving portal: \(currentMovingPortal)")
+            //                }
+            //                else if touchedNode == springNodeImage || touchedNode == background {
+            //                    currentMovingPortal = springNodeImage
+            //                    springNodeImage.run(SKAction(named: "rotateVortex")!)
+            //                    print("The node that is being touched is: \(touchedNode)")
+            //                    print("Current moving portal: \(currentMovingPortal)")
+            //                }
+            //            }
         }
     }
     func boundLayerPos(_ aNewPosition : CGPoint) -> CGPoint {
@@ -533,34 +531,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                 let position = portal2.position
                 portal2.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
             }
-            if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-                if vortexHasBeenPlaced == false {
-                    if currentMovingPortal == springNodeImage {
-                        let position = springNodeImage.position
-                        springNodeImage.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
-                        springField.position = springNodeImage.position
-                        vortexIsPulling = true
-                        vortexHasBeenMoved = true
-                        springField.isEnabled = false
-                    }
-                } else {
-                    springField.isEnabled = true
-                    print("Spring Field is Enabled in draggable == \(springField.isEnabled)")
-                    vortexHasBeenMoved = true
-                }
-            } else if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-                if currentMovingPortal == springNodeImage {
-                    springField.isEnabled = true
-                    print("Spring Field is Enabled == \(springField.isEnabled)")
-                }
-            }
+            //            if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+            //                if vortexHasBeenPlaced == false {
+            //                    if currentMovingPortal == springNodeImage {
+            //                        let position = springNodeImage.position
+            //                        springNodeImage.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+            //                        springField.position = springNodeImage.position
+            //                        vortexIsPulling = true
+            //                        vortexHasBeenMoved = true
+            //                        springField.isEnabled = false
+            //                    }
+            //                } else {
+            //                    springField.isEnabled = true
+            //                    print("Spring Field is Enabled in draggable == \(springField.isEnabled)")
+            //                    vortexHasBeenMoved = true
+            //                }
+            //            } else if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+            //                if currentMovingPortal == springNodeImage {
+            //                    springField.isEnabled = true
+            //                    print("Spring Field is Enabled == \(springField.isEnabled)")
+            //                }
         }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         // MARK: Draggable objects setup
         if gameState == .playing {
-            if  levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+            //            if  levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+            
+            if  levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
                 let touch = touches.first!
                 let positionInScene = touch.location(in: self)
                 selectPortalForTouch(positionInScene)
@@ -676,7 +675,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                     camera?.position.x += ((location?.x)! - (previousLocation?.x)!) * -1
                     camera?.position.y += ((location?.y)! - (previousLocation?.y)!) * -1
                 }
-                if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")){
+                //                if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")){
+                if levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")){
                     let touch = touches.first!
                     let positionInScene = touch.location(in: self)
                     let previousPosition = touch.previousLocation(in: self)
@@ -690,21 +690,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if gameState == .playing {
-            if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")){
-                if vortexHasBeenMoved == true {
-                    springField.isEnabled = false
-                    if vortexHasBeenPlaced == true {
-                        springNodeImage.removeAllActions()
-                    } else {
-                    vortexHasBeenPlaced = true
-                    }
-                    
-                }
-            } else if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-                springField.isEnabled = false
-                springNodeImage.removeAllActions()
-                vortexHasBeenPlaced = true
-            }
+//            if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")){
+//                if vortexHasBeenMoved == true {
+//                    springField.isEnabled = false
+//                    if vortexHasBeenPlaced == true {
+//                        springNodeImage.removeAllActions()
+//                    } else {
+//                        vortexHasBeenPlaced = true
+//                    }
+//                    
+//                }
+//            } else if levelWithVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+//                springField.isEnabled = false
+//                springNodeImage.removeAllActions()
+//                vortexHasBeenPlaced = true
+//            }
             if projectileIsDragged {
                 cameraTarget = projectile
                 projectileIsDragged = false
@@ -728,8 +728,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                     released = true
                     let sound = SKAction.playSoundFileNamed("BallReleasedSound", waitForCompletion: false)
                     self.run(sound)
-                    if levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-                        self.physicsWorld.speed = 0.37
+//                    if levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+                    if levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+                    self.physicsWorld.speed = 0.37
                     } else {
                         self.physicsWorld.speed = 0.5
                     }
@@ -739,9 +740,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                         bluePortalDrag.isHidden = false
                         yellowPortalDrag.isHidden = false
                     }
-                    if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-                        vortexDrag.isHidden = false
-                    }
+//                    if levelWithDraggableVortex.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+//                        vortexDrag.isHidden = false
+//                    }
                 } else {
                     projectile.physicsBody = nil
                     projectile.position = Settings.Metrics.projectileRestPosition
