@@ -41,22 +41,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             }
         }
     }
+    var GUI: SKReferenceNode!
+    var menus: guiCode!
     
-    var starOne :SKSpriteNode!
-    var starTwo :SKSpriteNode!
-    var starThree :SKSpriteNode!
-    var winMenu: SKSpriteNode!
-    var nextLevelButton: MSButtonNode!
+    private var starOne :SKSpriteNode!
+    private var starTwo :SKSpriteNode!
+    private var starThree :SKSpriteNode!
+    private var winMenu: SKSpriteNode!
+    private var nextLevelButton: MSButtonNode!
+    private var pauseMenu: SKSpriteNode!
+    private var resetButton: MSButtonNode!
+    private var resumeButton: MSButtonNode!
+    private var levelSelectButton: MSButtonNode!
+    
     
     let fixedDelta: CFTimeInterval = 1.0 / 60.0 /* 60 FPS */
     var gameStart: CFTimeInterval = 0
     var timer: CFTimeInterval = 0
     var trajectoryTimeOut: CFTimeInterval = 1
-    
-    var pauseMenu: SKSpriteNode!
-    var resetButton: MSButtonNode!
-    var resumeButton: MSButtonNode!
-    var levelSelectButton: MSButtonNode!
     
     var background: SKSpriteNode!
     var portal1: SKSpriteNode!
@@ -66,7 +68,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     
     var alien: SKSpriteNode!
     var inGameMenu: MSButtonNode!
-    
     var projectile: spear!
     
     //Touch dragging vars
@@ -114,7 +115,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     var powerLabel: SKLabelNode!
     var angleLabel: SKLabelNode!
     
-    
     private var adPopUp: SKReferenceNode!
     private var adScreen: AdPage!
     private var mainMenuButton: MSButtonNode!
@@ -125,8 +125,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     var projectilePredictionPoint3: SKSpriteNode!
     var projectilePredictionPoint4: SKSpriteNode!
     var projectilePredictionPoint5: SKSpriteNode!
-    
-    var spaceshipGlass: SKSpriteNode!
     
     var numberOfLives = 0
     
@@ -195,6 +193,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         powerLabel = labelIndicators.powerIndicator!
         labelIndicators.position = CGPoint(x: 40, y: 20)
         
+        // MARK: GUI Setup
+        GUI = SKReferenceNode(fileNamed: "GUI_Menus")
+        GUI.physicsBody = nil
+        self.addChild(GUI!)
+        menus = GUI.childNode(withName: "parentGUI") as! guiCode
+        winMenu = menus.winMenu_guiCode!
+        menus.position = CGPoint(x: 50, y: 20)
+        
         // MARK: Ad popup
         GADRewardBasedVideoAd.sharedInstance().delegate = (self as GADRewardBasedVideoAdDelegate)
         adPopUp = SKReferenceNode(fileNamed: "adPage")
@@ -229,17 +235,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         }
         
         background = childNode(withName: "background") as! SKSpriteNode
-        pauseMenu = childNode(withName: "pauseMenu") as! SKSpriteNode
-        resumeButton = childNode(withName: "//resumeButton") as! MSButtonNode
-        resetButton = childNode(withName: "resetButton") as! MSButtonNode
-        
-        starOne = childNode(withName: "//starOne") as! SKSpriteNode
-        starTwo = childNode(withName: "//starTwo") as! SKSpriteNode
-        starThree = childNode(withName: "//starThree") as! SKSpriteNode
-        
-        winMenu = childNode(withName: "winMenu") as! SKSpriteNode
-        nextLevelButton = childNode(withName: "//nextLevelButton") as! MSButtonNode
-        levelSelectButton = childNode(withName: "levelSelectButton") as! MSButtonNode
+//        pauseMenu = childNode(withName: "pauseMenu") as! SKSpriteNode
+//        resumeButton = childNode(withName: "//resumeButton") as! MSButtonNode
+//        resetButton = childNode(withName: "resetButton") as! MSButtonNode
+//        
+//        starOne = childNode(withName: "//starOne") as! SKSpriteNode
+//        starTwo = childNode(withName: "//starTwo") as! SKSpriteNode
+//        starThree = childNode(withName: "//starThree") as! SKSpriteNode
+//        
+//        winMenu = childNode(withName: "winMenu") as! SKSpriteNode
+//        nextLevelButton = childNode(withName: "//nextLevelButton") as! MSButtonNode
+//        levelSelectButton = childNode(withName: "levelSelectButton") as! MSButtonNode
         
         lifeCounter = childNode(withName: "//lifeCounter") as! SKLabelNode
         
