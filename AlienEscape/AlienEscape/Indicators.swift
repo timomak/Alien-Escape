@@ -9,7 +9,7 @@
 import SpriteKit
 
 class Indicators: SKSpriteNode {
-    var labelIndicator: SKSpriteNode!
+//    var labelIndicator: SKSpriteNode!
     var powerIndicator: SKLabelNode!
     var angleIndicator: SKLabelNode!
     

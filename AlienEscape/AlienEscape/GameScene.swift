@@ -44,15 +44,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     var GUI: SKReferenceNode!
     var menus: guiCode!
     
-    private var starOne :SKSpriteNode!
-    private var starTwo :SKSpriteNode!
-    private var starThree :SKSpriteNode!
-    private var winMenu: SKSpriteNode!
-    private var nextLevelButton: MSButtonNode!
-    private var pauseMenu: SKSpriteNode!
-    private var resetButton: MSButtonNode!
-    private var resumeButton: MSButtonNode!
-    private var levelSelectButton: MSButtonNode!
+    var starOne :SKSpriteNode!
+    var starTwo :SKSpriteNode!
+    var starThree :SKSpriteNode!
+    var winMenu: SKSpriteNode!
+    var nextLevelButton: MSButtonNode!
+    var pauseMenu: SKSpriteNode!
+    var resetButton: MSButtonNode!
+    var resumeButton: MSButtonNode!
+    var levelSelectButton: MSButtonNode!
     
     
     let fixedDelta: CFTimeInterval = 1.0 / 60.0 /* 60 FPS */
@@ -104,7 +104,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     var levelWithMovingCameraFromAtoB = [4]
     var levelWithMovableCameraInXAxis = [5]
     var levelWithMovableCameraInYAxis = [5]
-
+    
     var topBorder: SKSpriteNode!
     var rightBorder: SKSpriteNode!
     
@@ -199,7 +199,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         self.addChild(GUI!)
         menus = GUI.childNode(withName: "parentGUI") as! guiCode
         winMenu = menus.winMenu_guiCode!
-        menus.position = CGPoint(x: 50, y: 20)
+        starOne = menus.starOne_guiCode!
+        starTwo = menus.starTwo_guiCode!
+        starThree = menus.starThree_guiCode!
+        pauseMenu = menus.pauseMenu_guiCode!
+        nextLevelButton = menus.nextLevelButton_guiCode!
+        levelSelectButton = menus.levelSelectButton_guiCode!
+        resetButton = menus.resetButton_guiCode!
+        resumeButton = menus.resumeButton_guiCode!
+        
+        menus.position = CGPoint(x: cameraNode.position.x, y: -446.994)
         
         // MARK: Ad popup
         GADRewardBasedVideoAd.sharedInstance().delegate = (self as GADRewardBasedVideoAdDelegate)
@@ -235,17 +244,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         }
         
         background = childNode(withName: "background") as! SKSpriteNode
-//        pauseMenu = childNode(withName: "pauseMenu") as! SKSpriteNode
-//        resumeButton = childNode(withName: "//resumeButton") as! MSButtonNode
-//        resetButton = childNode(withName: "resetButton") as! MSButtonNode
-//        
-//        starOne = childNode(withName: "//starOne") as! SKSpriteNode
-//        starTwo = childNode(withName: "//starTwo") as! SKSpriteNode
-//        starThree = childNode(withName: "//starThree") as! SKSpriteNode
-//        
-//        winMenu = childNode(withName: "winMenu") as! SKSpriteNode
-//        nextLevelButton = childNode(withName: "//nextLevelButton") as! MSButtonNode
-//        levelSelectButton = childNode(withName: "levelSelectButton") as! MSButtonNode
+        //        pauseMenu = childNode(withName: "pauseMenu") as! SKSpriteNode
+        //        resumeButton = childNode(withName: "//resumeButton") as! MSButtonNode
+        //        resetButton = childNode(withName: "resetButton") as! MSButtonNode
+        //
+        //        starOne = childNode(withName: "//starOne") as! SKSpriteNode
+        //        starTwo = childNode(withName: "//starTwo") as! SKSpriteNode
+        //        starThree = childNode(withName: "//starThree") as! SKSpriteNode
+        //
+        //        winMenu = childNode(withName: "winMenu") as! SKSpriteNode
+        //        nextLevelButton = childNode(withName: "//nextLevelButton") as! MSButtonNode
+        //        levelSelectButton = childNode(withName: "levelSelectButton") as! MSButtonNode
         
         lifeCounter = childNode(withName: "//lifeCounter") as! SKLabelNode
         
@@ -583,7 +592,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                     camera?.position.x += ((location?.x)! - (previousLocation?.x)!) * -1
                     camera?.position.y += ((location?.y)! - (previousLocation?.y)!) * -1
                 }
-
+                
                 if levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")){
                     let touch = touches.first!
                     let positionInScene = touch.location(in: self)
@@ -622,7 +631,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                     let sound = SKAction.playSoundFileNamed("BallReleasedSound", waitForCompletion: false)
                     self.run(sound)
                     if levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-                    self.physicsWorld.speed = 0.37
+                        self.physicsWorld.speed = 0.37
                     } else {
                         self.physicsWorld.speed = 0.5
                     }
