@@ -177,7 +177,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         }
         
         alien.run(SKAction(named: UserDefaults.standard.object(forKey: "currentAlien") as! String)!)
-        
         inGameMenu = childNode(withName: "//inGameMenu") as! MSButtonNode
         cameraNode = childNode(withName: "cameraNode") as! SKCameraNode
         
@@ -188,6 +187,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         labelReferenceNode = SKReferenceNode(fileNamed: "Indicator")
         labelReferenceNode.physicsBody = nil
         self.addChild(labelReferenceNode!)
+        
         labelIndicators = labelReferenceNode.childNode(withName: "labelIndicators") as! Indicators
         angleLabel = labelIndicators.angleIndicator!
         powerLabel = labelIndicators.powerIndicator!
@@ -197,6 +197,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         GUI = SKReferenceNode(fileNamed: "GUI_Menus")
         GUI.physicsBody = nil
         self.addChild(GUI!)
+        
         menus = GUI.childNode(withName: "parentGUI") as! guiCode
         winMenu = menus.winMenu_guiCode!
         starOne = menus.starOne_guiCode!
@@ -209,9 +210,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         resumeButton = menus.resumeButton_guiCode!
         
         menus.position = CGPoint(x: cameraNode.position.x, y: -446.994)
-        
-//        winMenu.removeFromParent()
         winMenu.childNode(withName: "cameraNode")
+        
         // MARK: Ad popup
         GADRewardBasedVideoAd.sharedInstance().delegate = (self as GADRewardBasedVideoAdDelegate)
         adPopUp = SKReferenceNode(fileNamed: "adPage")
@@ -246,20 +246,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         }
         
         background = childNode(withName: "background") as! SKSpriteNode
-        //        pauseMenu = childNode(withName: "pauseMenu") as! SKSpriteNode
-        //        resumeButton = childNode(withName: "//resumeButton") as! MSButtonNode
-        //        resetButton = childNode(withName: "resetButton") as! MSButtonNode
-        //
-        //        starOne = childNode(withName: "//starOne") as! SKSpriteNode
-        //        starTwo = childNode(withName: "//starTwo") as! SKSpriteNode
-        //        starThree = childNode(withName: "//starThree") as! SKSpriteNode
-        //
-        //        winMenu = childNode(withName: "winMenu") as! SKSpriteNode
-        //        nextLevelButton = childNode(withName: "//nextLevelButton") as! MSButtonNode
-        //        levelSelectButton = childNode(withName: "levelSelectButton") as! MSButtonNode
-        
         lifeCounter = childNode(withName: "//lifeCounter") as! SKLabelNode
-        
         numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes")
         
         if UserDefaults.standard.integer(forKey: "numberOfLifes") <= 0 {
@@ -377,23 +364,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         inGameMenu.selectedHandler = {[unowned self] in
             if self.gameState == .playing {
                 self.physicsWorld.speed = 0
-//                self.pauseMenu.position.x = self.cameraNode.position.x
-//                self.resumeButton.position.x = self.cameraNode.position.x
-//                self.levelSelectButton.position.x = self.cameraNode.position.x
-//                self.resetButton.position.x = self.cameraNode.position.x
-
                 self.menus.position.x = self.cameraNode.position.x
-                
-//                self.pauseMenu.position.y = (self.cameraNode.position.y - 123.14) + 150
-//                self.resumeButton.position.y = (self.cameraNode.position.y - 123.14) + 240
-//                self.levelSelectButton.position.y = (self.cameraNode.position.y - 123.14) + 140
-//                self.resetButton.position.y = (self.cameraNode.position.y - 123.14) + 40
-                
                 self.menus.position.y = self.cameraNode.position.y - 25
-//                self.pauseMenu.position.y = (self.cameraNode.position.y) + 150
-//                self.resumeButton.position.y = (self.cameraNode.position.y) + 240
-//                self.levelSelectButton.position.y = (self.cameraNode.position.y) + 140
-//                self.resetButton.position.y = (self.cameraNode.position.y) + 40
                 self.winMenu.position.y -= 200
                 self.nextLevelButton.position.y -= 200
                 
@@ -404,11 +376,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         }
         resumeButton.selectedHandler = {
             self.physicsWorld.speed = 0.5
-//            self.pauseMenu.position.y = -430
-//            self.resumeButton.position.y = -340
-//            self.levelSelectButton.position.y = -440
-//            self.resetButton.position.y = -540
-
             
             self.winMenu.position.y += 200
             self.nextLevelButton.position.y += 200
@@ -872,23 +839,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         starTwo.alpha = 0
         starThree.alpha = 0
         
-        resetButton.position.x = cameraNode.position.x
-        levelSelectButton.position.x = cameraNode.position.x
-        winMenu.position.x = cameraNode.position.x
+        menus.position.x = cameraNode.position.x
         
-        let moveMenu = SKAction.move(to: CGPoint(x: cameraNode.position.x, y:150), duration: 1)
+        let moveMenu = SKAction.move(to: CGPoint(x: menus.position.x, y: 123.14 ), duration: 1)
         let moveDelay = SKAction.wait(forDuration: 0.5)
         let menuSequence = SKAction.sequence([moveDelay,moveMenu])
-        winMenu.run(menuSequence)
-        
-        let moveMenu2 = SKAction.move(to: CGPoint(x: cameraNode.position.x, y:160), duration: 1)
-        let menuSequence2 = SKAction.sequence([moveDelay,moveMenu2])
-        levelSelectButton.run(menuSequence2)
-        
-        let moveMenu4 = SKAction.move(to: CGPoint(x: cameraNode.position.x, y: 40 ), duration: 1)
-        let menuSequence4 = SKAction.sequence([moveDelay,moveMenu4])
-        resetButton.run(menuSequence4)
-        
+
+        menus.run(menuSequence)
+        pauseMenu.position.y = -200
+        resumeButton.position.y = -200
+        nextLevelButton.position.y = -200
+
         inGameMenu.isHidden = true
         
     }
@@ -899,28 +860,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         starTwo.alpha = 0
         starThree.alpha = 0
         
-        winMenu.position.x = cameraNode.position.x
-        nextLevelButton.position.x = cameraNode.position.x + 50
-        levelSelectButton.position.x = cameraNode.position.x
-        resetButton.position.x = cameraNode.position.x - 50
-        nextLevelButton.position.y = resetButton.position.y
+        menus.position.x = cameraNode.position.x
         
-        let moveMenu = SKAction.move(to: CGPoint(x: cameraNode.position.x, y:150), duration: 1)
+        let moveMenu = SKAction.move(to: CGPoint(x: menus.position.x, y: 123.14 ), duration: 1)
         let moveDelay = SKAction.wait(forDuration: 0.5)
         let menuSequence = SKAction.sequence([moveDelay,moveMenu])
-        winMenu.run(menuSequence)
         
-        let moveMenu2 = SKAction.move(to: CGPoint(x: cameraNode.position.x + 50, y:40), duration: 1)
-        let menuSequence2 = SKAction.sequence([moveDelay,moveMenu2])
-        nextLevelButton.run(menuSequence2)
-        
-        let moveMenu3 = SKAction.move(to: CGPoint(x: cameraNode.position.x, y:160), duration: 1)
-        let menuSequence3 = SKAction.sequence([moveDelay,moveMenu3])
-        levelSelectButton.run(menuSequence3)
-        
-        let moveMenu4 = SKAction.move(to: CGPoint(x: cameraNode.position.x - 50, y:40), duration: 1)
-        let menuSequence4 = SKAction.sequence([moveDelay,moveMenu4])
-        resetButton.run(menuSequence4)
+        menus.run(menuSequence)
+        pauseMenu.position.y = -200
+        resumeButton.position.y = -200
         
         var stars = 0
         
