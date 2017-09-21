@@ -99,10 +99,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     var yellowPortalHasBeenPlaced = false
     
     
-    var levelWithExtraPortals = [5]
+    var levelWithExtraPortals = [6]
     var levelWithDraggablePortals = [3]
     var levelWithMovingCameraFromAtoB = [4]
-    var levelWithMovableCameraInXAxis = [5]
+    var levelWithMovableCameraInXAxis = [5,6]
     var levelWithMovableCameraInYAxis = [5]
     
     var topBorder: SKSpriteNode!
@@ -210,6 +210,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         
         menus.position = CGPoint(x: cameraNode.position.x, y: -446.994)
         
+//        winMenu.removeFromParent()
+        winMenu.childNode(withName: "cameraNode")
         // MARK: Ad popup
         GADRewardBasedVideoAd.sharedInstance().delegate = (self as GADRewardBasedVideoAdDelegate)
         adPopUp = SKReferenceNode(fileNamed: "adPage")
@@ -375,25 +377,43 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         inGameMenu.selectedHandler = {[unowned self] in
             if self.gameState == .playing {
                 self.physicsWorld.speed = 0
-                self.pauseMenu.position.x = self.cameraNode.position.x
-                self.resumeButton.position.x = self.cameraNode.position.x
-                self.levelSelectButton.position.x = self.cameraNode.position.x
-                self.resetButton.position.x = self.cameraNode.position.x
+//                self.pauseMenu.position.x = self.cameraNode.position.x
+//                self.resumeButton.position.x = self.cameraNode.position.x
+//                self.levelSelectButton.position.x = self.cameraNode.position.x
+//                self.resetButton.position.x = self.cameraNode.position.x
+
+                self.menus.position.x = self.cameraNode.position.x
                 
-                self.pauseMenu.position.y = (self.cameraNode.position.y - 123.14) + 150
-                self.resumeButton.position.y = (self.cameraNode.position.y - 123.14) + 240
-                self.levelSelectButton.position.y = (self.cameraNode.position.y - 123.14) + 140
-                self.resetButton.position.y = (self.cameraNode.position.y - 123.14) + 40
+//                self.pauseMenu.position.y = (self.cameraNode.position.y - 123.14) + 150
+//                self.resumeButton.position.y = (self.cameraNode.position.y - 123.14) + 240
+//                self.levelSelectButton.position.y = (self.cameraNode.position.y - 123.14) + 140
+//                self.resetButton.position.y = (self.cameraNode.position.y - 123.14) + 40
+                
+                self.menus.position.y = self.cameraNode.position.y - 25
+//                self.pauseMenu.position.y = (self.cameraNode.position.y) + 150
+//                self.resumeButton.position.y = (self.cameraNode.position.y) + 240
+//                self.levelSelectButton.position.y = (self.cameraNode.position.y) + 140
+//                self.resetButton.position.y = (self.cameraNode.position.y) + 40
+                self.winMenu.position.y -= 200
+                self.nextLevelButton.position.y -= 200
+                
+                
                 self.inGameMenu.isHidden = true
                 self.gameState = .paused
             }
         }
         resumeButton.selectedHandler = {
             self.physicsWorld.speed = 0.5
-            self.pauseMenu.position.y = -430
-            self.resumeButton.position.y = -340
-            self.levelSelectButton.position.y = -440
-            self.resetButton.position.y = -540
+//            self.pauseMenu.position.y = -430
+//            self.resumeButton.position.y = -340
+//            self.levelSelectButton.position.y = -440
+//            self.resetButton.position.y = -540
+
+            
+            self.winMenu.position.y += 200
+            self.nextLevelButton.position.y += 200
+            self.menus.position.y = self.cameraNode.position.y - 700
+            
             self.gameState = .playing
             self.inGameMenu.isHidden = false
         }
