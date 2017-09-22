@@ -53,7 +53,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     var resetButton: MSButtonNode!
     var resumeButton: MSButtonNode!
     var levelSelectButton: MSButtonNode!
-    
+    var gameOverSign: SKSpriteNode!
     
     let fixedDelta: CFTimeInterval = 1.0 / 60.0 /* 60 FPS */
     var gameStart: CFTimeInterval = 0
@@ -156,6 +156,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         print("number of lifes is: \(numberOfLives)")
         print("number of lifes is: \(UserDefaults.standard.integer(forKey: "numberOfLifes"))")
     }
+    func rewardBasedVideoAd(_ rewardBasedVideoAd: GADRewardBasedVideoAd, didFailToLoadWithError error: Error) {
+        numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes") + 30
+        UserDefaults.standard.set(numberOfLives, forKey: "numberOfLifes")
+        UserDefaults.standard.synchronize()
+        adScreen.run(SKAction.moveTo(y: 1600, duration: 1))
+        lifeCounter.text = String(numberOfLives)
+        gameState = .playing
+        let request = GADRequest()
+        GADRewardBasedVideoAd.sharedInstance().load(request,
+                                                    withAdUnitID: "ca-app-pub-6454574712655895/9250778455")
+        print("number of lifes after ad is: \(UserDefaults.standard.integer(forKey: "numberOfLifes"))")
+    }
     func rewardBasedVideoAdDidClose(_ rewardBasedVideoAd: GADRewardBasedVideoAd) {
         numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes") + 30
         UserDefaults.standard.set(numberOfLives, forKey: "numberOfLifes")
@@ -168,6 +180,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                                                     withAdUnitID: "ca-app-pub-6454574712655895/9250778455")
         print("number of lifes after ad is: \(UserDefaults.standard.integer(forKey: "numberOfLifes"))")
     }
+    
     override func didMove(to view: SKView) {
         currentLevel = UserDefaults.standard.integer(forKey: "currentLevel")
         alien = childNode(withName: "//alien") as! SKSpriteNode
@@ -208,6 +221,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         levelSelectButton = menus.levelSelectButton_guiCode!
         resetButton = menus.resetButton_guiCode!
         resumeButton = menus.resumeButton_guiCode!
+        gameOverSign = menus.gameOverSign_guiCode!
         
         menus.position = CGPoint(x: cameraNode.position.x, y: -446.994)
         winMenu.childNode(withName: "cameraNode")
@@ -367,6 +381,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                 self.menus.position.x = self.cameraNode.position.x
                 self.menus.position.y = self.cameraNode.position.y - 25
                 self.winMenu.position.y -= 200
+                self.gameOverSign.position.y -= 200
                 self.nextLevelButton.position.y -= 200
                 
                 
@@ -379,6 +394,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             
             self.winMenu.position.y += 200
             self.nextLevelButton.position.y += 200
+            self.gameOverSign.position.y += 200
             self.menus.position.y = self.cameraNode.position.y - 700
             
             self.gameState = .playing
@@ -841,7 +857,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         
         menus.position.x = cameraNode.position.x
         
-        let moveMenu = SKAction.move(to: CGPoint(x: menus.position.x, y: 123.14 ), duration: 1)
+        let moveMenu = SKAction.move(to: CGPoint(x: menus.position.x, y: 180 ), duration: 1)
         let moveDelay = SKAction.wait(forDuration: 0.5)
         let menuSequence = SKAction.sequence([moveDelay,moveMenu])
 
@@ -853,6 +869,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         inGameMenu.isHidden = true
         
     }
+    
+    func starEmitterNode(node: SKNode) {
+        let starEmitterPath = Bundle.main.path(forResource: "StarWinEmitter",
+                                         ofType: "sks")
+        
+        let starEmitter = NSKeyedUnarchiver.unarchiveObject(withFile: starEmitterPath!)
+            as! SKEmitterNode
+        
+        starEmitter.position = node.position
+    
+        self.addChild(starEmitter)
+
+    }
+    
     func win() {
         cameraTarget = nil
         cameraNode.position.y = 123.14
@@ -862,13 +892,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         
         menus.position.x = cameraNode.position.x
         
-        let moveMenu = SKAction.move(to: CGPoint(x: menus.position.x, y: 123.14 ), duration: 1)
+        let moveMenu = SKAction.move(to: CGPoint(x: menus.position.x, y: 180 ), duration: 1)
         let moveDelay = SKAction.wait(forDuration: 0.5)
         let menuSequence = SKAction.sequence([moveDelay,moveMenu])
         
         menus.run(menuSequence)
         pauseMenu.position.y = -200
         resumeButton.position.y = -200
+        gameOverSign.position.y -= 200
         
         var stars = 0
         
@@ -883,6 +914,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                 }
             }
         }
+        
         print("The number of stars in level.\(currentLevel) is: \(stars)")
         let fadeStar = SKAction.fadeAlpha(by: 1, duration: 0.6)
         let fadeDelay = SKAction.wait(forDuration: 1.5)
@@ -898,14 +930,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         
         if stars == 1 {
             starOne.run(starSequence)
+            starEmitterNode(node: starOne)
         } else if stars == 2 {
             starOne.run(starSequence)
             starTwo.run(starSequence2)
-            
+            starEmitterNode(node: starOne)
+            starEmitterNode(node: starTwo)
         } else if stars == 3 {
             starOne.run(starSequence)
             starTwo.run(starSequence2)
             starThree.run(starSequence3)
+            starEmitterNode(node: starOne)
+            starEmitterNode(node: starTwo)
+            starEmitterNode(node: starThree)
         }
         
         if UserDefaults.standard.integer(forKey: "checkpoint") < 2 {

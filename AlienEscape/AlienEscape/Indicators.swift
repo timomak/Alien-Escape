@@ -41,6 +41,7 @@ class guiCode: SKSpriteNode {
     var resetButton_guiCode: MSButtonNode!
     var resumeButton_guiCode: MSButtonNode!
     var levelSelectButton_guiCode: MSButtonNode!
+    var gameOverSign_guiCode: SKSpriteNode!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -55,6 +56,7 @@ class guiCode: SKSpriteNode {
         winMenu_guiCode = childNode(withName: "//winMenu") as! SKSpriteNode
         nextLevelButton_guiCode = childNode(withName: "//nextLevelButton") as! MSButtonNode
         levelSelectButton_guiCode = childNode(withName: "//levelSelectButton") as! MSButtonNode
+        gameOverSign_guiCode = childNode(withName: "//gameOverSign") as! SKSpriteNode
     }
 }
 
