@@ -1,5 +1,9 @@
 <!-- alienescape.handlebars -->
 <style>
+html,body {
+    margin:0;
+    padding:0;
+}
 h2 {
   text-align: center;
   font-family: 'Lato', Helvetica, sans-serif;
@@ -15,8 +19,7 @@ img {
   align-self: center;
   max-width: 200px;
   margin: 40px 0px 0px 0px;
-  border: 7px solid white;
-  border-radius: 200px;
+  border-radius: 35px;
 }
 ul {
   padding: 10px;
@@ -40,15 +43,55 @@ a {
   color: white;
   line-height: 1.5;
 }
+.name {
+  color: rgba(255,255,255,1);
+  background: black;
+  background: linear-gradient(bottom, rgba(0,0,0,1), rgba(0,0,0,.4));
+  background: -webkit-linear-gradient(bottom, rgba(0,0,0,1), rgba(0,0,0,.4));
+  background: -moz-linear-gradient(bottom, rgba(0,0,0,1), rgba(0,0,0,.4));
+  padding: 10px;
+  line-height: 28px;
+  text-align: justify;
+  position: absolute;
+  bottom: 0;
+  margin: 0;
+  height: 30px;
+  transition: height .5s;
+  -webkit-transition: height .5s;
+  -moz-transition: height .5s;
+}
+small {
+  opacity: 0;
+}
+
+.show-description .name {
+  height: 150px;
+}
+
+.show-description small {
+  opacity: 1;
+}
+.Alien{
+  height: 200px;
+  background-size: cover;
+  position: relative;
+  margin: 40px 0 0 0;
+  border-radius: 12px;
+  background-image: url("http://is4.mzstatic.com/image/thumb/Purple128/v4/a7/6a/f4/a76af452-d5b8-65c1-e218-bcea317c1ed9/source/520x293bb.jpg");
+}
+.status {
+  float: right;
+}
 </style>
 <body>
-  <h2 class="text">AlienEscape Website building</h2>
+  <h2 class="text">AlienEscape Website Building</h2>
   <header>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <img src="http://is1.mzstatic.com/image/thumb/Purple128/v4/87/81/77/8781775e-5c3b-5b8b-df35-a21c0f30dd15/source/1200x630bb.jpg">
     <h1>My Gaming portfolio</h1>
     <ul>
       <li><a href="#">Home</a></li>
-      <li><a href="www.google.com">About</a></li>
+      <li><a href="#About">About</a></li>
       <li><a href="#Games">Games</a></li>
     </ul>
   </header>
@@ -60,8 +103,23 @@ a {
     <h3>About</h3>
     <p>123</p>
   </div>
-  <div>
-    <h3 class="Games">Games</h3>
-    <p>Alien Escape</p>
+  <div class="Games">
+    <h3>Games</h3>
+    <div class="Alien">
+    <p class="name">Alien Escape<span class="status">iOS Game</span><br />
+    <small>Alien Escape is a Puzzle solving/Strategy game that scores the user on his speed, accuracy and problem solving abilities.
+
+It allows you to take revenge on the aliens that have kidnapped you and brought you onto their spaceship. Use their own alien technology against them. Portals, vortexes and a Alien slingshot are all you have to surpass the increasingly difficult levels.
+
+As you progress, unlock new skins and items that will make all of your friends jealous of your achievements.
+
+Enjoy the difficulty and the satisfaction of passing from one level to another while taking out Aliens.</small></p>
+    </div>
   </div>
 </body>
+
+<script>
+  $('div').on('click', function() {
+      $(this).toggleClass('show-description');
+  });
+</script>
