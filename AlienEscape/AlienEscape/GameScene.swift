@@ -110,6 +110,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     
     var projectileFirstPosition = CGPoint()
     
+    var timerReferenceNode: SKReferenceNode!
+    var visualTimer: CircularProgressNode!
+    
     var labelReferenceNode: SKReferenceNode!
     var labelIndicators: Indicators!
     var powerLabel: SKLabelNode!
@@ -195,6 +198,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         
         portal1 = childNode(withName: "portal_1") as! SKSpriteNode
         portal2 = childNode(withName: "portal_2") as! SKSpriteNode
+        
+//        timerReferenceNode = SKReferenceNode(fileNamed: "CircularProgressNode")
+//        timerReferenceNode.physicsBody = nil
+//        self.addChild(timerReferenceNode!)
+//        visualTimer = timerReferenceNode.childNode(withName: "CircularProgressNode") as! CircularProgressNode
         
         // MARK: SK Reference link
         labelReferenceNode = SKReferenceNode(fileNamed: "Indicator")
@@ -438,7 +446,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     }
     
     func radToDeg(_ radian: Double) -> CGFloat {
-        return CGFloat(radian * 180.0 / M_PI)
+        return CGFloat(radian * 180.0 / .pi)
     }
     
     func selectPortalForTouch(_ touchLocation : CGPoint) {
@@ -551,6 +559,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                     let initialVelocity = sqrt(pow((vectorX * Settings.Metrics.forceMultiplier) / 0.5, 2) + pow((vectorY * Settings.Metrics.forceMultiplier) / 0.5, 2))
                     let angleRadians = angle * CGFloat(M_PI) / 180
                     
+                    // MARK: Money Making code
                     func projectilePredictionPath (initialPosition: CGPoint, time: CGFloat, angle1: CGFloat /*initial Velocity and Gravity*/) -> CGPoint {
                         let YpointPosition = initialPosition.y + initialVelocity * time * sin(angle1) - 4.9 * pow(time,2)
                         let XpointPosition = initialPosition.x + initialVelocity * time * cos(angle1)
@@ -870,18 +879,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         
     }
     
-    func starEmitterNode(node: SKNode) {
-        let starEmitterPath = Bundle.main.path(forResource: "StarWinEmitter",
-                                         ofType: "sks")
-        
-        let starEmitter = NSKeyedUnarchiver.unarchiveObject(withFile: starEmitterPath!)
-            as! SKEmitterNode
-        
-        starEmitter.position = node.position
-    
-        self.addChild(starEmitter)
-
-    }
+//    func starEmitterNode(node: SKNode) {
+//
+//        node.addChild(starEmitter)
+//
+//    }
     
     func win() {
         cameraTarget = nil
@@ -891,6 +893,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         starThree.alpha = 0
         
         menus.position.x = cameraNode.position.x
+        
+        // MARK: Star emitter code
+        
+//        let starEmitterPath = Bundle.main.path(forResource: "starEmitterScene", ofType: "sks")
+//        let starEmitter = SKReferenceNode (url: URL (fileURLWithPath: starEmitterPath!))
+//        let moveMenu5 = SKAction.move(to: starOne.position, duration: 1)
+//        let moveDelay5 = SKAction.wait(forDuration: 0.5)
+//        let starActionSequence = SKAction.sequence([moveDelay5,moveMenu5])
+//        starEmitter.run(starActionSequence)
         
         let moveMenu = SKAction.move(to: CGPoint(x: menus.position.x, y: 180 ), duration: 1)
         let moveDelay = SKAction.wait(forDuration: 0.5)
@@ -915,6 +926,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             }
         }
         
+        
         print("The number of stars in level.\(currentLevel) is: \(stars)")
         let fadeStar = SKAction.fadeAlpha(by: 1, duration: 0.6)
         let fadeDelay = SKAction.wait(forDuration: 1.5)
@@ -930,19 +942,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         
         if stars == 1 {
             starOne.run(starSequence)
-            starEmitterNode(node: starOne)
+
         } else if stars == 2 {
             starOne.run(starSequence)
             starTwo.run(starSequence2)
-            starEmitterNode(node: starOne)
-            starEmitterNode(node: starTwo)
+
         } else if stars == 3 {
             starOne.run(starSequence)
             starTwo.run(starSequence2)
             starThree.run(starSequence3)
-            starEmitterNode(node: starOne)
-            starEmitterNode(node: starTwo)
-            starEmitterNode(node: starThree)
         }
         
         if UserDefaults.standard.integer(forKey: "checkpoint") < 2 {

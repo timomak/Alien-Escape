@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C859FFF4D13001CC8AF0EE6C /* Pods_AlienEscape.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB3262D5B0017F724128F785 /* Pods_AlienEscape.framework */; };
-		F308385E1F22B8F1004BD63F /* Chartboost.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F308385D1F22B8F1004BD63F /* Chartboost.framework */; };
+		EF7D909A8E7BD72B02544ED3 /* Pods_AlienEscape.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79668A572EBD017613699D2A /* Pods_AlienEscape.framework */; };
 		F30838601F22B909004BD63F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F308385F1F22B909004BD63F /* UIKit.framework */; };
 		F30838621F22B913004BD63F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F30838611F22B913004BD63F /* CoreGraphics.framework */; };
 		F30838641F22B91B004BD63F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F30838631F22B91B004BD63F /* Foundation.framework */; };
@@ -111,6 +110,7 @@
 		F387A8281F0EDF660052E0CB /* granade.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F387A8271F0EDF660052E0CB /* granade.mp3 */; };
 		F39C6A0E1F72270300AF93A0 /* GUI_Menus.sks in Resources */ = {isa = PBXBuildFile; fileRef = F39C6A0D1F72270300AF93A0 /* GUI_Menus.sks */; };
 		F39E989B1F7583D100F747B7 /* StarWinEmitter.sks in Resources */ = {isa = PBXBuildFile; fileRef = F39E989A1F7583D100F747B7 /* StarWinEmitter.sks */; };
+		F39E989D1F758F1200F747B7 /* starEmitterScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = F39E989C1F758F1200F747B7 /* starEmitterScene.sks */; };
 		F39ECAE71F0AC3D100EDE3D5 /* GreenAlien.sks in Resources */ = {isa = PBXBuildFile; fileRef = F39ECAE61F0AC3D100EDE3D5 /* GreenAlien.sks */; };
 		F39ECB171F0AC3F500EDE3D5 /* darkgray__0000_idle_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F39ECAE91F0AC3F500EDE3D5 /* darkgray__0000_idle_1.png */; };
 		F39ECB181F0AC3F500EDE3D5 /* darkgray__0001_idle_2.png in Resources */ = {isa = PBXBuildFile; fileRef = F39ECAEA1F0AC3F500EDE3D5 /* darkgray__0001_idle_2.png */; };
@@ -511,10 +511,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		79668A572EBD017613699D2A /* Pods_AlienEscape.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AlienEscape.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F7A27DDAFADC1FDA1E32244 /* Pods-AlienEscape.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlienEscape.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AlienEscape/Pods-AlienEscape.debug.xcconfig"; sourceTree = "<group>"; };
 		8F44C2BDBB013075E6B3B0AF /* Pods-AlienEscape.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlienEscape.release.xcconfig"; path = "Pods/Target Support Files/Pods-AlienEscape/Pods-AlienEscape.release.xcconfig"; sourceTree = "<group>"; };
-		BB3262D5B0017F724128F785 /* Pods_AlienEscape.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AlienEscape.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F308385D1F22B8F1004BD63F /* Chartboost.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Chartboost.framework; sourceTree = "<group>"; };
 		F308385F1F22B909004BD63F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F30838611F22B913004BD63F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		F30838631F22B91B004BD63F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -619,6 +618,7 @@
 		F387A8271F0EDF660052E0CB /* granade.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = granade.mp3; path = ../granade.mp3; sourceTree = "<group>"; };
 		F39C6A0D1F72270300AF93A0 /* GUI_Menus.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GUI_Menus.sks; sourceTree = "<group>"; };
 		F39E989A1F7583D100F747B7 /* StarWinEmitter.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = StarWinEmitter.sks; sourceTree = "<group>"; };
+		F39E989C1F758F1200F747B7 /* starEmitterScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = starEmitterScene.sks; sourceTree = "<group>"; };
 		F39ECAE61F0AC3D100EDE3D5 /* GreenAlien.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GreenAlien.sks; sourceTree = "<group>"; };
 		F39ECAE91F0AC3F500EDE3D5 /* darkgray__0000_idle_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkgray__0000_idle_1.png; sourceTree = "<group>"; };
 		F39ECAEA1F0AC3F500EDE3D5 /* darkgray__0001_idle_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkgray__0001_idle_2.png; sourceTree = "<group>"; };
@@ -1028,8 +1028,7 @@
 				F30838641F22B91B004BD63F /* Foundation.framework in Frameworks */,
 				F30838621F22B913004BD63F /* CoreGraphics.framework in Frameworks */,
 				F30838601F22B909004BD63F /* UIKit.framework in Frameworks */,
-				C859FFF4D13001CC8AF0EE6C /* Pods_AlienEscape.framework in Frameworks */,
-				F308385E1F22B8F1004BD63F /* Chartboost.framework in Frameworks */,
+				EF7D909A8E7BD72B02544ED3 /* Pods_AlienEscape.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1278,6 +1277,7 @@
 		F39ECB451F0B00D400EDE3D5 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
+				F39E989C1F758F1200F747B7 /* starEmitterScene.sks */,
 				F39E989A1F7583D100F747B7 /* StarWinEmitter.sks */,
 				F39C6A0D1F72270300AF93A0 /* GUI_Menus.sks */,
 				F3165B801F06D46600A7BD96 /* spear.swift */,
@@ -1652,8 +1652,7 @@
 				F30838631F22B91B004BD63F /* Foundation.framework */,
 				F30838611F22B913004BD63F /* CoreGraphics.framework */,
 				F308385F1F22B909004BD63F /* UIKit.framework */,
-				BB3262D5B0017F724128F785 /* Pods_AlienEscape.framework */,
-				F308385D1F22B8F1004BD63F /* Chartboost.framework */,
+				79668A572EBD017613699D2A /* Pods_AlienEscape.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1742,12 +1741,13 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0910;
 				ORGANIZATIONNAME = "timofey makhlay";
 				TargetAttributes = {
 					F3165B5E1F06C8D200A7BD96 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = SAZ2DLKCVY;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1926,6 +1926,7 @@
 				F3A8EFB31F3237BC00A299E0 /* predatormask__0006_walk_1.png in Resources */,
 				F3A8EEC21F32378B00A299E0 /* blue__0045_fire_10.png in Resources */,
 				F3FAC3EE1F1D7F12009F47AC /* green__0027_jump_1.png in Resources */,
+				F39E989D1F758F1200F747B7 /* starEmitterScene.sks in Resources */,
 				F3A8EF0A1F32379700A299E0 /* gray__0024_dead_3.png in Resources */,
 				F3A8EE521F32378100A299E0 /* armor__0026_dead_5.png in Resources */,
 				F3A8EEC11F32378B00A299E0 /* blue__0044_fire_9.png in Resources */,
@@ -2272,13 +2273,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AlienEscape-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		89EB42E48B0C2A9C113C44A9 /* [CP] Copy Pods Resources */ = {
@@ -2302,9 +2306,14 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-AlienEscape/Pods-AlienEscape-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2362,7 +2371,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -2370,13 +2381,18 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2393,7 +2409,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -2414,7 +2430,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -2422,13 +2440,18 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2439,8 +2462,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -2461,12 +2485,14 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = AlienEscape/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "timofey-makhlay.AlienEscape";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -2483,12 +2509,14 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = AlienEscape/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "timofey-makhlay.AlienEscape";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
