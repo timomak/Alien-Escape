@@ -11,7 +11,6 @@
 		F30838601F22B909004BD63F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F308385F1F22B909004BD63F /* UIKit.framework */; };
 		F30838621F22B913004BD63F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F30838611F22B913004BD63F /* CoreGraphics.framework */; };
 		F30838641F22B91B004BD63F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F30838631F22B91B004BD63F /* Foundation.framework */; };
-		F30838661F22B924004BD63F /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F30838651F22B924004BD63F /* StoreKit.framework */; };
 		F30838681F22B92D004BD63F /* GameplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F30838671F22B92D004BD63F /* GameplayKit.framework */; };
 		F308B55D1F2A60990050EC81 /* Level_10_removed.sks in Resources */ = {isa = PBXBuildFile; fileRef = F308B55C1F2A60990050EC81 /* Level_10_removed.sks */; };
 		F308B55F1F2AA3930050EC81 /* Level_11_removed.sks in Resources */ = {isa = PBXBuildFile; fileRef = F308B55E1F2AA3930050EC81 /* Level_11_removed.sks */; };
@@ -92,6 +91,7 @@
 		F328300D1F14113F00CB0A9D /* lazer_22_Purple.png in Resources */ = {isa = PBXBuildFile; fileRef = F3282FF61F14113F00CB0A9D /* lazer_22_Purple.png */; };
 		F328300F1F14294A00CB0A9D /* LevelSelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = F328300E1F14294A00CB0A9D /* LevelSelect.swift */; };
 		F32830111F143B5C00CB0A9D /* LevelSelect.sks in Resources */ = {isa = PBXBuildFile; fileRef = F32830101F143B5C00CB0A9D /* LevelSelect.sks */; };
+		F3288952204712D90099C05B /* Level_7.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3288951204712D80099C05B /* Level_7.sks */; };
 		F34100361F22AA8D00C9068D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F34100351F22AA8D00C9068D /* GoogleService-Info.plist */; };
 		F3411CF51F1978FB0046DC5F /* Level_5.sks in Resources */ = {isa = PBXBuildFile; fileRef = F3411CF41F1978FA0046DC5F /* Level_5.sks */; };
 		F37C40311F33907F0099FCE4 /* Alien_MainMenu_.psd in Resources */ = {isa = PBXBuildFile; fileRef = F37C40241F33907F0099FCE4 /* Alien_MainMenu_.psd */; };
@@ -379,7 +379,6 @@
 		F308385F1F22B909004BD63F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F30838611F22B913004BD63F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		F30838631F22B91B004BD63F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		F30838651F22B924004BD63F /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		F30838671F22B92D004BD63F /* GameplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameplayKit.framework; path = System/Library/Frameworks/GameplayKit.framework; sourceTree = SDKROOT; };
 		F308B55C1F2A60990050EC81 /* Level_10_removed.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level_10_removed.sks; sourceTree = "<group>"; };
 		F308B55E1F2AA3930050EC81 /* Level_11_removed.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level_11_removed.sks; sourceTree = "<group>"; };
@@ -462,6 +461,7 @@
 		F3282FF61F14113F00CB0A9D /* lazer_22_Purple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lazer_22_Purple.png; sourceTree = "<group>"; };
 		F328300E1F14294A00CB0A9D /* LevelSelect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelSelect.swift; sourceTree = "<group>"; };
 		F32830101F143B5C00CB0A9D /* LevelSelect.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LevelSelect.sks; sourceTree = "<group>"; };
+		F3288951204712D80099C05B /* Level_7.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level_7.sks; sourceTree = "<group>"; };
 		F34100351F22AA8D00C9068D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F3411CF41F1978FA0046DC5F /* Level_5.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Level_5.sks; path = alien_dark_gray/Level_5.sks; sourceTree = "<group>"; };
 		F37C40241F33907F0099FCE4 /* Alien_MainMenu_.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = Alien_MainMenu_.psd; sourceTree = "<group>"; };
@@ -748,7 +748,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F30838681F22B92D004BD63F /* GameplayKit.framework in Frameworks */,
-				F30838661F22B924004BD63F /* StoreKit.framework in Frameworks */,
 				F30838641F22B91B004BD63F /* Foundation.framework in Frameworks */,
 				F30838621F22B913004BD63F /* CoreGraphics.framework in Frameworks */,
 				F30838601F22B909004BD63F /* UIKit.framework in Frameworks */,
@@ -939,6 +938,7 @@
 				F3A38F521F1D55FC000C59FE /* Level_4.sks */,
 				F3411CF41F1978FA0046DC5F /* Level_5.sks */,
 				F3BEB69B1F1D544D0016F385 /* Level_6.sks */,
+				F3288951204712D80099C05B /* Level_7.sks */,
 				F308B5621F2AA94D0050EC81 /* Level_TEST.sks */,
 			);
 			name = Scenes;
@@ -1210,7 +1210,6 @@
 			isa = PBXGroup;
 			children = (
 				F30838671F22B92D004BD63F /* GameplayKit.framework */,
-				F30838651F22B924004BD63F /* StoreKit.framework */,
 				F30838631F22B91B004BD63F /* Foundation.framework */,
 				F30838611F22B913004BD63F /* CoreGraphics.framework */,
 				F308385F1F22B909004BD63F /* UIKit.framework */,
@@ -1311,6 +1310,11 @@
 						DevelopmentTeam = SAZ2DLKCVY;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -1678,6 +1682,7 @@
 				F3FAC3EC1F1D7F12009F47AC /* green__0025_dead_4.png in Resources */,
 				F3165B671F06C8D200A7BD96 /* Actions.sks in Resources */,
 				F3C5941F1F34E085009982E5 /* BallReleasedSound.wav in Resources */,
+				F3288952204712D90099C05B /* Level_7.sks in Resources */,
 				F32830031F14113F00CB0A9D /* lazer_12_Purple.png in Resources */,
 				F39ECB411F0AC3F500EDE3D5 /* darkgray__0042_fire_8.png in Resources */,
 				F3C7C7391F1039A100B859F2 /* r_crouch.png in Resources */,

@@ -99,10 +99,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     var yellowPortalHasBeenPlaced = false
     
     
-    var levelWithExtraPortals = [6]
-    var levelWithDraggablePortals = [3]
+    var levelWithExtraPortals = [6,7]
+    var levelWithDraggablePortals = [3,7]
     var levelWithMovingCameraFromAtoB = [4]
-    var levelWithMovableCameraInXAxis = [5,6]
+    var levelWithMovableCameraInXAxis = [5,6,7]
     var levelWithMovableCameraInYAxis = [5]
     
     var topBorder: SKSpriteNode!
@@ -466,7 +466,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                     bluePortalDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")
                     bluePortalHasBeenPlaced = true
                 }
-                if touchedNode == yellowPortalDrag || touchedNode == portal2{
+                else if touchedNode == yellowPortalDrag || touchedNode == portal2{
                     portal2.position = touchLocation
                     currentMovingPortal = portal2
                     yellowPortalDrag.texture = SKTexture(imageNamed: "Portal_drag_Empty")

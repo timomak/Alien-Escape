@@ -8,6 +8,7 @@
 
 import SpriteKit
 import AVFoundation
+import GameplayKit
 
 var cameraNode2: SKCameraNode!
 var background: SKSpriteNode!
@@ -38,16 +39,42 @@ private var lifeCounter: SKLabelNode!
 
 private var sound: SKAudioNode!
 
+var littleSpaceship: SKSpriteNode!
+var littleMars: SKSpriteNode!
+var littleSpaceman: SKSpriteNode!
+
+let swipeUpRec = UISwipeGestureRecognizer()
+let swipeDownRec = UISwipeGestureRecognizer()
+
+var currentChapter = 1
+
 var levelGerator = [1: level1, 2: level2, 3: level3,4: level4, 5: level5,6: level6,7: level7, 8: level8, 9: level9, 10: level10, 11: level11, 12: level12]
 
 class LevelSelect: SKScene {
 
     override func didMove(to view: SKView) {
         
+        littleSpaceship = childNode(withName: "//little_spaceship") as! SKSpriteNode
+        littleMars = childNode(withName: "//little_mars") as! SKSpriteNode
+        littleSpaceman = childNode(withName: "//little_spaceman") as! SKSpriteNode
+        
         cameraNode2 = childNode(withName: "cameraNode2") as! SKCameraNode
         background = childNode(withName: "background") as! SKSpriteNode
         mainManu = childNode(withName: "//mainMenuButton") as! MSButtonNode
         scene?.camera = cameraNode2
+        
+        littleSpaceship.setScale(0.04)
+        littleMars.setScale(0.02)
+        littleSpaceman.setScale(0.02)
+        
+        // MARK: Gesture Swipe Recognizer
+        swipeUpRec.addTarget(self, action: #selector(LevelSelect.swipedUp) )
+        swipeUpRec.direction = .up
+        self.view!.addGestureRecognizer(swipeUpRec)
+        
+        swipeDownRec.addTarget(self, action: #selector(LevelSelect.swipedDown) )
+        swipeDownRec.direction = .down
+        self.view!.addGestureRecognizer(swipeDownRec)
         
         if let musicURL = Bundle.main.url(forResource: "LevelSelectSound", withExtension: "mp3") {
             sound = SKAudioNode(url: musicURL)
@@ -140,14 +167,95 @@ class LevelSelect: SKScene {
             
         }
     }
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touch = touches.first
-        let location = touch?.location(in: self)
-        let previousLocation = touch?.previousLocation(in: self)
+    
+    func checkCameraPosition() {
+        
+        let cameraMoveToChapterOne = SKAction.moveTo(y: 0, duration: 0.5)
+        let cameraMoveToChapterTwo = SKAction.moveTo(y: -365, duration: 0.5)
+        let cameraMoveToChapterThree = SKAction.moveTo(y: -650, duration: 0.5)
+        
+        let moveSpaceshipUp = SKAction.moveTo(y: 40.5, duration: 0.2)
+        let moveSpaceshipToOriginal = SKAction.moveTo(y: 35.5, duration: 0.2)
+        let moveMarsUp = SKAction.moveTo(y: 5.5, duration: 0.2)
+        let moveMarsDown = SKAction.moveTo(y: -4.5, duration: 0.2)
+        let moveMarsToOriginal = SKAction.moveTo(y: 0.5, duration: 0.2)
+        let moveSpacemanDown = SKAction.moveTo(y: -39.5, duration: 0.2)
+        let moveSpacemanToOriginal = SKAction.moveTo(y: -34.5, duration: 0.2)
+        
+        if currentChapter == 1 {
+            cameraNode2.run(cameraMoveToChapterOne)
+            littleSpaceship.setScale(0.04)
+            littleMars.setScale(0.02)
+            littleSpaceman.setScale(0.02)
+            littleSpaceship.run(moveSpaceshipToOriginal)
+            littleMars.run(moveMarsDown)
+            littleSpaceman.run(moveSpacemanDown)
+        } else if currentChapter == 2{
+            cameraNode2.run(cameraMoveToChapterTwo)
+            littleSpaceship.setScale(0.02)
+            littleMars.setScale(0.04)
+            littleSpaceman.setScale(0.02)
+            littleSpaceship.run(moveSpaceshipUp)
+            littleMars.run(moveMarsToOriginal)
+            littleSpaceman.run(moveSpacemanDown)
+        } else if currentChapter == 3{
+            cameraNode2.run(cameraMoveToChapterThree)
+            littleSpaceship.setScale(0.02)
+            littleMars.setScale(0.02)
+            littleSpaceman.setScale(0.04)
+            littleSpaceship.run(moveSpaceshipUp)
+            littleMars.run(moveMarsUp)
+            littleSpaceman.run(moveSpacemanToOriginal)
+        }
+    }
+    
+    @objc func swipedUp() {
+        
+        print("Up")
 
         let targetY = cameraNode2.position.y
         let y = clamp(value: targetY, lower: -620, upper: -10)
         cameraNode2.position.y = y
-        camera?.position.y += ((location?.y)! - (previousLocation?.y)!) * -1
+        
+        if currentChapter == 1 {
+            currentChapter = 2
+        } else if currentChapter == 2{
+            currentChapter = 3
+        } else if currentChapter == 3{
+            currentChapter = 3
+        }
+        
+        checkCameraPosition()
     }
+    
+    @objc func swipedDown() {
+        
+        print("Down")
+        let targetY = cameraNode2.position.y
+        let y = clamp(value: targetY, lower: -620, upper: -10)
+        cameraNode2.position.y = y
+        
+        if currentChapter == 1 {
+            currentChapter = 1
+        } else if currentChapter == 2{
+            currentChapter = 1
+        } else if currentChapter == 3{
+            currentChapter = 2
+        }
+        checkCameraPosition()
+    }
+    
+    
+//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        let touch = touches.first
+//        let location = touch?.location(in: self)
+//        let previousLocation = touch?.previousLocation(in: self)
+//
+//        let targetY = cameraNode2.position.y
+//        let y = clamp(value: targetY, lower: -620, upper: -10)
+//
+//        cameraNode2.position.y = y
+//        camera?.position.y += ((location?.y)! - (previousLocation?.y)!) * -1
+//
+//    }
 }
