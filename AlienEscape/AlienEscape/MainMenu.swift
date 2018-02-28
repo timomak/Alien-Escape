@@ -22,6 +22,7 @@ class MainMenu: SKScene{
     var justOpened = true
     
     var level = 0
+    private var sound: SKAudioNode!
     
     
     override func didMove(to view: SKView) {
@@ -40,6 +41,11 @@ class MainMenu: SKScene{
         levelSelectButton.isHidden = true
         shopButton.isHidden = true
         startButton.position.y = 160
+        
+        if let musicURL = Bundle.main.url(forResource: "MainMenuMusic", withExtension: "mp3") {
+            sound = SKAudioNode(url: musicURL)
+            addChild(sound)
+        }
         
         if UserDefaults.standard.integer(forKey: "firstTime") == 0 {
             justOpened = true

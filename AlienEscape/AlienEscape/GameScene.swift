@@ -130,6 +130,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     var projectilePredictionPoint5: SKSpriteNode!
     
     var numberOfLives = 0
+    var watchedAdGiveLives = false
     
     func cameraMove() {
         guard let cameraTarget = cameraTarget else {
@@ -160,18 +161,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         print("number of lifes is: \(UserDefaults.standard.integer(forKey: "numberOfLifes"))")
     }
     func rewardBasedVideoAd(_ rewardBasedVideoAd: GADRewardBasedVideoAd, didFailToLoadWithError error: Error) {
-        numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes") + 30
-        UserDefaults.standard.set(numberOfLives, forKey: "numberOfLifes")
-        UserDefaults.standard.synchronize()
-        adScreen.run(SKAction.moveTo(y: 1600, duration: 1))
-        lifeCounter.text = String(numberOfLives)
-        gameState = .playing
-        let request = GADRequest()
-        GADRewardBasedVideoAd.sharedInstance().load(request,
-                                                    withAdUnitID: "ca-app-pub-6454574712655895/9250778455")
-        print("number of lifes after ad is: \(UserDefaults.standard.integer(forKey: "numberOfLifes"))")
+        if watchedAdGiveLives == true {
+            numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes") + 30
+            UserDefaults.standard.set(numberOfLives, forKey: "numberOfLifes")
+            UserDefaults.standard.synchronize()
+            adScreen.run(SKAction.moveTo(y: 1600, duration: 1))
+            lifeCounter.text = String(numberOfLives)
+            gameState = .playing
+            let request = GADRequest()
+            GADRewardBasedVideoAd.sharedInstance().load(request,
+                                                        withAdUnitID: "ca-app-pub-6454574712655895/9250778455")
+            print("number of lifes after ad is: \(UserDefaults.standard.integer(forKey: "numberOfLifes"))")
+            watchedAdGiveLives = false
+        }else {
+            return
+        }
     }
     func rewardBasedVideoAdDidClose(_ rewardBasedVideoAd: GADRewardBasedVideoAd) {
+        
         numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes") + 30
         UserDefaults.standard.set(numberOfLives, forKey: "numberOfLifes")
         UserDefaults.standard.synchronize()
@@ -209,7 +216,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         labelReferenceNode.physicsBody = nil
         self.addChild(labelReferenceNode!)
         
-        labelIndicators = labelReferenceNode.childNode(withName: "labelIndicators") as! Indicators
+        labelIndicators = labelReferenceNode.childNode(withName: "//labelIndicators") as! Indicators
         angleLabel = labelIndicators.angleIndicator!
         powerLabel = labelIndicators.powerIndicator!
         labelIndicators.position = CGPoint(x: 40, y: 20)
@@ -219,7 +226,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         GUI.physicsBody = nil
         self.addChild(GUI!)
         
-        menus = GUI.childNode(withName: "parentGUI") as! guiCode
+        menus = GUI.childNode(withName: "//parentGUI") as! guiCode
         winMenu = menus.winMenu_guiCode!
         starOne = menus.starOne_guiCode!
         starTwo = menus.starTwo_guiCode!
@@ -239,7 +246,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         adPopUp = SKReferenceNode(fileNamed: "adPage")
         adPopUp.physicsBody = nil
         self.addChild(adPopUp!)
-        adScreen = adPopUp.childNode(withName: "adScreen") as! AdPage
+        adScreen = adPopUp.childNode(withName: "//adScreen") as! AdPage
         mainMenuButton = adScreen.mainMenuButton2!
         watchAd = adScreen.watchAd!
         
@@ -859,7 +866,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         let numberOfLifes = UserDefaults.standard.integer(forKey: "numberOfLifes") - 1
         UserDefaults.standard.set(numberOfLifes, forKey: "numberOfLifes")
         UserDefaults.standard.synchronize()
-        
+        if numberOfLifes == 0 {
+            watchedAdGiveLives = true
+        }
         starOne.alpha = 0
         starTwo.alpha = 0
         starThree.alpha = 0
