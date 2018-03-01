@@ -31,6 +31,17 @@ class AdPage: MSButtonNode {
     }
 }
 
+//class timerIndicator: SKSpriteNode {
+//    var timerContainer: SKSpriteNode!
+//    var timerBars: SKSpriteNode!
+//
+//    required init?(coder aDecoder: NSCoder) {
+//        super.init(coder: aDecoder)
+//        timerContainer = childNode(withName: "timerContainer") as! SKSpriteNode
+//        timerBars = childNode(withName: "parentTimer") as! SKSpriteNode
+//    }
+//}
+
 class guiCode: SKSpriteNode {
     var starOne_guiCode :SKSpriteNode!
     var starTwo_guiCode :SKSpriteNode!
@@ -42,12 +53,17 @@ class guiCode: SKSpriteNode {
     var resumeButton_guiCode: MSButtonNode!
     var levelSelectButton_guiCode: MSButtonNode!
     var gameOverSign_guiCode: SKSpriteNode!
+    var timerContainer_guiCode: SKSpriteNode!
+    var timerBars_guiCode: SKSpriteNode!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         pauseMenu_guiCode = childNode(withName: "//pauseMenu") as! SKSpriteNode
         resumeButton_guiCode = childNode(withName: "//resumeButton") as! MSButtonNode
         resetButton_guiCode = childNode(withName: "//resetButton") as! MSButtonNode
+        
+        timerContainer_guiCode = childNode(withName: "//timerContainer") as! SKSpriteNode
+        timerBars_guiCode = childNode(withName: "//timerIndicator") as! SKSpriteNode
         
         starOne_guiCode = childNode(withName: "//starOne") as! SKSpriteNode
         starTwo_guiCode = childNode(withName: "//starTwo") as! SKSpriteNode

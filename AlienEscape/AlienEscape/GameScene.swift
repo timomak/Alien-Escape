@@ -44,6 +44,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     var GUI: SKReferenceNode!
     var menus: guiCode!
     
+//    var timerReferenceNode: SKReferenceNode!
+//    var timerBarContainer: timerIndicator!
+    
+    var timerBarContainer: SKSpriteNode!
+    var timerBarIndicator :SKSpriteNode!
+    var timerBar: CGFloat = 1.0 {
+        didSet {
+            // Bar health between 0.0 -> 100.0
+            timerBarIndicator.xScale = timerBar
+        }
+    }
+    
     var starOne :SKSpriteNode!
     var starTwo :SKSpriteNode!
     var starThree :SKSpriteNode!
@@ -109,9 +121,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     var rightBorder: SKSpriteNode!
     
     var projectileFirstPosition = CGPoint()
-    
-    var timerReferenceNode: SKReferenceNode!
-    var visualTimer: CircularProgressNode!
     
     var labelReferenceNode: SKReferenceNode!
     var labelIndicators: Indicators!
@@ -206,10 +215,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         portal1 = childNode(withName: "portal_1") as! SKSpriteNode
         portal2 = childNode(withName: "portal_2") as! SKSpriteNode
         
-//        timerReferenceNode = SKReferenceNode(fileNamed: "CircularProgressNode")
-//        timerReferenceNode.physicsBody = nil
-//        self.addChild(timerReferenceNode!)
-//        visualTimer = timerReferenceNode.childNode(withName: "CircularProgressNode") as! CircularProgressNode
         
         // MARK: SK Reference link
         labelReferenceNode = SKReferenceNode(fileNamed: "Indicator")
@@ -237,9 +242,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         resetButton = menus.resetButton_guiCode!
         resumeButton = menus.resumeButton_guiCode!
         gameOverSign = menus.gameOverSign_guiCode!
+        timerBarContainer = menus.timerContainer_guiCode!
+        timerBarIndicator = menus.timerBars_guiCode!
+        
+        timerBarContainer.removeFromParent()
+        cameraNode.addChild(timerBarContainer)
+        timerBarContainer.position = CGPoint(x: 0, y: 135)
         
         menus.position = CGPoint(x: cameraNode.position.x, y: -446.994)
         winMenu.childNode(withName: "cameraNode")
+        
+        // MARK: timer Setup
+//        timerReferenceNode = SKReferenceNode(fileNamed: "TimerBar")
+//        timerReferenceNode.physicsBody = nil
+//        self.addChild(timerReferenceNode!)
+////        timerReferenceNode.removeFromParent()
+////        cameraNode.addChild(timerReferenceNode)
+////        timerReferenceNode.position = CGPoint(x: 0, y: 135)
+//
+//        timerBarContainer = timerReferenceNode.childNode(withName: "//timerContainer") as! timerIndicator
+//        timerBarIndicator = timerBarContainer.timerBars!
+//        timerBarContainer.position = CGPoint(x: cameraNode.position.x, y: 135)
+//        timerBarIndicator.childNode(withName: "cameraNode")
         
         // MARK: Ad popup
         GADRewardBasedVideoAd.sharedInstance().delegate = (self as GADRewardBasedVideoAdDelegate)
@@ -438,12 +462,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         if physicsWorld.speed == 1 {
             if background.position.y > -1000 && gameState == .playing{
                 background.position.y -= 5
+                timerBar -= 0.0022
             } else if gameState == .playing{
                 gameState = .gameOver
             }
         } else {
             if background.position.y > -1000 && gameState == .playing{
                 background.position.y -= physicsWorld.speed * 5
+                timerBar -= physicsWorld.speed * 0.0022
             } else if gameState == .playing{
                 gameState = .gameOver
             }

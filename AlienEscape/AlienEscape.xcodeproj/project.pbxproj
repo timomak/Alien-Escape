@@ -111,7 +111,7 @@
 		F37C403D1F33907F0099FCE4 /* Alien_MainMenu_9.png in Resources */ = {isa = PBXBuildFile; fileRef = F37C40301F33907F0099FCE4 /* Alien_MainMenu_9.png */; };
 		F387A8281F0EDF660052E0CB /* granade.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F387A8271F0EDF660052E0CB /* granade.mp3 */; };
 		F38AC10820463A1C002E9C0A /* MainMenuMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F38AC10720463A1C002E9C0A /* MainMenuMusic.mp3 */; };
-		F39464F720477932008D699E /* HealthBar.sks in Resources */ = {isa = PBXBuildFile; fileRef = F39464F620477932008D699E /* HealthBar.sks */; };
+		F39464F720477932008D699E /* TimerBar.sks in Resources */ = {isa = PBXBuildFile; fileRef = F39464F620477932008D699E /* TimerBar.sks */; };
 		F39C6A0E1F72270300AF93A0 /* GUI_Menus.sks in Resources */ = {isa = PBXBuildFile; fileRef = F39C6A0D1F72270300AF93A0 /* GUI_Menus.sks */; };
 		F39E989B1F7583D100F747B7 /* StarWinEmitter.sks in Resources */ = {isa = PBXBuildFile; fileRef = F39E989A1F7583D100F747B7 /* StarWinEmitter.sks */; };
 		F39E989D1F758F1200F747B7 /* starEmitterScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = F39E989C1F758F1200F747B7 /* starEmitterScene.sks */; };
@@ -484,7 +484,7 @@
 		F37C40301F33907F0099FCE4 /* Alien_MainMenu_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Alien_MainMenu_9.png; sourceTree = "<group>"; };
 		F387A8271F0EDF660052E0CB /* granade.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = granade.mp3; path = ../granade.mp3; sourceTree = "<group>"; };
 		F38AC10720463A1C002E9C0A /* MainMenuMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = MainMenuMusic.mp3; sourceTree = "<group>"; };
-		F39464F620477932008D699E /* HealthBar.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = HealthBar.sks; sourceTree = "<group>"; };
+		F39464F620477932008D699E /* TimerBar.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = TimerBar.sks; sourceTree = "<group>"; };
 		F39C6A0D1F72270300AF93A0 /* GUI_Menus.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GUI_Menus.sks; sourceTree = "<group>"; };
 		F39E989A1F7583D100F747B7 /* StarWinEmitter.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = StarWinEmitter.sks; sourceTree = "<group>"; };
 		F39E989C1F758F1200F747B7 /* starEmitterScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = starEmitterScene.sks; sourceTree = "<group>"; };
@@ -1011,7 +1011,7 @@
 			children = (
 				F39E989C1F758F1200F747B7 /* starEmitterScene.sks */,
 				F39E989A1F7583D100F747B7 /* StarWinEmitter.sks */,
-				F39464F620477932008D699E /* HealthBar.sks */,
+				F39464F620477932008D699E /* TimerBar.sks */,
 				F39C6A0D1F72270300AF93A0 /* GUI_Menus.sks */,
 				F3165B801F06D46600A7BD96 /* spear.swift */,
 				F3A8EFDE1F32390500A299E0 /* Indicator.sks */,
@@ -1438,7 +1438,7 @@
 				F3C7C74E1F1039A100B859F2 /* r_hit_2.png in Resources */,
 				F3D5BAE51F33A8C400B1A2D4 /* adPage.sks in Resources */,
 				F3C7C79D1F1039A100B859F2 /* r_stand_shoot.png in Resources */,
-				F39464F720477932008D699E /* HealthBar.sks in Resources */,
+				F39464F720477932008D699E /* TimerBar.sks in Resources */,
 				F3FAC3FC1F1D7F12009F47AC /* green__0041_fire_7.png in Resources */,
 				F3A8EE3B1F32378100A299E0 /* armor__0003_turn_1.png in Resources */,
 				F3A8EE4F1F32378100A299E0 /* armor__0023_dead_2.png in Resources */,
