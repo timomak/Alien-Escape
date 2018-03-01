@@ -99,11 +99,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     var yellowPortalHasBeenPlaced = false
     
     
-    var levelWithExtraPortals = [6,7]
-    var levelWithDraggablePortals = [3,7]
-    var levelWithMovingCameraFromAtoB = [4]
-    var levelWithMovableCameraInXAxis = [5,6,7]
-    var levelWithMovableCameraInYAxis = [5]
+    var levelWithExtraPortals = [7]
+    var levelWithDraggablePortals = [5,7]
+    var levelWithMovingCameraFromAtoB = [6]
+    var levelWithMovableCameraInXAxis = [7]
+    var levelWithMovableCameraInYAxis = [7]
     
     var topBorder: SKSpriteNode!
     var rightBorder: SKSpriteNode!

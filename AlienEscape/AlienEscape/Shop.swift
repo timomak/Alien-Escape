@@ -7,6 +7,7 @@
 //
 
 import SpriteKit
+import GameplayKit
 
 private var cameraNode3: SKCameraNode!
 private var starCounter: SKLabelNode!
@@ -24,6 +25,9 @@ private var checkMark2: SKSpriteNode!
 private var checkMark3: SKSpriteNode!
 private var checkMark4: SKSpriteNode!
 private var currentAlien = String()
+
+let swipeLeftRec = UISwipeGestureRecognizer()
+let swipeRightRec = UISwipeGestureRecognizer()
 
 enum SelectedSkin {
     case robotAlien, armoredAlien, darkAlien, greenAlien
@@ -105,6 +109,15 @@ class Shop: SKScene {
         
         scene?.camera = cameraNode3
         
+        // MARK: Gesture Swipe Recognizer
+        swipeLeftRec.addTarget(self, action: #selector(Shop.swipedLeft) )
+        swipeLeftRec.direction = .left
+        self.view!.addGestureRecognizer(swipeLeftRec)
+        
+        swipeRightRec.addTarget(self, action: #selector(Shop.swipedRight) )
+        swipeRightRec.direction = .right
+        self.view!.addGestureRecognizer(swipeRightRec)
+        
         func countTheNumberOfStars() {
             var numberOfStarz = 0
             for x in 0...UserDefaults.standard.integer(forKey: "checkpoint") {
@@ -184,6 +197,25 @@ class Shop: SKScene {
             }
         }
     }
+    
+    @objc func swipedLeft() {
+        print("Left")
+        if cameraNode3.position.x != 285 {
+            cameraNode3.position.x -= 600
+        } else {
+            cameraNode3.position.x = 2085
+        }
+    }
+    
+    @objc func swipedRight() {
+        print("Right")
+        if cameraNode3.position.x != 2085 {
+            cameraNode3.position.x += 600
+        } else {
+            cameraNode3.position.x = 285
+        }
+    }
+    
     
     func greenAlienSkinCheck() {
         checkMark1.texture = SKTexture(imageNamed: "checkCircle_locked")

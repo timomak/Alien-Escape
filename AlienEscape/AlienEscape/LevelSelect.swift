@@ -169,11 +169,11 @@ class LevelSelect: SKScene {
     }
     
     func checkCameraPosition() {
-        
+        // Camera Animations
         let cameraMoveToChapterOne = SKAction.moveTo(y: 0, duration: 0.5)
         let cameraMoveToChapterTwo = SKAction.moveTo(y: -365, duration: 0.5)
         let cameraMoveToChapterThree = SKAction.moveTo(y: -650, duration: 0.5)
-        
+        // Little Chapters Animation
         let moveSpaceshipUp = SKAction.moveTo(y: 40.5, duration: 0.2)
         let moveSpaceshipToOriginal = SKAction.moveTo(y: 35.5, duration: 0.2)
         let moveMarsUp = SKAction.moveTo(y: 5.5, duration: 0.2)
@@ -210,9 +210,7 @@ class LevelSelect: SKScene {
     }
     
     @objc func swipedUp() {
-        
-        print("Up")
-
+        print("current CHapter: ",currentChapter)
         let targetY = cameraNode2.position.y
         let y = clamp(value: targetY, lower: -620, upper: -10)
         cameraNode2.position.y = y
@@ -224,13 +222,11 @@ class LevelSelect: SKScene {
         } else if currentChapter == 3{
             currentChapter = 3
         }
-        
         checkCameraPosition()
     }
     
     @objc func swipedDown() {
-        
-        print("Down")
+        print("current CHapter: ",currentChapter)
         let targetY = cameraNode2.position.y
         let y = clamp(value: targetY, lower: -620, upper: -10)
         cameraNode2.position.y = y
@@ -244,18 +240,4 @@ class LevelSelect: SKScene {
         }
         checkCameraPosition()
     }
-    
-    
-//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        let touch = touches.first
-//        let location = touch?.location(in: self)
-//        let previousLocation = touch?.previousLocation(in: self)
-//
-//        let targetY = cameraNode2.position.y
-//        let y = clamp(value: targetY, lower: -620, upper: -10)
-//
-//        cameraNode2.position.y = y
-//        camera?.position.y += ((location?.y)! - (previousLocation?.y)!) * -1
-//
-//    }
 }
