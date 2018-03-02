@@ -9,8 +9,14 @@
 import UIKit
 import SpriteKit
 import GameplayKit
+import GoogleMobileAds
+import AdSupport
 
-class GameViewController: UIViewController {
+
+class GameViewController: UIViewController, GADBannerViewDelegate, GADInterstitialDelegate{
+    var adBannerView: GADBannerView!
+    var myAd = GADInterstitial()
+    let request = GADRequest()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +35,21 @@ class GameViewController: UIViewController {
             
             view.showsFPS = true
             view.showsNodeCount = true
+        }
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.loadAndShow), name: NSNotification.Name(rawValue: "loadAndShow"), object: nil)
+    }
+    @objc func loadAndShow() {
+        request.testDevices = [ kGADSimulatorID ];
+        myAd.setAdUnitID("ca-app-pub-6454574712655895/1809701850")
+        myAd.delegate = self
+        myAd.load(request)
+        print("request for ad works")
+    }
+    
+    func interstitialDidReceiveAd(_ ad: GADInterstitial) {
+        if (self.myAd.isReady) {
+             print("request for ad is ready")
+            myAd.present(fromRootViewController: self)
         }
     }
 

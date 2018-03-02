@@ -178,6 +178,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             lifeCounter.text = String(numberOfLives)
             gameState = .playing
             let request = GADRequest()
+            request.testDevices = [ kGADSimulatorID ];
             GADRewardBasedVideoAd.sharedInstance().load(request,
                                                         withAdUnitID: "ca-app-pub-6454574712655895/9250778455")
             print("number of lifes after ad is: \(UserDefaults.standard.integer(forKey: "numberOfLifes"))")
@@ -195,12 +196,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         lifeCounter.text = String(numberOfLives)
         gameState = .playing
         let request = GADRequest()
+        request.testDevices = [ kGADSimulatorID ];
         GADRewardBasedVideoAd.sharedInstance().load(request,
                                                     withAdUnitID: "ca-app-pub-6454574712655895/9250778455")
         print("number of lifes after ad is: \(UserDefaults.standard.integer(forKey: "numberOfLifes"))")
     }
     
     override func didMove(to view: SKView) {
+//        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadAndShow"), object: nil)
         currentLevel = UserDefaults.standard.integer(forKey: "currentLevel")
         alien = childNode(withName: "//alien") as! SKSpriteNode
         
@@ -247,24 +250,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         
         timerBarContainer.removeFromParent()
         cameraNode.addChild(timerBarContainer)
-        timerBarContainer.position = CGPoint(x: 0, y: 135)
+        timerBarContainer.position = CGPoint(x: 0, y: -135)
         
         menus.position = CGPoint(x: cameraNode.position.x, y: -446.994)
         winMenu.childNode(withName: "cameraNode")
-        
-        // MARK: timer Setup
-//        timerReferenceNode = SKReferenceNode(fileNamed: "TimerBar")
-//        timerReferenceNode.physicsBody = nil
-//        self.addChild(timerReferenceNode!)
-////        timerReferenceNode.removeFromParent()
-////        cameraNode.addChild(timerReferenceNode)
-////        timerReferenceNode.position = CGPoint(x: 0, y: 135)
-//
-//        timerBarContainer = timerReferenceNode.childNode(withName: "//timerContainer") as! timerIndicator
-//        timerBarIndicator = timerBarContainer.timerBars!
-//        timerBarContainer.position = CGPoint(x: cameraNode.position.x, y: 135)
-//        timerBarIndicator.childNode(withName: "cameraNode")
-        
+ 
         // MARK: Ad popup
         GADRewardBasedVideoAd.sharedInstance().delegate = (self as GADRewardBasedVideoAdDelegate)
         adPopUp = SKReferenceNode(fileNamed: "adPage")
@@ -359,9 +349,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         }
         
         watchAd.selectedHandler = {
-            if GADRewardBasedVideoAd.sharedInstance().isReady == true {
+            print("Ad button pressed")
+            print("reward video is: ", GADRewardBasedVideoAd.sharedInstance().isReady)
+//            if GADRewardBasedVideoAd.sharedInstance().isReady == true {
+                print("adbutton returns true")
                 GADRewardBasedVideoAd.sharedInstance().present(fromRootViewController: (self.view?.window?.rootViewController)!)
-            }
+//            }
         }
         
         levelSelectButton.selectedHandler = {
@@ -886,6 +879,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     }
     
     func GameOver() {
+        let possibilityToGetAd = arc4random_uniform(2)
+        print("Possibility to get ad: \(possibilityToGetAd)")
+        if possibilityToGetAd == 1 {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadAndShow"), object: nil)
+        }
         cameraTarget = nil
         cameraNode.position.y = 123.14
         print("game Over is called")

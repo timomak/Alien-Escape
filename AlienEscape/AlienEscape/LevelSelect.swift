@@ -45,6 +45,8 @@ var littleSpaceman: SKSpriteNode!
 
 let swipeUpRec = UISwipeGestureRecognizer()
 let swipeDownRec = UISwipeGestureRecognizer()
+var swipedUpAlreadyInUse = false
+var swipedDownAlreadyInUse = false
 
 var currentChapter = 1
 
@@ -53,7 +55,7 @@ var levelGerator = [1: level1, 2: level2, 3: level3,4: level4, 5: level5,6: leve
 class LevelSelect: SKScene {
 
     override func didMove(to view: SKView) {
-        
+        currentChapter = 1
         littleSpaceship = childNode(withName: "//little_spaceship") as! SKSpriteNode
         littleMars = childNode(withName: "//little_mars") as! SKSpriteNode
         littleSpaceman = childNode(withName: "//little_spaceman") as! SKSpriteNode
@@ -68,13 +70,21 @@ class LevelSelect: SKScene {
         littleSpaceman.setScale(0.02)
         
         // MARK: Gesture Swipe Recognizer
-        swipeUpRec.addTarget(self, action: #selector(LevelSelect.swipedUp) )
-        swipeUpRec.direction = .up
-        self.view!.addGestureRecognizer(swipeUpRec)
+        print("Did load functions in level Select")
         
-        swipeDownRec.addTarget(self, action: #selector(LevelSelect.swipedDown) )
-        swipeDownRec.direction = .down
-        self.view!.addGestureRecognizer(swipeDownRec)
+        if swipedUpAlreadyInUse == false {
+            swipeUpRec.addTarget(self, action: #selector(LevelSelect.swipedUp) )
+            swipeUpRec.direction = .up
+            self.view!.addGestureRecognizer(swipeUpRec)
+            swipedUpAlreadyInUse = true
+        }
+        
+        if swipedDownAlreadyInUse == false {
+            swipeDownRec.addTarget(self, action: #selector(LevelSelect.swipedDown) )
+            swipeDownRec.direction = .down
+            self.view!.addGestureRecognizer(swipeDownRec)
+            swipedUpAlreadyInUse = true
+        }
         
         if let musicURL = Bundle.main.url(forResource: "LevelSelectSound", withExtension: "mp3") {
             sound = SKAudioNode(url: musicURL)
@@ -209,33 +219,37 @@ class LevelSelect: SKScene {
         }
     }
     
-    @objc func swipedUp() {
-        print("current CHapter: ",currentChapter)
+    @objc private func swipedUp() {
+        print("current Chapter: ",currentChapter)
         let targetY = cameraNode2.position.y
         let y = clamp(value: targetY, lower: -620, upper: -10)
         cameraNode2.position.y = y
         
         if currentChapter == 1 {
             currentChapter = 2
-        } else if currentChapter == 2{
+        }
+        else if currentChapter == 2{
             currentChapter = 3
-        } else if currentChapter == 3{
+        }
+        else if currentChapter == 3{
             currentChapter = 3
         }
         checkCameraPosition()
     }
     
-    @objc func swipedDown() {
-        print("current CHapter: ",currentChapter)
+    @objc private func swipedDown() {
+        print("current Chapter: ",currentChapter)
         let targetY = cameraNode2.position.y
         let y = clamp(value: targetY, lower: -620, upper: -10)
         cameraNode2.position.y = y
         
         if currentChapter == 1 {
             currentChapter = 1
-        } else if currentChapter == 2{
+        }
+        else if currentChapter == 2{
             currentChapter = 1
-        } else if currentChapter == 3{
+        }
+        else if currentChapter == 3{
             currentChapter = 2
         }
         checkCameraPosition()

@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         GADMobileAds.configure(withApplicationID: "ca-app-pub-6454574712655895~3494753427")
         let request = GADRequest()
+        request.testDevices = [kGADSimulatorID]
         GADRewardBasedVideoAd.sharedInstance().load(request,
                                                     withAdUnitID: "ca-app-pub-6454574712655895/9250778455")
         // Sample device ID
