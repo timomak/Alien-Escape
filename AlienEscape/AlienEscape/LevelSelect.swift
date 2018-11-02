@@ -45,8 +45,10 @@ var littleSpaceman: SKSpriteNode!
 
 let swipeUpRec = UISwipeGestureRecognizer()
 let swipeDownRec = UISwipeGestureRecognizer()
-var swipedUpAlreadyInUse = false
-var swipedDownAlreadyInUse = false
+private var swipedUpAlreadyInUse = false
+private var swipedDownAlreadyInUse = false
+
+var currentView = String()
 
 var currentChapter = 1
 
@@ -55,6 +57,7 @@ var levelGerator = [1: level1, 2: level2, 3: level3,4: level4, 5: level5,6: leve
 class LevelSelect: SKScene {
 
     override func didMove(to view: SKView) {
+        currentView = "levelSelect"
         currentChapter = 1
         littleSpaceship = childNode(withName: "//little_spaceship") as! SKSpriteNode
         littleMars = childNode(withName: "//little_mars") as! SKSpriteNode
@@ -122,6 +125,7 @@ class LevelSelect: SKScene {
                 }
             }
             levelGerator[i]!?.selectedHandler = {
+                currentView = "not LevelSelect"
                 guard let scene = GameScene.level(i) else {
                     print("Level \(i) is missing?")
                     return
@@ -152,6 +156,7 @@ class LevelSelect: SKScene {
         starCounter.text = String(numberOfStars)
         
         mainManu.selectedHandler = {
+            currentView = "not LevelSelect"
             /* 1) Grab reference to our SpriteKit view */
             guard let skView = self.view as SKView! else {
                 print("Could not get Skview")
@@ -218,8 +223,8 @@ class LevelSelect: SKScene {
             littleSpaceman.run(moveSpacemanToOriginal)
         }
     }
-    
     @objc private func swipedUp() {
+        if currentView == "levelSelect" {
         print("current Chapter: ",currentChapter)
         let targetY = cameraNode2.position.y
         let y = clamp(value: targetY, lower: -620, upper: -10)
@@ -235,9 +240,11 @@ class LevelSelect: SKScene {
             currentChapter = 3
         }
         checkCameraPosition()
+        }
     }
     
     @objc private func swipedDown() {
+        if currentView == "levelSelect" {
         print("current Chapter: ",currentChapter)
         let targetY = cameraNode2.position.y
         let y = clamp(value: targetY, lower: -620, upper: -10)
@@ -253,5 +260,6 @@ class LevelSelect: SKScene {
             currentChapter = 2
         }
         checkCameraPosition()
+        }
     }
 }

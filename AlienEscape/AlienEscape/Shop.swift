@@ -28,6 +28,8 @@ private var currentAlien = String()
 
 let swipeLeftRec = UISwipeGestureRecognizer()
 let swipeRightRec = UISwipeGestureRecognizer()
+private var swipedRightAlreadyInUse = false
+private var swipedLefrAlreadyInUse = false
 
 enum SelectedSkin {
     case robotAlien, armoredAlien, darkAlien, greenAlien
@@ -110,13 +112,19 @@ class Shop: SKScene {
         scene?.camera = cameraNode3
         
         // MARK: Gesture Swipe Recognizer
-        swipeLeftRec.addTarget(self, action: #selector(Shop.swipedLeft) )
-        swipeLeftRec.direction = .left
-        self.view!.addGestureRecognizer(swipeLeftRec)
+        if swipedLefrAlreadyInUse == false {
+            swipeLeftRec.addTarget(self, action: #selector(Shop.swipedLeft) )
+            swipeLeftRec.direction = .left
+            self.view!.addGestureRecognizer(swipeLeftRec)
+            swipedLefrAlreadyInUse = true
+        }
         
-        swipeRightRec.addTarget(self, action: #selector(Shop.swipedRight) )
-        swipeRightRec.direction = .right
-        self.view!.addGestureRecognizer(swipeRightRec)
+        if swipedRightAlreadyInUse == false {
+            swipeRightRec.addTarget(self, action: #selector(Shop.swipedRight) )
+            swipeRightRec.direction = .right
+            self.view!.addGestureRecognizer(swipeRightRec)
+            swipedRightAlreadyInUse = true
+        }
         
         func countTheNumberOfStars() {
             var numberOfStarz = 0

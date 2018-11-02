@@ -203,7 +203,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     }
     
     override func didMove(to view: SKView) {
-//        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadAndShow"), object: nil)
         currentLevel = UserDefaults.standard.integer(forKey: "currentLevel")
         alien = childNode(withName: "//alien") as! SKSpriteNode
         
@@ -603,7 +602,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                     projectilePredictionPoint3.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 0.9, angle1: angleRadians)
                     projectilePredictionPoint4.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 1.2, angle1: angleRadians)
                     projectilePredictionPoint5.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 1.5, angle1: angleRadians)
-                    
                     if distance < Settings.Metrics.rLimit  {
                         touchCurrentPoint = touchLocation
                     } else {
@@ -877,6 +875,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         addChild(slingshot_2)
         slingshot_2.isHidden = false
     }
+    func delayWithSeconds(_ seconds: Double, completion: @escaping () -> ()) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+            completion()
+        }
+    }
     
     func GameOver() {
         let possibilityToGetAd = arc4random_uniform(2)
@@ -917,7 +920,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
 //        node.addChild(starEmitter)
 //
 //    }
-    
     func win() {
         cameraTarget = nil
         cameraNode.position.y = 123.14
@@ -973,17 +975,47 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         let fadeDelay3 = SKAction.wait(forDuration: 2.7)
         let starSequence3 = SKAction.sequence([fadeDelay3,fadeStar3])
         
+        let starEmitterPath = Bundle.main.path(forResource: "starEmitterScene", ofType: "sks")
+        let starEmitter1 = SKReferenceNode (url: URL (fileURLWithPath: starEmitterPath!))
+        let starEmitter2 = SKReferenceNode (url: URL (fileURLWithPath: starEmitterPath!))
+        let starEmitter3 = SKReferenceNode (url: URL (fileURLWithPath: starEmitterPath!))
+        
         if stars == 1 {
             starOne.run(starSequence)
+//            delayWithSeconds(3.3) {
+//                starEmitter1.position = self.starOne.position
+//                self.addChild(starEmitter1)
+//            }
 
         } else if stars == 2 {
             starOne.run(starSequence)
             starTwo.run(starSequence2)
-
+//            delayWithSeconds(3.3) {
+//                starEmitter1.position = self.starOne.position
+//                self.addChild(starEmitter1)
+//                self.delayWithSeconds(3.3) {
+//                    starEmitter2.position = self.starTwo.position
+//                    self.addChild(starEmitter2)
+//                }
+//            }
+            
         } else if stars == 3 {
             starOne.run(starSequence)
             starTwo.run(starSequence2)
             starThree.run(starSequence3)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+                starEmitter1.position = self.starOne.position
+                self.addChild(starEmitter1)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+                    starEmitter2.position = self.starTwo.position
+                    self.addChild(starEmitter2)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+                        starEmitter3.position = self.starThree.position
+                        self.addChild(starEmitter3)
+                    })
+                })
+            })
         }
         
         if UserDefaults.standard.integer(forKey: "checkpoint") < 2 {
