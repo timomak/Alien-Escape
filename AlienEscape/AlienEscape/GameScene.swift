@@ -11,22 +11,27 @@ import SpriteKit
 import GoogleMobileAds
 import AudioToolbox
 
+// Sets the outer bouderies of the level (it will stop the camera from looking outside of the scope).
 func clamp<T: Comparable>(value: T, lower: T, upper: T) -> T {
     return min(max(value, lower), upper)
 }
 
 extension CGVector {
+    
+    // Calculate lenght using pythagorian theory
     public func length() -> CGFloat {
         return CGFloat(sqrt(dx*dx + dy*dy))
     }
 }
 
+// Game States (pause, playing, over and won are the game modes).
 enum GameState {
     case paused, playing, gameOver, won
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegate{
-    
+
+    // Calling a function when the game state changes. The level starts at .playing mode.
     var gameState: GameState = .playing {
         didSet {
             switch gameState {
@@ -41,14 +46,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             }
         }
     }
+    
+    // Adds Menus, but they're not visible in .playing mode.
     var GUI: SKReferenceNode!
     var menus: guiCode!
     
-//    var timerReferenceNode: SKReferenceNode!
-//    var timerBarContainer: timerIndicator!
-    
+    // Timer Bar
     var timerBarContainer: SKSpriteNode!
     var timerBarIndicator :SKSpriteNode!
+    
+    // Visual timer that shrinks in size as time goes on.
     var timerBar: CGFloat = 1.0 {
         didSet {
             // Bar health between 0.0 -> 100.0
@@ -56,9 +63,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         }
     }
     
+    // Stars that appear after winning or losing on a level. Signify how fast they passed the level.
     var starOne :SKSpriteNode!
     var starTwo :SKSpriteNode!
     var starThree :SKSpriteNode!
+    
+    // Individual GUI Menus
     var winMenu: SKSpriteNode!
     var nextLevelButton: MSButtonNode!
     var pauseMenu: SKSpriteNode!
@@ -67,19 +77,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     var levelSelectButton: MSButtonNode!
     var gameOverSign: SKSpriteNode!
     
+    // Main timer count. 1 per frame. (The game is 60 Frames Per Second).
     let fixedDelta: CFTimeInterval = 1.0 / 60.0 /* 60 FPS */
+    
+    // Timer for the game
     var gameStart: CFTimeInterval = 0
     var timer: CFTimeInterval = 0
+    
+    // TODO: Find out more about how these timers are used and how to fix it.
     var trajectoryTimeOut: CFTimeInterval = 1
     
+    // Background Sprite used to know when it makes contact with the projectile (it's game over if the projectile touches the ground).
     var background: SKSpriteNode!
+    
+    // Portal Sprites to teleport ball. Not used on all levels, but physically present on all (just outside of the frame)
     var portal1: SKSpriteNode!
     var portal2: SKSpriteNode!
     var portalA: SKSpriteNode!
     var portalB: SKSpriteNode!
     
+    // Alien Sprite
     var alien: SKSpriteNode!
+    
+    // TODO: Check what this does
     var inGameMenu: MSButtonNode!
+    
+    // Projectile Class
     var projectile: spear!
     
     //Touch dragging vars
@@ -91,56 +114,89 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     var cameraNode:SKCameraNode!
     var cameraTarget:SKSpriteNode!
     
+    // Sets the current level value (this changes when a level is loaded, 1 is the default level for the first time user).
     var currentLevel = 1
     
+    // Tracks the [ Current Level : Number of stars (out of 3) ]
     var levelScore = [ 0: 0]
     
+    // Tracks the highest level reached by the player.
     var lastLevel = 1
+    
+    // TODO: Check what you do with this.
     var winCount = 1
     
+    // Sprite to visually track the number of lives left.
     var lifeCounter: SKLabelNode!
     
+    // Check if the projectile has been launched.
     var released = false
     
+    // Class to launch the projectile before it's launched.
     var projectileBox: Projectile!
     
+    // Default Portals ( Blue & Yellow )
     var bluePortalDrag: SKSpriteNode!
     var yellowPortalDrag: SKSpriteNode!
+    
+    // Variables to track the dragging of portals.
     var currentMovingPortal = SKSpriteNode()
     var bluePortalHasBeenPlaced = false
     var yellowPortalHasBeenPlaced = false
     
+    /*
+        MARK: This decides what tools for completion of the level the user has access to.
+        This is where to decide if the player will have access to portals or vortexes etc...
+        Within the array, is the number of the levels that use those tools.
+        Very easy to scale the same tools on different levels wihtout re-writing code.
+    */
     
+    // More than 2 portals
     var levelWithExtraPortals = [7]
+    
+    // Draggable portals
     var levelWithDraggablePortals = [5,7]
+    
+    // Being able to move the camera ( UP / DOWN & LEFT & Right ).
     var levelWithMovingCameraFromAtoB = [6]
+    
+    // Can move the camera ( LEFT & RIGHT )
     var levelWithMovableCameraInXAxis = [7]
+    
+    // Can move the camera ( UP & DOWN )
     var levelWithMovableCameraInYAxis = [7]
     
+    // TODO: Figure out how they're used.
     var topBorder: SKSpriteNode!
     var rightBorder: SKSpriteNode!
     
+    // Track where the first point of dragging the projectile is. ( used to calculate the distace and everything else )
     var projectileFirstPosition = CGPoint()
     
+    // Label Indicator Sprites
     var labelReferenceNode: SKReferenceNode!
     var labelIndicators: Indicators!
     var powerLabel: SKLabelNode!
     var angleLabel: SKLabelNode!
     
+    // Ads Logic
     private var adPopUp: SKReferenceNode!
     private var adScreen: AdPage!
     private var mainMenuButton: MSButtonNode!
     private var watchAd: MSButtonNode!
     
+    // The four dots to show the prediction line for the projectile
     var projectilePredictionPoint1: SKSpriteNode!
     var projectilePredictionPoint2: SKSpriteNode!
     var projectilePredictionPoint3: SKSpriteNode!
     var projectilePredictionPoint4: SKSpriteNode!
     var projectilePredictionPoint5: SKSpriteNode!
     
+    // TODO: Figure out what this code does. Number of lives
     var numberOfLives = 0
     var watchedAdGiveLives = false
     
+    // Set the bounderies for the camera. (The camera will follow
     func cameraMove() {
         guard let cameraTarget = cameraTarget else {
             return
@@ -155,7 +211,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         cameraNode.position.y = y
     }
     
-    // MARK: Loading Levels
+    // MARK: Loading Levels the level depending on the currentLevel Integer
     class func level(_ currentLevel: Int) -> GameScene? {
         guard let scene = GameScene(fileNamed: "Level_\(currentLevel)") else {
             return nil
@@ -164,30 +220,56 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         return scene
     }
     
+    // TODO: Check what this does.
     func rewardBasedVideoAd(_ rewardBasedVideoAd: GADRewardBasedVideoAd, didRewardUserWith reward: GADAdReward) {
         
         print("number of lifes is: \(numberOfLives)")
         print("number of lifes is: \(UserDefaults.standard.integer(forKey: "numberOfLifes"))")
     }
+    
+    // TODO: Check if it works.
     func rewardBasedVideoAd(_ rewardBasedVideoAd: GADRewardBasedVideoAd, didFailToLoadWithError error: Error) {
+        /*
+            Actions once the ad has been displayed.
+        */
+        print("\n---------- SOMETHING AD ----------/n")
         if watchedAdGiveLives == true {
+            
+            // Pulls the number of lifes the player has left and adds 30 to it. Saves it again.
             numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes") + 30
             UserDefaults.standard.set(numberOfLives, forKey: "numberOfLifes")
             UserDefaults.standard.synchronize()
+            
+            // Ad slides off screen
             adScreen.run(SKAction.moveTo(y: 1600, duration: 1))
+            
+            // Updating the life counter text
             lifeCounter.text = String(numberOfLives)
+            
+            // Changing game state
             gameState = .playing
+            
+            // Making the request for the AD
             let request = GADRequest()
+            
+            // MARK: Uncomment before pushing to the app store
             request.testDevices = [ kGADSimulatorID ];
             GADRewardBasedVideoAd.sharedInstance().load(request,
                                                         withAdUnitID: "ca-app-pub-6454574712655895/9250778455")
             print("number of lifes after ad is: \(UserDefaults.standard.integer(forKey: "numberOfLifes"))")
+            
+            // Make sure it only happens once
             watchedAdGiveLives = false
-        }else {
+        }
+            // TODO: Check if the else is needed
+        else {
             return
         }
     }
     func rewardBasedVideoAdDidClose(_ rewardBasedVideoAd: GADRewardBasedVideoAd) {
+        // TODO: CHeck if this one is running of the function above.
+        
+        print("\n---------- CLOSING AD ----------/n")
         
         numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes") + 30
         UserDefaults.standard.set(numberOfLives, forKey: "numberOfLifes")
@@ -204,18 +286,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     
     override func didMove(to view: SKView) {
         currentLevel = UserDefaults.standard.integer(forKey: "currentLevel")
-        alien = childNode(withName: "//alien") as! SKSpriteNode
+        alien = childNode(withName: "//alien") as? SKSpriteNode
         
         if UserDefaults.standard.object(forKey: "currentAlien") as! String ==  "Robot_Alien" {
             alien.size = CGSize(width: 255, height: 430)
         }
         
         alien.run(SKAction(named: UserDefaults.standard.object(forKey: "currentAlien") as! String)!)
-        inGameMenu = childNode(withName: "//inGameMenu") as! MSButtonNode
-        cameraNode = childNode(withName: "cameraNode") as! SKCameraNode
+        inGameMenu = childNode(withName: "//inGameMenu") as? MSButtonNode
+        cameraNode = childNode(withName: "cameraNode") as? SKCameraNode
         
-        portal1 = childNode(withName: "portal_1") as! SKSpriteNode
-        portal2 = childNode(withName: "portal_2") as! SKSpriteNode
+        portal1 = childNode(withName: "portal_1") as? SKSpriteNode
+        portal2 = childNode(withName: "portal_2") as? SKSpriteNode
         
         
         // MARK: SK Reference link
@@ -223,7 +305,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         labelReferenceNode.physicsBody = nil
         self.addChild(labelReferenceNode!)
         
-        labelIndicators = labelReferenceNode.childNode(withName: "//labelIndicators") as! Indicators
+        labelIndicators = labelReferenceNode.childNode(withName: "//labelIndicators") as? Indicators
         angleLabel = labelIndicators.angleIndicator!
         powerLabel = labelIndicators.powerIndicator!
         labelIndicators.position = CGPoint(x: 40, y: 20)
@@ -233,7 +315,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         GUI.physicsBody = nil
         self.addChild(GUI!)
         
-        menus = GUI.childNode(withName: "//parentGUI") as! guiCode
+        menus = GUI.childNode(withName: "//parentGUI") as? guiCode
         winMenu = menus.winMenu_guiCode!
         starOne = menus.starOne_guiCode!
         starTwo = menus.starTwo_guiCode!
@@ -259,7 +341,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         adPopUp = SKReferenceNode(fileNamed: "adPage")
         adPopUp.physicsBody = nil
         self.addChild(adPopUp!)
-        adScreen = adPopUp.childNode(withName: "//adScreen") as! AdPage
+        adScreen = adPopUp.childNode(withName: "//adScreen") as? AdPage
         mainMenuButton = adScreen.mainMenuButton2!
         watchAd = adScreen.watchAd!
         
@@ -267,15 +349,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         
         // MARK: Extra Portals
         if levelWithExtraPortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-            portalA = childNode(withName: "portal_A") as! SKSpriteNode
-            portalB = childNode(withName: "portal_B") as! SKSpriteNode
+            portalA = childNode(withName: "portal_A") as? SKSpriteNode
+            portalB = childNode(withName: "portal_B") as? SKSpriteNode
         }
         
         // MARK: Draggable Portals
         if levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
             
-            bluePortalDrag = childNode(withName: "//bluePortalDrag") as! SKSpriteNode
-            yellowPortalDrag = childNode(withName: "//yellowPortalDrag") as! SKSpriteNode
+            bluePortalDrag = childNode(withName: "//bluePortalDrag") as? SKSpriteNode
+            yellowPortalDrag = childNode(withName: "//yellowPortalDrag") as? SKSpriteNode
             
             bluePortalDrag.isHidden = true
             yellowPortalDrag.isHidden = true
@@ -283,12 +365,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         
         // MARK: Larger Levels Borders
         if levelWithMovableCameraInXAxis.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithMovableCameraInYAxis.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
-            topBorder = childNode(withName: "topBorder") as! SKSpriteNode
-            rightBorder = childNode(withName: "rightBorder") as! SKSpriteNode
+            topBorder = childNode(withName: "topBorder") as? SKSpriteNode
+            rightBorder = childNode(withName: "rightBorder") as? SKSpriteNode
         }
         
-        background = childNode(withName: "background") as! SKSpriteNode
-        lifeCounter = childNode(withName: "//lifeCounter") as! SKLabelNode
+        background = childNode(withName: "background") as? SKSpriteNode
+        lifeCounter = childNode(withName: "//lifeCounter") as? SKLabelNode
         numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes")
         
         if UserDefaults.standard.integer(forKey: "numberOfLifes") <= 0 {
