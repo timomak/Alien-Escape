@@ -109,6 +109,10 @@
 		F37C403B1F33907F0099FCE4 /* Alien_MainMenu_7.png in Resources */ = {isa = PBXBuildFile; fileRef = F37C402E1F33907F0099FCE4 /* Alien_MainMenu_7.png */; };
 		F37C403C1F33907F0099FCE4 /* Alien_MainMenu_8.png in Resources */ = {isa = PBXBuildFile; fileRef = F37C402F1F33907F0099FCE4 /* Alien_MainMenu_8.png */; };
 		F37C403D1F33907F0099FCE4 /* Alien_MainMenu_9.png in Resources */ = {isa = PBXBuildFile; fileRef = F37C40301F33907F0099FCE4 /* Alien_MainMenu_9.png */; };
+		F38555E4227A30C300A28971 /* nanopb.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F38555E0227A30C300A28971 /* nanopb.framework */; };
+		F38555E5227A30C300A28971 /* GoogleUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F38555E1227A30C300A28971 /* GoogleUtilities.framework */; };
+		F38555E6227A30C300A28971 /* GoogleAppMeasurement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F38555E2227A30C300A28971 /* GoogleAppMeasurement.framework */; };
+		F38555E7227A30C300A28971 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F38555E3227A30C300A28971 /* GoogleMobileAds.framework */; };
 		F385AC32204CE3D200032B3A /* Level_6.sks in Resources */ = {isa = PBXBuildFile; fileRef = F385AC31204CE3D200032B3A /* Level_6.sks */; };
 		F387A8281F0EDF660052E0CB /* granade.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F387A8271F0EDF660052E0CB /* granade.mp3 */; };
 		F38AC10820463A1C002E9C0A /* MainMenuMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F38AC10720463A1C002E9C0A /* MainMenuMusic.mp3 */; };
@@ -484,6 +488,10 @@
 		F37C402E1F33907F0099FCE4 /* Alien_MainMenu_7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Alien_MainMenu_7.png; sourceTree = "<group>"; };
 		F37C402F1F33907F0099FCE4 /* Alien_MainMenu_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Alien_MainMenu_8.png; sourceTree = "<group>"; };
 		F37C40301F33907F0099FCE4 /* Alien_MainMenu_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Alien_MainMenu_9.png; sourceTree = "<group>"; };
+		F38555E0227A30C300A28971 /* nanopb.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = nanopb.framework; sourceTree = "<group>"; };
+		F38555E1227A30C300A28971 /* GoogleUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleUtilities.framework; sourceTree = "<group>"; };
+		F38555E2227A30C300A28971 /* GoogleAppMeasurement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleAppMeasurement.framework; sourceTree = "<group>"; };
+		F38555E3227A30C300A28971 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMobileAds.framework; sourceTree = "<group>"; };
 		F385AC31204CE3D200032B3A /* Level_6.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Level_6.sks; path = alien_dark_gray/Level_6.sks; sourceTree = "<group>"; };
 		F387A8271F0EDF660052E0CB /* granade.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = granade.mp3; path = ../granade.mp3; sourceTree = "<group>"; };
 		F38AC10720463A1C002E9C0A /* MainMenuMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = MainMenuMusic.mp3; sourceTree = "<group>"; };
@@ -757,11 +765,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F38555E7227A30C300A28971 /* GoogleMobileAds.framework in Frameworks */,
 				F30838681F22B92D004BD63F /* GameplayKit.framework in Frameworks */,
 				F30838641F22B91B004BD63F /* Foundation.framework in Frameworks */,
 				F30838621F22B913004BD63F /* CoreGraphics.framework in Frameworks */,
 				F30838601F22B909004BD63F /* UIKit.framework in Frameworks */,
+				F38555E4227A30C300A28971 /* nanopb.framework in Frameworks */,
 				EF7D909A8E7BD72B02544ED3 /* Pods_AlienEscape.framework in Frameworks */,
+				F38555E6227A30C300A28971 /* GoogleAppMeasurement.framework in Frameworks */,
+				F38555E5227A30C300A28971 /* GoogleUtilities.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1224,6 +1236,10 @@
 		F3F3A2101F22780F00D146AA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F38555E2227A30C300A28971 /* GoogleAppMeasurement.framework */,
+				F38555E3227A30C300A28971 /* GoogleMobileAds.framework */,
+				F38555E1227A30C300A28971 /* GoogleUtilities.framework */,
+				F38555E0227A30C300A28971 /* nanopb.framework */,
 				F30838671F22B92D004BD63F /* GameplayKit.framework */,
 				F30838631F22B91B004BD63F /* Foundation.framework */,
 				F30838611F22B913004BD63F /* CoreGraphics.framework */,
@@ -1299,7 +1315,6 @@
 				F3165B5C1F06C8D200A7BD96 /* Frameworks */,
 				F3165B5D1F06C8D200A7BD96 /* Resources */,
 				FF0ABBC705CD67487D0DA4AE /* [CP] Embed Pods Frameworks */,
-				89EB42E48B0C2A9C113C44A9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1338,6 +1353,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -1732,21 +1748,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		89EB42E48B0C2A9C113C44A9 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AlienEscape/Pods-AlienEscape-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FF0ABBC705CD67487D0DA4AE /* [CP] Embed Pods Frameworks */ = {

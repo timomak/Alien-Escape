@@ -6,6 +6,8 @@
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>Alieny</string>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-6454574712655895~3494753427</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

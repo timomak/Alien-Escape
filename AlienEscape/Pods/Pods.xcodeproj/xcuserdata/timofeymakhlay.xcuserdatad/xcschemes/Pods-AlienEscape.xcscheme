@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BAC0B230EA7895E3FD77926DF69C957B"
+               BlueprintIdentifier = "124D4F8755817E0AEB2963DA49C50CA5"
                BuildableName = "Pods_AlienEscape.framework"
                BlueprintName = "Pods-AlienEscape"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -26,7 +26,6 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
@@ -37,7 +36,6 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      language = ""
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
@@ -47,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BAC0B230EA7895E3FD77926DF69C957B"
+            BlueprintIdentifier = "124D4F8755817E0AEB2963DA49C50CA5"
             BuildableName = "Pods_AlienEscape.framework"
             BlueprintName = "Pods-AlienEscape"
             ReferencedContainer = "container:Pods.xcodeproj">

@@ -234,7 +234,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         */
         print("\n---------- SOMETHING AD ----------/n")
         if watchedAdGiveLives == true {
-            
+            print("\n---------- Getting $ AD ----------/n")
             // Pulls the number of lifes the player has left and adds 30 to it. Saves it again.
             numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes") + 30
             UserDefaults.standard.set(numberOfLives, forKey: "numberOfLifes")
