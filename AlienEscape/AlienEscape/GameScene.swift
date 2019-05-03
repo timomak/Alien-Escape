@@ -551,7 +551,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         
         // Open the in game pause menu.
         inGameMenu.selectedHandler = {[unowned self] in
-            if self.gameState == .playing {
+//            if self.gameState == .playing {
                 self.physicsWorld.speed = 0
                 self.menus.position.x = self.cameraNode.position.x
                 self.menus.position.y = self.cameraNode.position.y - 25
@@ -560,9 +560,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                 self.nextLevelButton.position.y -= 200
                 
                 
-                self.inGameMenu.isHidden = true
+//                self.inGameMenu.isHidden = true
                 self.gameState = .paused
-            }
+//            }
         }
         
         // Resume the game after it was paused.
@@ -575,7 +575,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             self.menus.position.y = self.cameraNode.position.y - 700
             
             self.gameState = .playing
-            self.inGameMenu.isHidden = false
+//            self.inGameMenu.isHidden = false
         }
         setupSlingshot()
     }
@@ -1185,21 +1185,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         starTwo.alpha = 0
         starThree.alpha = 0
         
-        // Move the GUI to the middle of the screen.
+        // Center menus with the camera
         menus.position.x = cameraNode.position.x
         
         // Animations for the menu.
         let moveMenu = SKAction.move(to: CGPoint(x: menus.position.x, y: 180 ), duration: 1)
         let moveDelay = SKAction.wait(forDuration: 0.5)
         let menuSequence = SKAction.sequence([moveDelay,moveMenu])
-
+        
+        menus.isPaused = false
+        
         menus.run(menuSequence)
+//        menus.position.y = 180
         pauseMenu.position.y = -200
         resumeButton.position.y = -200
         nextLevelButton.position.y = -200
 
         // Pause button.
-        inGameMenu.isHidden = true
+//        inGameMenu.isHidden = true
         
     }
     
@@ -1246,6 +1249,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         let moveDelay = SKAction.wait(forDuration: 0.5)
         let menuSequence = SKAction.sequence([moveDelay,moveMenu])
         
+        menus.isPaused = false
+        
         menus.run(menuSequence)
         pauseMenu.position.y = -200
         resumeButton.position.y = -200
@@ -1253,7 +1258,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         
         var stars = 0
         
-        inGameMenu.isHidden = true
+//        inGameMenu.isHidden = true
         
         // Check the score depending on how much the screen has moved.
         if background.position.y > -1000 {
