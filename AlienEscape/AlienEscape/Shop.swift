@@ -190,37 +190,39 @@ class Shop: SKScene {
         }
         
         leftArrow.selectedHandler = {
-            if cameraNode3.position.x != 285 {
+            print("camera position:", cameraNode3.position.x)
+            if cameraNode3.position.x != 345 {
                 cameraNode3.position.x -= 600
             } else {
-                cameraNode3.position.x = 2085
+                cameraNode3.position.x = 2145
             }
         }
         
         rightArrow.selectedHandler = {
-            if cameraNode3.position.x != 2085 {
+            print("camera position:", cameraNode3.position.x)
+            if cameraNode3.position.x != 2145 {
                 cameraNode3.position.x += 600
             } else {
-                cameraNode3.position.x = 285
+                cameraNode3.position.x = 345
             }
         }
     }
     
     @objc func swipedLeft() {
         print("Left")
-        if cameraNode3.position.x != 285 {
+        if cameraNode3.position.x != 345 {
             cameraNode3.position.x -= 600
         } else {
-            cameraNode3.position.x = 2085
+            cameraNode3.position.x = 2145
         }
     }
     
     @objc func swipedRight() {
         print("Right")
-        if cameraNode3.position.x != 2085 {
+        if cameraNode3.position.x != 2145 {
             cameraNode3.position.x += 600
         } else {
-            cameraNode3.position.x = 285
+            cameraNode3.position.x = 345
         }
     }
     
