@@ -642,8 +642,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
 //        return retval
 //    }
     
-    // Pan to move portal.
-    func panForTranslation(_ translation : CGPoint) {
+    /// Pan to move portal.
+    func panForPortalTranslation(_ translation : CGPoint) {
         if gameState == .playing {
             if currentMovingPortal == portal1 {
                 let position = portal1.position
@@ -702,8 +702,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             }
             // If projectile hasn't been dragged but touches moved. Means they might be trying to move the camera or portal or (lost vortex)
             else {
-                // MARK: Code to move the camera on X-Axis
+                // MARK: Code to move the camera on X-Axis by panning
                 if levelWithMovableCameraInXAxis.contains(UserDefaults.standard.integer(forKey: "currentLevel")) && gameState == .playing && released == false {
+                    // Calculates the distance between the start pan point and the current. Will Move camera by that difference as you pan.
                     let touch = touches.first
                     let location = touch?.location(in: self)
                     let previousLocation = touch?.previousLocation(in: self)
@@ -716,32 +717,46 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                     camera?.position.x += ((location?.x)! - (previousLocation?.x)!) * -1
                     camera?.position.y += ((location?.y)! - (previousLocation?.y)!) * -1
                 }
-                
                 if levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")){
                     let touch = touches.first!
                     let positionInScene = touch.location(in: self)
                     let previousPosition = touch.previousLocation(in: self)
                     let translation = CGPoint(x: positionInScene.x - previousPosition.x, y: positionInScene.y - previousPosition.y)
                     
-                    panForTranslation(translation)
+                    panForPortalTranslation(translation)
                 }
             }
         }
     }
-    /// Function that
+    
+    /// Updates the indicator labels and prediction line on screen depending on projectile drag.
     func updateTheIndicators(touch : UITouch, touchLocation : CGPoint) {
         let distance = fingerDistanceFromProjectileRestPosition(projectileRestPosition: touchLocation, fingerPosition: touchStartingPoint)
-        // TODO: Highpotenuese calculation for power
+        // Hypotenuse calculation for power
+        // TODO: Figure out why you used "75" and "100" as units here.
         var power = ( distance / 75 ) * 100
         if power > 100 {
             power = 100
         }
+        // Calculate change in vectors when dragging
         let vectorX = touchStartingPoint.x - touchCurrentPoint.x
         let vectorY = touchStartingPoint.y - touchCurrentPoint.y
         
+        // Calculating hypotenuse by using tan(opposite / adjacent) or tan( y / x ) = h
         let angleRad = atan(vectorY / vectorX)
+        
+        // Swift works with radians, but I like degrees, so I convert them
         let angleDeg = radToDeg(Double(angleRad))
+        
+        // I know this looks weird, but angle will change, while angleDeg will need to stay the same.
         var angle = angleDeg
+        
+        /*
+            Since I'm using triangles to calculate power, but the projectile can shoot anywhere in a circle.
+         
+            A triangle logic, can only work if the player is shooting in a degree between 0º-90º
+            If the aims above 90º but not more than 180º, I will need to flip the tringle horizontally so that the height (y) of the triangle is opposite and the lenght (x) is adjacent for the formula to work.
+        */
         var reverseAngle = angleDeg
         if touchCurrentPoint.x > touchStartingPoint.x {
             angle = angle + 180
@@ -754,33 +769,57 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             }
         }
         
+        // If the projectile has been dragged, pretty much.
         if angle > -1 {
+            // It will update the labels.
             let intAngle: Int = Int(angle)
             powerLabel.text = "\(String(Int(power)))%"
             angleLabel.text = "\(String(describing: intAngle))°"
         }
         
+        // Calculates the initial velocity at which the projectile is going to be released.
+        // (meters / second)
         let initialVelocity = sqrt(pow((vectorX * Settings.Metrics.forceMultiplier) / 0.5, 2) + pow((vectorY * Settings.Metrics.forceMultiplier) / 0.5, 2))
+        
+        // TODO: Check if there's a need to convert insead of using angleRad variable.
         let angleRadians = angle * CGFloat(M_PI) / 180
         
         // MARK: Money Making code
-        func projectilePredictionPath (initialPosition: CGPoint, time: CGFloat, angle1: CGFloat /*initial Velocity and Gravity*/) -> CGPoint {
-            let YpointPosition = initialPosition.y + initialVelocity * time * sin(angle1) - 4.9 * pow(time,2)
+        /// Checkout the Description at: https://github.com/timomak/Swift-Projectile-Prediction-Trajectory
+        /**
+         This code will return the poistion of the projectile at any moment you want after release.
+         Not factoring in if anything gets into the projectile's way.
+         */
+        /// - parameter initialPosition: (meters) Initial Position of the projectile.
+        /// - parameter time: (seconds) How long from the moment it was released.
+        /// - parameter angle1: (Degrees) The angle at which the projectile was released.
+        /// - parameter gravity: (meters/seconds) The current gravity within the game.
+        /// - parameter initialVelocity: (meters / seconds) Initial Velocity at which the projectile was released.
+        func projectilePredictionPath (initialPosition: CGPoint, time: CGFloat, angle1: CGFloat, gravity: CGFloat = 9.8, initialVelocity: CGFloat) -> CGPoint {
+            // Find the Y coordiate position.
+            let YpointPosition = initialPosition.y + initialVelocity * time * sin(angle1) - (0.5 * gravity) * pow(time,2)
+            // Find the X coordinate position.
             let XpointPosition = initialPosition.x + initialVelocity * time * cos(angle1)
+            // Creates a (x, y) coordinate point.
             let predictionPoint = CGPoint(x: XpointPosition, y: YpointPosition)
+            // Returns the coordinate (x, y) at a point in time.
             return predictionPoint
-            
         }
+        // Unhide the projectiles
         projectilePredictionPoint1.isHidden = false
         projectilePredictionPoint2.isHidden = false
         projectilePredictionPoint3.isHidden = false
         projectilePredictionPoint4.isHidden = false
         projectilePredictionPoint5.isHidden = false
-        projectilePredictionPoint1.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 0.3, angle1: angleRadians)
-        projectilePredictionPoint2.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 0.6, angle1: angleRadians)
-        projectilePredictionPoint3.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 0.9, angle1: angleRadians)
-        projectilePredictionPoint4.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 1.2, angle1: angleRadians)
-        projectilePredictionPoint5.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 1.5, angle1: angleRadians)
+        
+        // Place the projectiles 0.3 seconds apart from each other.
+        projectilePredictionPoint1.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 0.3, angle1: angleRadians, initialVelocity: initialVelocity)
+        projectilePredictionPoint2.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 0.6, angle1: angleRadians, initialVelocity: initialVelocity)
+        projectilePredictionPoint3.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 0.9, angle1: angleRadians, initialVelocity: initialVelocity)
+        projectilePredictionPoint4.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 1.2, angle1: angleRadians, initialVelocity: initialVelocity)
+        projectilePredictionPoint5.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 1.5, angle1: angleRadians, initialVelocity: initialVelocity)
+        
+        // TODO: Check how this code affect the game.
         if distance < Settings.Metrics.rLimit  {
             touchCurrentPoint = touchLocation
         } else {
@@ -792,6 +831,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         }
     }
     
+    // What will happen once the projectile has been released.
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if gameState == .playing {
             if projectileIsDragged {
