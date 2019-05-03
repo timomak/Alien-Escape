@@ -1150,14 +1150,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     /// Function to run the game over stuff.
     /**
      This funciton will:
-     * 50% chance to start a fullscreen AD
+     * 33% chance to start a fullscreen AD
      * Update Camera position
      * Update life count
      * Bring up the menu
      */
     func GameOver() {
         // TODO: Check if this code is breaking the game rn
-        // I set a 50% chance of getting an ad when you lose.
+        // I set a 33% chance of getting an ad when you lose.
         let possibilityToGetAd = arc4random_uniform(2)
         print("Possibility to get ad: \(possibilityToGetAd)")
         if possibilityToGetAd == 1 {
