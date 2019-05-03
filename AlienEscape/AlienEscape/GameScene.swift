@@ -6,10 +6,15 @@
 //  Copyright © 2017 timofey makhlay. All rights reserved.
 //
 
-// print(#file, #function, #line)
 import SpriteKit
 import GoogleMobileAds
 import AudioToolbox
+
+/* LARGE TODO LIST:
+     * Fix gamestate. Doesn't let menu open once game is not .playing
+     * Fix Ads. They sometimes don't open properly
+     * Fix Camera borders.
+*/
 
 // Sets the outer bouderies of the level (it will stop the camera from looking outside of the scope).
 func clamp<T: Comparable>(value: T, lower: T, upper: T) -> T {
@@ -21,6 +26,31 @@ extension CGVector {
     // Calculate lenght using pythagorian theory
     public func length() -> CGFloat {
         return CGFloat(sqrt(dx*dx + dy*dy))
+    }
+}
+
+/// Slingshot settingss
+/**
+ Will set parameters for the Slingshot such as:
+    * How big the projectile radius is (its invisible size)
+    * Where the rest position of the projectile is on screen.
+    * Threshold (to check how far the minumum drag or pull of the projectile is)
+    * Force multiplier (how fast the projectile is gonna be launched.)
+    * Not sure what the rLimit is :)
+ 
+ And it will set the gravity indiviadually for the projectile so it's unaffected by the physics world.
+*/
+struct Settings {
+    struct Metrics {
+        static let projectileRadius = CGFloat(16)
+        static let projectileRestPosition = CGPoint(x: -100, y: 40)
+        static let projectileTouchThreshold = CGFloat(30)
+        static let projectileSnapLimit = CGFloat(10)
+        static let forceMultiplier = CGFloat(0.7)
+        static let rLimit = CGFloat(80)
+    }
+    struct Game {
+        static let gravity = CGVector(dx: 0,dy: -9.8)
     }
 }
 
@@ -328,6 +358,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         GUI.physicsBody = nil
         self.addChild(GUI!)
         
+        // Init
         menus = GUI.childNode(withName: "//parentGUI") as? guiCode
         winMenu = menus.winMenu_guiCode!
         starOne = menus.starOne_guiCode!
@@ -431,7 +462,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         // Button to go to the main Menu
         mainMenuButton.selectedHandler = {
             /* 1) Grab reference to our SpriteKit view */
-            guard let skView = self.view as SKView! else {
+            guard let skView = self.view else {
                 print("Could not get Skview")
                 return
             }
@@ -468,7 +499,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         // Go to Level select Button.
         levelSelectButton.selectedHandler = {
             /* 1) Grab reference to our SpriteKit view */
-            guard let skView = self.view as SKView! else {
+            guard let skView = self.view else {
                 print("Could not get Skview")
                 return
             }
@@ -631,7 +662,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         }
     }
     
-    //    MARK: PROBABLY unused function
+    // MARK: PROBABLY unused function
 //    func boundLayerPos(_ aNewPosition : CGPoint) -> CGPoint {
 //        let winSize = self.size
 //        var retval = aNewPosition
@@ -782,7 +813,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         let initialVelocity = sqrt(pow((vectorX * Settings.Metrics.forceMultiplier) / 0.5, 2) + pow((vectorY * Settings.Metrics.forceMultiplier) / 0.5, 2))
         
         // TODO: Check if there's a need to convert insead of using angleRad variable.
-        let angleRadians = angle * CGFloat(M_PI) / 180
+        let angleRadians = angle * CGFloat(Double.pi) / 180
         
         // MARK: Money Making code
         /// Checkout the Description at: https://github.com/timomak/Swift-Projectile-Prediction-Trajectory
@@ -835,40 +866,61 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if gameState == .playing {
             if projectileIsDragged {
+                // Setting the camera to follow the projectile once the ball is released.
                 cameraTarget = projectile
+                
+                // Making sure the user won't be able to drag the projectile again after release
                 projectileIsDragged = false
+                
+                // Calculates the distace between the drag start point and end point.
                 let distance = fingerDistanceFromProjectileRestPosition(projectileRestPosition: touchCurrentPoint, fingerPosition: touchStartingPoint)
+                
+                // If that distance is large enough, it be released
                 if distance > Settings.Metrics.projectileSnapLimit {
+                    // Getting height and lenght vectors
                     let vectorX = touchStartingPoint.x - touchCurrentPoint.x
                     let vectorY = touchStartingPoint.y - touchCurrentPoint.y
+                    
+                    // Giving the projectile a physical body to be affected by the in game physics.
                     projectile.physicsBody = SKPhysicsBody(circleOfRadius: 15)
                     projectile.physicsBody?.categoryBitMask = 1
                     projectile.physicsBody?.contactTestBitMask = 6
                     projectile.physicsBody?.collisionBitMask = 9
                     physicsBody?.friction = 0.6
                     physicsBody?.mass = 0.5
+                    
+                    // Apply a force to launch the projectile.
                     projectile.physicsBody?.applyImpulse(
                         CGVector(
                             dx: vectorX * Settings.Metrics.forceMultiplier,
                             dy: vectorY * Settings.Metrics.forceMultiplier
                         )
                     )
+                    
+                    // Start the timer
                     trajectoryTimeOut = 0
+                    
+                    // Makes sure to record to avoid bugs with all these conditionals.
                     released = true
+                    
+                    // Play projectile release sound
                     let sound = SKAction.playSoundFileNamed("BallReleasedSound", waitForCompletion: false)
                     self.run(sound)
+                    
+                    // If it has portals, the game will be slightly in slow-motion
                     if levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
                         self.physicsWorld.speed = 0.37
                     } else {
                         self.physicsWorld.speed = 0.5
                     }
                     
-                    // MARK: Dragging Portals made visible
+                    // Dragging Portals made visible
                     if  levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
                         bluePortalDrag.isHidden = false
                         yellowPortalDrag.isHidden = false
                     }
                 } else {
+                    // If the drag wasn't successful, the projectile doesn't get launched.
                     projectile.physicsBody = nil
                     projectile.position = Settings.Metrics.projectileRestPosition
                 }
@@ -877,24 +929,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
-        /* Physics contact delegate implementation */
-        /* Get references to the bodies involved in the collision */
+        // Physics contact delegate implementation.
+        // Get references to the bodies involved in the collision.
         let contactA:SKPhysicsBody = contact.bodyA
         let contactB:SKPhysicsBody = contact.bodyB
-        /* Get references to the physics body parent SKSpriteNode */
+        
+        // Get references to the physics body parent SKSpriteNode.
         let nodeA = contactA.node as! SKSpriteNode
         let nodeB = contactB.node as! SKSpriteNode
-        /* Check if either physics bodies was a seal */
+        
+        // Check if the node collision is with a portal.
         if contactA.categoryBitMask == 4 || contactB.categoryBitMask == 4{
             if contactA.categoryBitMask != 4{
+                // If the contact was not the alien, it was probably the ball making contact with a portal. From portal1 to portal2.
                 teleportBallA(node: nodeA)
+                
                 if levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+                    /*
+                     If the level had draggable portals and they weren't place, it will be gameover.
+                    */
                     if yellowPortalHasBeenPlaced == false {
                         gameState = .gameOver
                     }
                 }
             }
-            if contactB.categoryBitMask != 4{
+            if contactB.categoryBitMask != 4 {
+                // TODO: Clean this up. Repetetive code.
+                // If the other physics body was a portal, do the same thing as above.
                 teleportBallA(node: nodeB)
                 if levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
                     if yellowPortalHasBeenPlaced == false {
@@ -903,6 +964,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                 }
             }
         }
+        // From portal2 to portal1.
         if contactA.categoryBitMask == 16 || contactB.categoryBitMask == 16{
             if contactA.categoryBitMask != 16{
                 teleportBallB(node: nodeA)
@@ -911,9 +973,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                 teleportBallB(node: nodeB)
             }
         }
+        // If the game state is either .playing or .paused, check if the ball made contact with the ground.
         if gameState != .gameOver && gameState != .won && released == true{
             if contactA.categoryBitMask == 8 || contactB.categoryBitMask == 8{
-                print("there was contact with the ground")
+                // The ball made contact with the ground
                 if contactA.categoryBitMask != 8{
                     removeBall(node: nodeA)
                 }
@@ -924,17 +987,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             }
         }
         
+        // Check if either physics bodies was the alien. The categoty bitmask of the alien is 4.
         if contactA.categoryBitMask == 0 || contactB.categoryBitMask == 0 {
             if contactA.categoryBitMask == 0{
+                
+                // Animate Alien Explosion and remove alien.
                 animateExplosion(node: nodeA)
                 alien.removeFromParent()
+                
+                // MARK: Update winning gamestate.
                 if winCount == 1 && gameState != .gameOver{
                     gameState = .won
                     winCount += 1
                 }
                 
             }
-            if contactB.categoryBitMask == 0{
+            if contactB.categoryBitMask == 0 {
+                // TODO: Clean up repetetive code.
                 animateExplosion(node: nodeB)
                 alien.removeFromParent()
                 if winCount == 1 && gameState != .gameOver{
@@ -944,6 +1013,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                 
             }
         }
+        
+        // TODO: Check if this code is needed. The code above can also just delete the alien.
         if contactA.categoryBitMask == 2 && contactB.categoryBitMask == 1 {
             /* Was the collision more than a gentle nudge? */
             
@@ -966,6 +1037,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         }
         
     }
+    
+    /// Teleport ball from portalA to portalB
     func teleportBallB(node: SKNode) {
         let sound = SKAction.playSoundFileNamed("Portal_Sound", waitForCompletion: false)
         self.run(sound)
@@ -976,6 +1049,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             cameraNode.position.y = 123.14
         }
     }
+    
+    /// Teleport ball from portal1 to portal2
     func teleportBallA(node: SKNode) {
         let sound = SKAction.playSoundFileNamed("Portal_Sound", waitForCompletion: false)
         self.run(sound)
@@ -987,6 +1062,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         }
     }
     
+    /// Animate alien explosion death
     func animateExplosion(node: SKNode) {
         node.run(SKAction(named: "Boom")!)
         // MARK: Sound Effect
@@ -996,6 +1072,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         
     }
     
+    /// Remove the ball from the game once it has hit the alien.
     func removeBall(node: SKNode) {
         projectile.physicsBody?.angularDamping = 1
         projectile.physicsBody?.allowsRotation = false
@@ -1009,27 +1086,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         run(removingBall)
     }
     
-    // MARK: Remove Alien
+    /// Remove Alien
     func removeAlien(node: SKNode) {
         
-        /* Create our hero death action */
+        /* Create our alien death action */
         let alienDeath = SKAction.run({
-            /* Remove seal node from scene */
+            /* Remove alien node from scene */
             node.removeFromParent()
             
         })
+        
+        // TODO: Check if this code is necessary or repetetive.
+        // MARK: Change game state to won
         if winCount == 1 && gameState != .gameOver{
             gameState = .won
             winCount += 1
         }
+        // Start the animation.
         self.run(alienDeath)
     }
     
-    // MARK: SlingShot
+    /// Slingshot initial force or velocity calculation
     func fingerDistanceFromProjectileRestPosition(projectileRestPosition: CGPoint, fingerPosition: CGPoint) -> CGFloat {
         return sqrt(pow(projectileRestPosition.x - fingerPosition.x,2) + pow(projectileRestPosition.y - fingerPosition.y,2))
     }
     
+    /// Return the projectile to its initial position (i think).
     func projectilePositionForFingerPosition(fingerPosition: CGPoint, projectileRestPosition:CGPoint, rLimit:CGFloat) -> CGPoint {
         let θ = atan2(fingerPosition.x - projectileRestPosition.x, fingerPosition.y - projectileRestPosition.y)
         let cX = sin(θ) * rLimit
@@ -1037,21 +1119,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         return CGPoint(x: cX + projectileRestPosition.x, y: cY + projectileRestPosition.y)
     }
     
-    struct Settings {
-        struct Metrics {
-            static let projectileRadius = CGFloat(16)
-            static let projectileRestPosition = CGPoint(x: -100, y: 40)
-            static let projectileTouchThreshold = CGFloat(30)
-            static let projectileSnapLimit = CGFloat(10)
-            static let forceMultiplier = CGFloat(0.7)
-            static let rLimit = CGFloat(80)
-        }
-        struct Game {
-            static let gravity = CGVector(dx: 0,dy: -9.8)
-        }
-    }
-    
+    /// Code that will put the slingshot image and projectile in place.
     func setupSlingshot() {
+        /*
+         The Slingshot image is split into 2. The trunk and left arm, and the right arm.
+         Hasn't been useful yet, but it will make it easier when updating the sprites in the future.
+        */
         let slingshot_1 = SKSpriteNode(imageNamed: "slingshot_1")
         slingshot_1.position = CGPoint(x: -100, y: -10)
         addChild(slingshot_1)
@@ -1066,33 +1139,56 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         addChild(slingshot_2)
         slingshot_2.isHidden = false
     }
-    func delayWithSeconds(_ seconds: Double, completion: @escaping () -> ()) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
-            completion()
-        }
-    }
     
+    // MARK: Currently unused function. For emitters on stars later.
+//    func delayWithSeconds(_ seconds: Double, completion: @escaping () -> ()) {
+//        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+//            completion()
+//        }
+//    }
+    
+    /// Function to run the game over stuff.
+    /**
+     This funciton will:
+     * 50% chance to start a fullscreen AD
+     * Update Camera position
+     * Update life count
+     * Bring up the menu
+     */
     func GameOver() {
+        // TODO: Check if this code is breaking the game rn
+        // I set a 50% chance of getting an ad when you lose.
         let possibilityToGetAd = arc4random_uniform(2)
         print("Possibility to get ad: \(possibilityToGetAd)")
         if possibilityToGetAd == 1 {
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadAndShow"), object: nil)
         }
+        
+        // Remove the projectile from being the camera's target.
         cameraTarget = nil
+        // Rest camera position to center.
         cameraNode.position.y = 123.14
         print("game Over is called")
+        
+        // Update the life counter in memory.
         let numberOfLifes = UserDefaults.standard.integer(forKey: "numberOfLifes") - 1
         UserDefaults.standard.set(numberOfLifes, forKey: "numberOfLifes")
         UserDefaults.standard.synchronize()
+        
+        // TODO: Check what this does.
         if numberOfLifes == 0 {
             watchedAdGiveLives = true
         }
+        
+        // When the GUI is pulled up, show 0 stars.
         starOne.alpha = 0
         starTwo.alpha = 0
         starThree.alpha = 0
         
+        // Move the GUI to the middle of the screen.
         menus.position.x = cameraNode.position.x
         
+        // Animations for the menu.
         let moveMenu = SKAction.move(to: CGPoint(x: menus.position.x, y: 180 ), duration: 1)
         let moveDelay = SKAction.wait(forDuration: 0.5)
         let menuSequence = SKAction.sequence([moveDelay,moveMenu])
@@ -1102,22 +1198,38 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         resumeButton.position.y = -200
         nextLevelButton.position.y = -200
 
+        // Pause button.
         inGameMenu.isHidden = true
         
     }
     
+    // MARK: Code for future star emitter implemenation.
 //    func starEmitterNode(node: SKNode) {
 //
 //        node.addChild(starEmitter)
 //
 //    }
+    
+    /// Function that will run the Winning stuff.
+    /**
+     This function will:
+     * Reset camera position.
+     * Run Menu animations to bring them in-view
+     * Give a number of starts correlating to the duration of the game.
+     * Update the checkpoint if it's the first time you surpass the level.
+     * Save the number of stars received on the current level.
+    */
     func win() {
+        // Reset Camera
         cameraTarget = nil
         cameraNode.position.y = 123.14
+        
+        // Hide stars for later animation
         starOne.alpha = 0
         starTwo.alpha = 0
         starThree.alpha = 0
         
+        // Bring the menus in view.
         menus.position.x = cameraNode.position.x
         
         // MARK: Star emitter code
@@ -1129,6 +1241,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
 //        let starActionSequence = SKAction.sequence([moveDelay5,moveMenu5])
 //        starEmitter.run(starActionSequence)
         
+        // Animations
         let moveMenu = SKAction.move(to: CGPoint(x: menus.position.x, y: 180 ), duration: 1)
         let moveDelay = SKAction.wait(forDuration: 0.5)
         let menuSequence = SKAction.sequence([moveDelay,moveMenu])
@@ -1142,6 +1255,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         
         inGameMenu.isHidden = true
         
+        // Check the score depending on how much the screen has moved.
         if background.position.y > -1000 {
             stars = 1
             if background.position.y > -232{
@@ -1152,7 +1266,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             }
         }
         
-        
+        // Animate stars
         print("The number of stars in level.\(currentLevel) is: \(stars)")
         let fadeStar = SKAction.fadeAlpha(by: 1, duration: 0.6)
         let fadeDelay = SKAction.wait(forDuration: 1.5)
@@ -1171,6 +1285,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         let starEmitter2 = SKReferenceNode (url: URL (fileURLWithPath: starEmitterPath!))
         let starEmitter3 = SKReferenceNode (url: URL (fileURLWithPath: starEmitterPath!))
         
+        // MARK: Also for future implementaiton of emitters on stars.
         if stars == 1 {
             starOne.run(starSequence)
 //            delayWithSeconds(3.3) {
@@ -1209,6 +1324,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             })
         }
         
+        // TODO: Check what this is for.
         if UserDefaults.standard.integer(forKey: "checkpoint") < 2 {
             lastLevel = 2
             UserDefaults.standard.set(lastLevel, forKey: "checkpoint")
@@ -1222,11 +1338,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                 print("At won checkpoint is: ",UserDefaults.standard.integer(forKey: "checkpoint"))
             }
         }
-        
+        // TODO: Figure out how this part works
         let name = String(currentLevel)
         if stars > UserDefaults.standard.integer(forKey: name){
             levelScore[currentLevel] = stars
-            UserDefaults.standard.set(levelScore[currentLevel]!, forKey: name)
+            UserDefaults.standard.set(levelScore[currentLevel], forKey: name)
             UserDefaults.standard.synchronize()
         }
     }
