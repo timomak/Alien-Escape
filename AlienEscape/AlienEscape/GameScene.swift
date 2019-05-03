@@ -105,7 +105,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     // Projectile Class
     var projectile: spear!
     
-    //Touch dragging vars
+    /// Touch dragging variables
     var projectileIsDragged = false
     var touchCurrentPoint: CGPoint!
     var touchStartingPoint: CGPoint!
@@ -285,22 +285,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     }
     
     override func didMove(to view: SKView) {
+        /*
+            This is the first / main function that runs and puts everything in view, in place.
+        */
+        
+        // Sets the current level to what was previously saved.
         currentLevel = UserDefaults.standard.integer(forKey: "currentLevel")
+        
+        // Alien Sprite
         alien = childNode(withName: "//alien") as? SKSpriteNode
         
+        // If the current alien is Robot, it will unfortunately have a slighly different size.
         if UserDefaults.standard.object(forKey: "currentAlien") as! String ==  "Robot_Alien" {
             alien.size = CGSize(width: 255, height: 430)
         }
         
+        // Starts animation depending on which skin is currenly selected.
         alien.run(SKAction(named: UserDefaults.standard.object(forKey: "currentAlien") as! String)!)
+        
+        // Connects what is on the level to variable through their names.
         inGameMenu = childNode(withName: "//inGameMenu") as? MSButtonNode
         cameraNode = childNode(withName: "cameraNode") as? SKCameraNode
         
+        // Connecting portals
         portal1 = childNode(withName: "portal_1") as? SKSpriteNode
         portal2 = childNode(withName: "portal_2") as? SKSpriteNode
         
         
         // MARK: SK Reference link
+        // Connecting similarly to how you would add a XIB file to a storyboard.
         labelReferenceNode = SKReferenceNode(fileNamed: "Indicator")
         labelReferenceNode.physicsBody = nil
         self.addChild(labelReferenceNode!)
@@ -336,8 +349,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         menus.position = CGPoint(x: cameraNode.position.x, y: -446.994)
         winMenu.childNode(withName: "cameraNode")
  
-        // MARK: Ad popup
+        // MARK: AD by ADMOB: https://developers.google.com/admob/ios/rewarded-video
         GADRewardBasedVideoAd.sharedInstance().delegate = (self as GADRewardBasedVideoAdDelegate)
+        
+        // Giving a View to display the ad
+        // TODO: Figure out the differences between these.
         adPopUp = SKReferenceNode(fileNamed: "adPage")
         adPopUp.physicsBody = nil
         self.addChild(adPopUp!)
@@ -373,6 +389,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         lifeCounter = childNode(withName: "//lifeCounter") as? SKLabelNode
         numberOfLives = UserDefaults.standard.integer(forKey: "numberOfLifes")
         
+        // MARK: Loading add if no lifes to begin with.
+        // As the level loads, if the user already has less than or equal to 0 lives, it will prompt to watch the add.
         if UserDefaults.standard.integer(forKey: "numberOfLifes") <= 0 {
             adScreen.zPosition = 10
             cameraNode.childNode(withName: "life_counter")?.zPosition = 11
@@ -380,12 +398,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             adScreen.run(SKAction.moveTo(y: cameraNode.position.y + 37, duration: 1))
             gameState = .paused
         }
+        
+        // Updating life counter label
         lifeCounter.text = String(numberOfLives)
         
+        // Turning on Physics and checking for contact between sprites with a physical body.
         self.physicsWorld.contactDelegate = self
         
+        // Camera itself
         self.camera = cameraNode
         
+        // Adding the original projectile prediction line dots to hidden until the projectile is moved.
         projectilePredictionPoint1 = SKSpriteNode(imageNamed: "Circle_small")
         addChild(projectilePredictionPoint1)
         projectilePredictionPoint2 = SKSpriteNode(imageNamed: "Circle_small")
@@ -403,6 +426,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         projectilePredictionPoint4.isHidden = true
         projectilePredictionPoint5.isHidden = true
         
+        // Adding functions to buttons.
+        
+        // Button to go to the main Menu
         mainMenuButton.selectedHandler = {
             /* 1) Grab reference to our SpriteKit view */
             guard let skView = self.view as SKView! else {
@@ -429,6 +455,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             
         }
         
+        // Button to start watching the add.
         watchAd.selectedHandler = {
             print("Ad button pressed")
             print("reward video is: ", GADRewardBasedVideoAd.sharedInstance().isReady)
@@ -438,6 +465,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
 //            }
         }
         
+        // Go to Level select Button.
         levelSelectButton.selectedHandler = {
             /* 1) Grab reference to our SpriteKit view */
             guard let skView = self.view as SKView! else {
@@ -463,6 +491,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             skView.presentScene(scene)
         }
         
+        // Restart the level.
         resetButton.selectedHandler = {
             guard let scene = GameScene.level(self.currentLevel) else {
                 print("Level 1 is missing?")
@@ -473,6 +502,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             view.presentScene(scene)
         }
         
+        // Go to the next Level.
         nextLevelButton.selectedHandler = {
             self.lastLevel = UserDefaults.standard.integer(forKey: "checkpoint") + 1
             UserDefaults.standard.set(self.currentLevel + 1, forKey: "currentLevel")
@@ -488,6 +518,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             view.presentScene(scene)
         }
         
+        // Open the in game pause menu.
         inGameMenu.selectedHandler = {[unowned self] in
             if self.gameState == .playing {
                 self.physicsWorld.speed = 0
@@ -502,6 +533,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                 self.gameState = .paused
             }
         }
+        
+        // Resume the game after it was paused.
         resumeButton.selectedHandler = {
             self.physicsWorld.speed = 0.5
             
@@ -517,7 +550,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     }
     
     override func update(_ currentTime: CFTimeInterval) {
-        /* Called before each frame is rendered */
+        /*
+            Called before each frame is rendered
+        */
+        
+        // Give the camera a starting point
         func cameraToCenter() {
             let cameraReset = SKAction.move(to: CGPoint(x: 239, y:camera!.position.y), duration: 1.5)
             let cameraDelay = SKAction.wait(forDuration: 0.5)
@@ -533,6 +570,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         if levelWithMovableCameraInXAxis.contains(UserDefaults.standard.integer(forKey: "currentLevel")) || levelWithMovableCameraInYAxis.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
             cameraMove()
         }
+        
+        /*
+            Weird way I set the game over. It calls game over ones the background image has slid all the way down.
+        */
         if physicsWorld.speed == 1 {
             if background.position.y > -1000 && gameState == .playing{
                 background.position.y -= 5
@@ -548,17 +589,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                 gameState = .gameOver
             }
         }
+        
+        // Increases the timers.
         gameStart += fixedDelta
         timer += fixedDelta
     }
     
+    // Radians to degrees function. just because I like it more.
     func radToDeg(_ radian: Double) -> CGFloat {
         return CGFloat(radian * 180.0 / .pi)
     }
     
+    /// Function to check which portal is being touched.
+    /**
+     Steps:
+        * Sets the first touch location
+        * Checks if the node in that location is a portal
+        * if it is, it will set that portal to be draggable
+     */
+    /// - parameter touchLocation: Just the user's current touch location.
     func selectPortalForTouch(_ touchLocation : CGPoint) {
+        // TODO: Maybe update the code to return the current touched portal.
         let touchedNode = self.atPoint(touchLocation)
         if touchedNode is SKSpriteNode {
+            
+            // TODO: Check if conditional is needed.
             if levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
                 if touchedNode == bluePortalDrag || touchedNode == portal1{
                     portal1.position = touchLocation
@@ -575,15 +630,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             }
         }
     }
-    func boundLayerPos(_ aNewPosition : CGPoint) -> CGPoint {
-        let winSize = self.size
-        var retval = aNewPosition
-        retval.x = CGFloat(min(retval.x, 0))
-        retval.x = CGFloat(max(retval.x, -(background.size.width) + winSize.width))
-        retval.y = self.position.y
-        
-        return retval
-    }
+    
+    //    MARK: PROBABLY unused function
+//    func boundLayerPos(_ aNewPosition : CGPoint) -> CGPoint {
+//        let winSize = self.size
+//        var retval = aNewPosition
+//        retval.x = CGFloat(min(retval.x, 0))
+//        retval.x = CGFloat(max(retval.x, -(background.size.width) + winSize.width))
+//        retval.y = self.position.y
+//
+//        return retval
+//    }
+    
+    // Pan to move portal.
     func panForTranslation(_ translation : CGPoint) {
         if gameState == .playing {
             if currentMovingPortal == portal1 {
@@ -598,17 +657,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        // Making things draggable when touches begins on the node's location.
         // MARK: Draggable objects setup
         if gameState == .playing {
             if  levelWithDraggablePortals.contains(UserDefaults.standard.integer(forKey: "currentLevel")) {
+                // When touches begins on a portal, that portal will become selected to later be dragged.
                 let touch = touches.first!
                 let positionInScene = touch.location(in: self)
                 selectPortalForTouch(positionInScene)
             }
-        }
-        if gameState == .playing {
             if let touch = touches.first {
                 let touchLocation = touch.location(in: self)
+                // Checking if the projectile is being dragged.
                 if !projectileIsDragged && shouldStartDragging(touchLocation: touchLocation, threshold: Settings.Metrics.projectileTouchThreshold)  {
                     touchStartingPoint = touchLocation
                     touchCurrentPoint = touchLocation
@@ -620,82 +680,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         }
     }
     
+    /// Code that checks if the player has dragged the projectile far enough.
     func shouldStartDragging(touchLocation:CGPoint, threshold: CGFloat) -> Bool {
         let distance = fingerDistanceFromProjectileRestPosition(
             projectileRestPosition: Settings.Metrics.projectileRestPosition,
             fingerPosition: touchLocation
         )
+        // True if distance is big enougn. False otherwise.
         return distance < Settings.Metrics.projectileRadius + threshold
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        // TODO: Make this function more modular you stupid ass!
         if gameState == .playing {
             if projectileIsDragged {
                 if let touch = touches.first {
                     let touchLocation = touch.location(in: self)
-                    let distance = fingerDistanceFromProjectileRestPosition(projectileRestPosition: touchLocation, fingerPosition: touchStartingPoint)
-                    // TODO: Highpotenuese calculation for power
-                    var power = (distance/75) * 100
-                    if power > 100 {
-                        power = 100
-                    }
-                    let vectorX = touchStartingPoint.x - touchCurrentPoint.x
-                    let vectorY = touchStartingPoint.y - touchCurrentPoint.y
-                    
-                    let angleRad = atan(vectorY / vectorX)
-                    let angleDeg = radToDeg(Double(angleRad))
-                    var angle = angleDeg
-                    var reverseAngle = angleDeg
-                    if touchCurrentPoint.x > touchStartingPoint.x {
-                        angle = angle + 180
-                        if touchCurrentPoint.y < touchStartingPoint.y {
-                        } else if touchCurrentPoint.y > touchStartingPoint.y {
-                        }
-                    } else if touchCurrentPoint.x < touchStartingPoint.x {
-                        if touchCurrentPoint.y > touchStartingPoint.y {
-                            angle = angle + 360
-                        }
-                    }
-                    
-                    if angle > -1 {
-                        let intAngle: Int = Int(angle)
-                        powerLabel.text = "\(String(Int(power)))%"
-                        angleLabel.text = "\(String(describing: intAngle))°"
-                    }
-                    
-                    let initialVelocity = sqrt(pow((vectorX * Settings.Metrics.forceMultiplier) / 0.5, 2) + pow((vectorY * Settings.Metrics.forceMultiplier) / 0.5, 2))
-                    let angleRadians = angle * CGFloat(M_PI) / 180
-                    
-                    // MARK: Money Making code
-                    func projectilePredictionPath (initialPosition: CGPoint, time: CGFloat, angle1: CGFloat /*initial Velocity and Gravity*/) -> CGPoint {
-                        let YpointPosition = initialPosition.y + initialVelocity * time * sin(angle1) - 4.9 * pow(time,2)
-                        let XpointPosition = initialPosition.x + initialVelocity * time * cos(angle1)
-                        let predictionPoint = CGPoint(x: XpointPosition, y: YpointPosition)
-                        return predictionPoint
-                        
-                    }
-                    projectilePredictionPoint1.isHidden = false
-                    projectilePredictionPoint2.isHidden = false
-                    projectilePredictionPoint3.isHidden = false
-                    projectilePredictionPoint4.isHidden = false
-                    projectilePredictionPoint5.isHidden = false
-                    projectilePredictionPoint1.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 0.3, angle1: angleRadians)
-                    projectilePredictionPoint2.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 0.6, angle1: angleRadians)
-                    projectilePredictionPoint3.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 0.9, angle1: angleRadians)
-                    projectilePredictionPoint4.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 1.2, angle1: angleRadians)
-                    projectilePredictionPoint5.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 1.5, angle1: angleRadians)
-                    if distance < Settings.Metrics.rLimit  {
-                        touchCurrentPoint = touchLocation
-                    } else {
-                        touchCurrentPoint = projectilePositionForFingerPosition(
-                            fingerPosition: touchLocation,
-                            projectileRestPosition: touchStartingPoint,
-                            rLimit: Settings.Metrics.rLimit
-                        )
-                    }
+                    updateTheIndicators(touch: touch, touchLocation: touchLocation)
                 }
                 projectile.position = touchCurrentPoint
-            } else {
+            }
+            // If projectile hasn't been dragged but touches moved. Means they might be trying to move the camera or portal or (lost vortex)
+            else {
                 // MARK: Code to move the camera on X-Axis
                 if levelWithMovableCameraInXAxis.contains(UserDefaults.standard.integer(forKey: "currentLevel")) && gameState == .playing && released == false {
                     let touch = touches.first
@@ -720,6 +726,69 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                     panForTranslation(translation)
                 }
             }
+        }
+    }
+    /// Function that
+    func updateTheIndicators(touch : UITouch, touchLocation : CGPoint) {
+        let distance = fingerDistanceFromProjectileRestPosition(projectileRestPosition: touchLocation, fingerPosition: touchStartingPoint)
+        // TODO: Highpotenuese calculation for power
+        var power = ( distance / 75 ) * 100
+        if power > 100 {
+            power = 100
+        }
+        let vectorX = touchStartingPoint.x - touchCurrentPoint.x
+        let vectorY = touchStartingPoint.y - touchCurrentPoint.y
+        
+        let angleRad = atan(vectorY / vectorX)
+        let angleDeg = radToDeg(Double(angleRad))
+        var angle = angleDeg
+        var reverseAngle = angleDeg
+        if touchCurrentPoint.x > touchStartingPoint.x {
+            angle = angle + 180
+            if touchCurrentPoint.y < touchStartingPoint.y {
+            } else if touchCurrentPoint.y > touchStartingPoint.y {
+            }
+        } else if touchCurrentPoint.x < touchStartingPoint.x {
+            if touchCurrentPoint.y > touchStartingPoint.y {
+                angle = angle + 360
+            }
+        }
+        
+        if angle > -1 {
+            let intAngle: Int = Int(angle)
+            powerLabel.text = "\(String(Int(power)))%"
+            angleLabel.text = "\(String(describing: intAngle))°"
+        }
+        
+        let initialVelocity = sqrt(pow((vectorX * Settings.Metrics.forceMultiplier) / 0.5, 2) + pow((vectorY * Settings.Metrics.forceMultiplier) / 0.5, 2))
+        let angleRadians = angle * CGFloat(M_PI) / 180
+        
+        // MARK: Money Making code
+        func projectilePredictionPath (initialPosition: CGPoint, time: CGFloat, angle1: CGFloat /*initial Velocity and Gravity*/) -> CGPoint {
+            let YpointPosition = initialPosition.y + initialVelocity * time * sin(angle1) - 4.9 * pow(time,2)
+            let XpointPosition = initialPosition.x + initialVelocity * time * cos(angle1)
+            let predictionPoint = CGPoint(x: XpointPosition, y: YpointPosition)
+            return predictionPoint
+            
+        }
+        projectilePredictionPoint1.isHidden = false
+        projectilePredictionPoint2.isHidden = false
+        projectilePredictionPoint3.isHidden = false
+        projectilePredictionPoint4.isHidden = false
+        projectilePredictionPoint5.isHidden = false
+        projectilePredictionPoint1.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 0.3, angle1: angleRadians)
+        projectilePredictionPoint2.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 0.6, angle1: angleRadians)
+        projectilePredictionPoint3.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 0.9, angle1: angleRadians)
+        projectilePredictionPoint4.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 1.2, angle1: angleRadians)
+        projectilePredictionPoint5.position = projectilePredictionPath(initialPosition: touchStartingPoint, time: 1.5, angle1: angleRadians)
+        if distance < Settings.Metrics.rLimit  {
+            touchCurrentPoint = touchLocation
+        } else {
+            touchCurrentPoint = projectilePositionForFingerPosition(
+                fingerPosition: touchLocation,
+                projectileRestPosition: touchStartingPoint,
+                rLimit: Settings.Metrics.rLimit
+            )
         }
     }
     
