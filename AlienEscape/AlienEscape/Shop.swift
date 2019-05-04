@@ -93,21 +93,21 @@ class Shop: SKScene {
     
     override func didMove(to view: SKView) {
         
-        cameraNode3 = childNode(withName: "cameraNode3") as! SKCameraNode
-        mainManu = childNode(withName: "//mainMenuButton") as! MSButtonNode
-        starCounter = childNode(withName: "//starCounter") as! SKLabelNode
-        lifeCounter = childNode(withName: "//lifeCounter") as! SKLabelNode
-        leftArrow = childNode(withName: "//leftArrow") as! MSButtonNode
-        rightArrow = childNode(withName: "//rightArrow") as! MSButtonNode
-        robotAlien = childNode(withName: "robot") as! MSButtonNode
-        armoredAlien = childNode(withName: "armored_Alien") as! MSButtonNode
-        darkAlien = childNode(withName: "dark_Alien") as! MSButtonNode
-        greenAlien = childNode(withName: "green_Alien") as! MSButtonNode
+        cameraNode3 = (childNode(withName: "cameraNode3") as! SKCameraNode)
+        mainManu = (childNode(withName: "//mainMenuButton") as! MSButtonNode)
+        starCounter = (childNode(withName: "//starCounter") as! SKLabelNode)
+        lifeCounter = (childNode(withName: "//lifeCounter") as! SKLabelNode)
+        leftArrow = (childNode(withName: "//leftArrow") as! MSButtonNode)
+        rightArrow = (childNode(withName: "//rightArrow") as! MSButtonNode)
+        robotAlien = (childNode(withName: "robot") as! MSButtonNode)
+        armoredAlien = (childNode(withName: "armored_Alien") as! MSButtonNode)
+        darkAlien = (childNode(withName: "dark_Alien") as! MSButtonNode)
+        greenAlien = (childNode(withName: "green_Alien") as! MSButtonNode)
         
-        checkMark1 = childNode(withName: "//checkMark1") as! SKSpriteNode
-        checkMark2 = childNode(withName: "//checkMark2") as! SKSpriteNode
-        checkMark3 = childNode(withName: "//checkMark3") as! SKSpriteNode
-        checkMark4 = childNode(withName: "//checkMark4") as! SKSpriteNode
+        checkMark1 = (childNode(withName: "//checkMark1") as! SKSpriteNode)
+        checkMark2 = (childNode(withName: "//checkMark2") as! SKSpriteNode)
+        checkMark3 = (childNode(withName: "//checkMark3") as! SKSpriteNode)
+        checkMark4 = (childNode(withName: "//checkMark4") as! SKSpriteNode)
         
         scene?.camera = cameraNode3
         
@@ -165,7 +165,7 @@ class Shop: SKScene {
         
         mainManu.selectedHandler = {
             /* 1) Grab reference to our SpriteKit view */
-            guard let skView = self.view as SKView! else {
+            guard let skView = self.view else {
                 print("Could not get Skview")
                 return
             }

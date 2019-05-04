@@ -1129,8 +1129,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         slingshot_1.position = CGPoint(x: -100, y: -10)
         addChild(slingshot_1)
         slingshot_1.isHidden = false
+        slingshot_1.zPosition = 2
         
         projectile = spear()
+        projectile.zPosition = 3
         projectile.position = Settings.Metrics.projectileRestPosition
         addChild(projectile)
         
@@ -1138,6 +1140,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         slingshot_2.position = CGPoint(x: -100, y: -10)
         addChild(slingshot_2)
         slingshot_2.isHidden = false
+        slingshot_2.zPosition = 2
+        
+        
     }
     
     // MARK: Currently unused function. For emitters on stars later.
