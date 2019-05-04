@@ -182,19 +182,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
     */
     
     // More than 2 portals
-    var levelWithExtraPortals = [7]
+    var levelWithExtraPortals = [9,10]
     
     // Draggable portals
-    var levelWithDraggablePortals = [5,7]
+    var levelWithDraggablePortals = [5,10]
     
-    // Being able to move the camera ( UP / DOWN & LEFT & Right ).
-    var levelWithMovingCameraFromAtoB = [6]
+    // Being able to move the camera ( Teleport ).
+    var levelWithMovingCameraFromAtoB = [7]
     
     // Can move the camera ( LEFT & RIGHT )
-    var levelWithMovableCameraInXAxis = [7]
+    var levelWithMovableCameraInXAxis = [8,9,10]
     
     // Can move the camera ( UP & DOWN )
-    var levelWithMovableCameraInYAxis = [7]
+    var levelWithMovableCameraInYAxis = [8,9,10]
     
     // TODO: Figure out how they're used.
     var topBorder: SKSpriteNode!
@@ -560,7 +560,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
                 self.nextLevelButton.position.y -= 200
                 
                 
-//                self.inGameMenu.isHidden = true
+                self.inGameMenu.isHidden = true
                 self.gameState = .paused
 //            }
         }
@@ -575,7 +575,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
             self.menus.position.y = self.cameraNode.position.y - 700
             
             self.gameState = .playing
-//            self.inGameMenu.isHidden = false
+            self.inGameMenu.isHidden = false
         }
         setupSlingshot()
     }
@@ -1202,7 +1202,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         nextLevelButton.position.y = -200
 
         // Pause button.
-//        inGameMenu.isHidden = true
+        inGameMenu.isHidden = true
         
     }
     
@@ -1258,7 +1258,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GADRewardBasedVideoAdDelegat
         
         var stars = 0
         
-//        inGameMenu.isHidden = true
+        inGameMenu.isHidden = true
         
         // Check the score depending on how much the screen has moved.
         if background.position.y > -1000 {
